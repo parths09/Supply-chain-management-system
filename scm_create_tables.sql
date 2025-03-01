@@ -54,7 +54,7 @@ password varchar(30) not null
 drop table if exists warehouses cascade;
 
 create table warehouses(
-warehouse_id bigint primary key,
+warehouse_id int primary key,
 name varchar(50) not null,
 location varchar(255),
 phone_number varchar(15) unique,
@@ -92,7 +92,7 @@ create table inventory(
 inventory_id serial primary key,
 product_id bigint not null,
 supplier_id bigint not null,
-warehouse_id bigint not null,
+warehouse_id int not null,
 quantity_in_stock int not null check(quantity_in_stock>=0),
 reorder_level int,
 foreign key (product_id) references products(product_id) on delete restrict,
@@ -104,7 +104,7 @@ foreign key (warehouse_id) references warehouses(warehouse_id) on delete restric
 drop table if exists procurement;
 
 create table procurement(
-procurement_id bigint primary key,
+procurement_id serial primary key,
 inventory_id bigint not null	,
 quantity int not null,
 order_date date not null,
@@ -133,7 +133,6 @@ delivery_date date,
 tracking_number varchar(15) not null,
 shipping_status varchar(20) default 'pending' not null check(shipping_status in ('pending',  'processing', 'shipped','in transit', 'out for delivery', 'delivered', 'cancelled'))
 );
-
 --shipping_details
 drop table if exists shipping_details cascade;
 
@@ -141,8 +140,8 @@ create table shipping_details(
 detail_id serial primary key,
 shipping_id bigint not null,
 shipping_date date,
-curr_warehouse bigint not null,
-next_warehouse bigint,
+curr_warehouse int not null,
+next_warehouse int,
 foreign key (curr_warehouse) references warehouses(warehouse_id),
 foreign key (next_warehouse) references warehouses(warehouse_id),
 foreign key (shipping_id ) references shippings (shipping_id)
