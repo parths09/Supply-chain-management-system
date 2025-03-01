@@ -60,7 +60,6 @@ select * from get_orders(1);
 --returns the details of shipments currently in the warehouse
 
 
-
 drop function if exists get_shipment_details;
 
 create or replace function get_shipment_details(w_id int)
