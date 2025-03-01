@@ -61,28 +61,34 @@ INSERT INTO customers (customer_id, name, age, phone_number, email_id, pincode, 
 INSERT INTO orders (order_id, customer_id, order_date, order_status) VALUES
 (1, 1, '2025-02-15', 'on the way'),
 (2, 1, '2025-02-14', 'completed'),
-(3, 1, '2025-02-13', 'on the way'),
-(4, 1, '2025-02-12', 'confirmed'),
-(5, 1, '2025-02-11', 'completed');
+(3, 3, '2025-02-13', 'on the way'),
+(4, 4, '2025-02-12', 'confirmed'),
+(5, 5, '2025-02-11', 'completed');
 
 INSERT INTO shippings (shipping_id, delivery_date, tracking_number,shipping_status) VALUES
 (1, '2025-02-18','TRK1517', 'shipped'),
 (2, '2025-02-16','TRK1518', 'delivered'),
 (3,'2025-02-15','TRK1519', 'out for delivery'),
 (4,'2025-02-17','TRK1511', 'processing'),
-(5,'2025-02-20','TRK1512', 'cancelled');
+(5,'2025-02-20','TRK1512', 'cancelled'),
+(6,'2025-02-17','TRK1513', 'shipped');
 
 INSERT INTO shipping_details (shipping_id, curr_warehouse, next_warehouse, shipping_date) VALUES
 (1,1,2,'2025-02-16'),
 (2,2,3,'2025-02-15'),
+(3,3,2,'2025-02-11'),
+(3,2,4,'2025-02-11'),
 (3,4,null,'2025-02-11'),
 (4,4,1,'2025-02-12'),
-(5,3,5,'2025-02-16');
+(5,5,2,'2025-02-16'),
+(6,4,1,'2025-02-12'),
+(6,1,2,'2025-02-12');
 
 INSERT INTO order_details (order_id,shipping_id, inventory_id, quantity, amount) VALUES
 (1, 1, 1, 2, 2400),
 (2, 2, 2, 1, 250),
 (3, 3, 3, 1, 90),
+(3, 6, 4, 1, 15),
 (4, 4, 4, 3, 45),
 (5, 5, 5, 2, 60);
 
@@ -99,5 +105,5 @@ select * from order_details;
 select * from procurement;
 select * from warehouses;
 
-
+select * from shipping_details where shipping_id = 3;
 
