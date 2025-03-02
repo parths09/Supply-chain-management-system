@@ -1,6 +1,6 @@
 --1)
 --input : warehouse_id int
---returns the products present in the warehouse along with required attributes 
+--returns the products present in the warehouse  with required attributes 
 
 drop function if exists get_warehouse_products;
 
@@ -57,7 +57,7 @@ select * from get_orders(1);
 
 --3)
 --input : warehouse_id
---returns the details of shipments currently in the warehouse
+--returns the details of shipments currently stationed at  the warehouse
 
 
 drop function if exists get_shipment_details;
