@@ -23,11 +23,11 @@ INSERT INTO prices (product_id, supplier_id, unit_price) VALUES
 --inserting manager into warehouse is little complicated
 
 INSERT INTO warehouses (warehouse_id, name, location, phone_number, manager_id, pincode) VALUES
-(1, 'Tech Warehouse A', 'New York', '9876543211', null, 10001),
-(2, 'Furniture Depot', 'Los Angeles', '8765432102', null, 90001),
-(3, 'Shoe Storage', 'Texas', '7654321093', null, 73301),
-(4, 'Book Warehouse', 'San Francisco', '6543210984', null, 94101),
-(5, 'Toy Distribution Center', 'Florida', '5432109875', null, 33101);
+(1, 'Warehouse A', 'New York', '9876543211', null, 10001),
+(2, 'Warehouse B', 'Los Angeles', '8765432102', null, 90001),
+(3, 'Warehouse C', 'Texas', '7654321093', null, 73301),
+(4, 'Warehouse D', 'San Francisco', '6543210984', null, 94101),
+(5, 'Warehouse E', 'Florida', '5432109875', null, 33101);
 
 INSERT INTO employees (employee_id, name, warehouse_id, phone_number, email_id, salary, password, role) VALUES
 (1, 'Michael Scott', 1, '9876543211', 'michael@dundermifflin.com', 60000, 'worldsbestboss', 'manager'),
