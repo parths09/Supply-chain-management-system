@@ -26,6 +26,7 @@ select * from get_warehouse_products(3);
 -- 2) Function: get_orders
 -- Input: cus_id (bigint) - The ID of the customer.
 -- Returns: A table containing details of all orders placed by the specified customer
+
 drop function if exists get_orders(cus_id bigint);
 
 create or replace function get_orders(cus_id bigint)
