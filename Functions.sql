@@ -1,6 +1,6 @@
---1)
---input : warehouse_id int
---returns the products present in the warehouse  with required attributes 
+-- 1) Function: get_warehouse_products
+-- Input: warehouse_id (int) - The ID of the warehouse.
+-- Output: A table containing the inventory details of products currently in the specified warehouse
 
 drop function if exists get_warehouse_products;
 
@@ -23,11 +23,9 @@ $$;
 select * from get_warehouse_products(3);
 
 
-
---2)
---input : customer_id
---returns the details of all orders of the customer
-
+-- 2) Function: get_orders
+-- Input: cus_id (bigint) - The ID of the customer.
+-- Returns: A table containing details of all orders placed by the specified customer
 drop function if exists get_orders(cus_id bigint);
 
 create or replace function get_orders(cus_id bigint)
@@ -55,9 +53,9 @@ $$;
 select * from get_orders(1);
 
 
---3)
---input : warehouse_id
---returns the details of shipments currently stationed at  the warehouse
+-- 3) Function: get_shipment_details
+-- Input: w_id (int) - The ID of the warehouse.
+-- Returns: A table containing details of shipments currently stationed at the specified warehouse
 
 
 drop function if exists get_shipment_details;
