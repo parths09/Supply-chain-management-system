@@ -10,7 +10,7 @@
   <body>
     <div class="login-container">
       <h2>Register</h2>
-      <form method="POST">
+      <form action="register" method="post">
         {% csrf_token %}
 
         <select id="role" name="role" required>
@@ -27,9 +27,16 @@
         <input type="password" name="cnf_password" placeholder="Confirm Password" required />
         <button type="submit">Register</button>
       </form>
-      
+
+      <div>
+        {% for message in messages %}
+        <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+      </div>
+    
       <div class="bottom-links">
         <a href="/" class="link-text">Back to Login</a>
+      </div>
     </div>
   </body>
 </html>

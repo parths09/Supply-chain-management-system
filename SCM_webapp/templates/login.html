@@ -10,7 +10,7 @@
   <body>
     <div class="login-container">
       <h2>Login</h2>
-      <form method="POST">
+      <form action='' method="POST">
         {% csrf_token %}
 
         <select id="role" name="role" required>
@@ -25,7 +25,11 @@
 
         <button type="submit">Login</button>
       </form>
-      
+      <div>
+        {% for message in messages %}
+        <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+      </div>
       <div class="bottom-links">
         <a href="/admin" class="link-text">Login as Admin</a>
         <a href="{% url 'register' %}" class="link-text">Register</a>
