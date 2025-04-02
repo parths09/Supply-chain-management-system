@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Register</h2>
+      <form method="POST">
+        {% csrf_token %}
+
+        <select id="role" name="role" required>
+          <option value="" disabled selected>Select a Role</option>
+          <option value="Customer">Customer</option>
+          <option value="Supplier">Supplier</option>
+        </select>
+
+        <input type="text" name="first_name" placeholder="First Name" required />
+        <input type="text" name="last_name" placeholder="Last Name" required />
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input type="password" name="cnf_password" placeholder="Confirm Password" required />
+        <button type="submit">Register</button>
+      </form>
+      
+      <div class="bottom-links">
+        <a href="/" class="link-text">Back to Login</a>
+    </div>
+  </body>
+</html>
