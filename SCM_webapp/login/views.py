@@ -14,7 +14,8 @@ def login(request):
             user = auth.authenticate(username=username,password=password)
             if user is not None:
                 auth.login(request,user)
-                return render(request,'customer_home.html',{'username':username})
+                # return render(request,'customer_home.html',{'username':username})
+                return redirect('/customer')
             else:
                 messages.info(request,'Invalid Credentials!')
                 return redirect("/")
@@ -46,6 +47,7 @@ def register(request):
                     return redirect('register')
                 user = User.objects.create_user(first_name=first_name,last_name=last_name,username=username,password=password,email=email)
                 user.save()
+
                 print("User created")
                 return redirect('/')
             else:   
