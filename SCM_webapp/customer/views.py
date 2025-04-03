@@ -12,10 +12,14 @@ def customer_home(request):
 def customer_shipments(request):
     # Example data (replace with real data from DB)
     shipments = cus_shipments(request.user.username)
-    
+    for shipment in shipments:
+         print(f"Tracking Number: {shipment.tracking_number}")
     context = {
         "username": request.user.username ,
         "shipments": shipments
     }
     
     return render(request, "customer_shipment.html", context)
+
+def tracking_page(request, tracking_number):
+    return render(request, "customer_tracking.html", {"tracking_number": tracking_number})

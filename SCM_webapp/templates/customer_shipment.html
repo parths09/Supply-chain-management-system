@@ -10,7 +10,7 @@
 <body>
     <main class="table" id="shipments_table">
         <section class="table__header">
-            <h1>Hello, {{ username }}! Here are your Shipments</h1>
+            <h1>Hello, {{ username }}!   Here are your Shipments</h1>
             <!-- Optionally, add search or export controls here -->
         </section>
         <section class="table__body">
@@ -23,6 +23,8 @@
                         <th>Quantity</th>
                         <th>Amount</th>
                         <th>Status</th>
+                        <th>Track</th>
+                        
                         
                         <!-- <th>Tracking Number <span class="icon-arrow">&UpArrow;</span></th>
                         <th>Product<span class="icon-arrow">&UpArrow;</span></th>
@@ -42,6 +44,11 @@
                         <td>{{ shipment.quantity }}</td>
                         <td>{{ shipment.amount }}</td>
                         <td>{{ shipment.status }}</td>
+                        <td>
+                            <form action="{% url 'tracking_page' shipment.tracking_number %}" method="GET">
+                                <button type="submit" class="track-btn">Track</button>
+                            </form>
+                       </td>
                     </tr>
                     {% empty %}
                     <tr>

@@ -40,15 +40,47 @@ main.table {
     color: #333;
 }
 
-.table__body {
+/* .table__body {
     width: 100%;
     overflow: auto;
     max-height: 70vh;
+} */
+.table__body {
+    width: 95%;
+    max-height: calc(89% - 1.6rem);
+    background-color: #fffb;
+
+    margin: .8rem auto;
+    border-radius: .6rem;
+
+    overflow: auto;
+    overflow: overlay;
+}
+
+
+.table__body::-webkit-scrollbar{
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb{
+    border-radius: .5rem;
+    background-color: #0004;
+    visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb{ 
+    visibility: visible;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+}
+table, th, td {
+    border-collapse: collapse;
+    padding: 1rem;
+    text-align: left;
 }
 
 thead th {
@@ -82,7 +114,7 @@ thead th:hover {
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #0000000b;
 }
 
 tbody tr:hover {
@@ -94,33 +126,6 @@ tbody td {
     border-bottom: 1px solid #eee;
 }
 
-/* Status styles */
-.status {
-    padding: 0.4rem 0.8rem;
-    border-radius: 1rem;
-    text-align: center;
-    font-weight: bold;
-}
-
-.status.delivered {
-    background-color: #86e49d;
-    color: #006b21;
-}
-
-.status.cancelled {
-    background-color: #d893a3;
-    color: #b30021;
-}
-
-.status.pending {
-    background-color: #ebc474;
-    color: #8a6d3b;
-}
-
-.status.shipped {
-    background-color: #6fcaea;
-    color: #005e8a;
-}
 
 /* Scrollbar styling */
 .table__body::-webkit-scrollbar {
@@ -141,4 +146,29 @@ tbody td {
     thead th {
         padding: 0.8rem;
     }
+}
+
+tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: rgba(0, 128, 255, 0.2); /* Light blue highlight */
+}
+
+.track-btn {
+    background-color: #ffcccc; /* Light red background */
+    color: #b30000; /* Dark red text */
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px; /* Rounded edges */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.track-btn:hover {
+    background-color: #ff9999; /* Slightly darker red */
+    color: #800000;
+    transform: scale(1.05); /* Slight zoom effect */
 }
