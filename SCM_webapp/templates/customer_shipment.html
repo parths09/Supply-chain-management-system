@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shipments</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cus_shipment.css' %}">
+</head>
+<body>
+    <main class="table" id="shipments_table">
+        <section class="table__header">
+            <h1>Hello, {{ username }}! Here are your Shipments</h1>
+            <!-- Optionally, add search or export controls here -->
+        </section>
+        <section class="table__body">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tracking Number <span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Status <span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Delivery Date <span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Origin <span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Destination <span class="icon-arrow">&UpArrow;</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shipment in shipments %}
+                    <tr>
+                        <td>{{ shipment.tracking_number }}</td>
+                        <td>{{ shipment.status }}</td>
+                        <td>{{ shipment.delivery_date|date:"Y-m-d" }}</td>
+                        <td>{{ shipment.origin }}</td>
+                        <td>{{ shipment.destination }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No shipments found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
