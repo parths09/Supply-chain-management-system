@@ -17,21 +17,31 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Tracking Number <span class="icon-arrow">&UpArrow;</span></th>
-                        <th>Status <span class="icon-arrow">&UpArrow;</span></th>
-                        <th>Delivery Date <span class="icon-arrow">&UpArrow;</span></th>
-                        <th>Origin <span class="icon-arrow">&UpArrow;</span></th>
-                        <th>Destination <span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Tracking Number </th>
+                        <th>Product</th>
+                        <th>Supplier </th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        
+                        <!-- <th>Tracking Number <span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Product<span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Supplier <span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Quantity<span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Amount<span class="icon-arrow">&UpArrow;</span></th>
+                        <th>Status<span class="icon-arrow">&UpArrow;</span></th> -->
                     </tr>
                 </thead>
                 <tbody>
                     {% for shipment in shipments %}
                     <tr>
                         <td>{{ shipment.tracking_number }}</td>
+                        <td>{{ shipment.product_name }}</td>
+                        <!-- <td>{{ shipment.delivery_date|date:"Y-m-d" }}</td> -->
+                        <td>{{ shipment.supplier_name }}</td>
+                        <td>{{ shipment.quantity }}</td>
+                        <td>{{ shipment.amount }}</td>
                         <td>{{ shipment.status }}</td>
-                        <td>{{ shipment.delivery_date|date:"Y-m-d" }}</td>
-                        <td>{{ shipment.origin }}</td>
-                        <td>{{ shipment.destination }}</td>
                     </tr>
                     {% empty %}
                     <tr>
