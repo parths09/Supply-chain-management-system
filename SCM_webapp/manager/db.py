@@ -81,8 +81,8 @@ class PostgresqlDB:
 
 
 #Defining Db Credentials
-USER_NAME = 'customer'
-PASSWORD = 'customer_pass'
+USER_NAME = 'manager'
+PASSWORD = 'manager_pass'
 PORT = 5432
 DATABASE_NAME = 'supply_chain_management'
 HOST = 'localhost'

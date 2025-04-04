@@ -16,6 +16,7 @@ def customer_shipments(request):
         "username": request.user.username ,
         "shipments": shipments
     }
+    print(shipments)
     
     return render(request, "customer_shipment.html", context)
 

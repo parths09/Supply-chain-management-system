@@ -46,8 +46,8 @@ def register(request):
         password = request.POST['password']
         cnf_password = request.POST['cnf_password']
 
-        if role == 'Customer':
-        # if role == 'Customer' or role == 'Manager':
+        # if role == 'Customer':
+        if role == 'Customer' or role == 'Manager':
             if password==cnf_password:
 
                 if User.objects.filter(username=username).exists():
