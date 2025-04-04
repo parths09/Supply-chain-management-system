@@ -1,144 +1,241 @@
-/* CSS for the shipment table */
-
+/* Reset & General Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: sans-serif;
-}
-
-body {
-    min-height: 100vh;
+  }
+  
+  body {
     background: #f5f5f5;
+    padding-top: 60px;
+  }
+  
+  /* Navbar */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    padding: 0 2rem;
+    background-color: #586de4;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+    color: whitesmoke;
+  }
+  
+  .menu {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .menu a:hover {
+    color: #ff4500;
+  }
+  
+  /* Search Container */
+  .search-container {
+    width: 25%;
+    min-width: 300px;
+    margin: 30px auto;
+    padding: 20px;
+    background: rgb(245, 232, 120);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .search-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Search Box (Now Responsive) */
+  .search-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Ensures items wrap on small screens */
+  }
+  
+  .search-box input {
+    border: 2px solid #0073e6;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    flex: 1; /* Makes it responsive */
+  }
+  
+  .search-box button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #0073e6;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .search-box button:hover {
+    background-color: #005bb5;
+  }
+  .message-box {
+    width: 100%; /* Ensures it takes the full width */
+    text-align: center; /* Centers the text */
+    margin-top: 5px; /* Adds space between the button and message */
+    padding: 5 px; /* Adds a little space for better visibility */
+    color: red; /* Keeps the error message clear */
+    font-weight: bold; /* Makes it stand out */
 }
-
-main.table {
-    width: 82vw;
+  /* Shipments Table */
+  main.table {
+    width: 90vw;
     max-width: 1200px;
     background-color: #fff;
     box-shadow: 0 0.4rem 0.8rem rgba(0,0,0,0.1);
     border-radius: 0.8rem;
     overflow: hidden;
-    margin: 2rem;
-}
-
-.table__header {
+    margin: 2rem auto;
+  }
+  
+  /* Table Header */
+  .table__header {
     width: 100%;
     padding: 1rem;
     background-color: #f7f7f7;
     border-bottom: 1px solid #ddd;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-}
-
-.table__header h1 {
-    font-size: 1.5rem;
+  }
+  
+  .table__header h1 {
+    font-size: 1.8rem;
     color: #333;
-}
-
-/* .table__body {
+    text-align: center;
     width: 100%;
-    overflow: auto;
-    max-height: 70vh;
-} */
-.table__body {
-    width: 95%;
-    max-height: calc(89% - 1.6rem);
-    background-color: #fffb;
+  }
+  
+  /* Responsive Table Container */
+  .table__body {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling */
+  }
 
-    margin: .8rem auto;
-    border-radius: .6rem;
-
-    overflow: auto;
-    overflow: overlay;
-}
-
-
-.table__body::-webkit-scrollbar{
+  .table__body::-webkit-scrollbar{
     width: 0.5rem;
     height: 0.5rem;
-}
+ }
 
-.table__body::-webkit-scrollbar-thumb{
+  .table__body::-webkit-scrollbar-thumb{
     border-radius: .5rem;
     background-color: #0004;
     visibility: hidden;
-}
+    background-color: rgba(0,0,0,0.25);
+    
+ }
 
 .table__body:hover::-webkit-scrollbar-thumb{ 
     visibility: visible;
 }
 
-table {
+  table {
     width: 100%;
+    min-width: 700px; /* Ensures table doesn’t shrink too much */
     border-collapse: collapse;
-}
-table, th, td {
-    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  
+  th, td {
     padding: 1rem;
-    text-align: left;
-}
-
-thead th {
+    text-align: center;
+  }
+  
+  thead th {
     position: sticky;
     top: 0;
     background-color: #d5d1defe;
     padding: 1rem;
-    text-align: left;
     text-transform: capitalize;
     cursor: pointer;
-}
-
-thead th span.icon-arrow {
-    display: inline-block;
-    width: 1.3rem;
-    height: 1.3rem;
-    border-radius: 50%;
-    border: 1.4px solid transparent;
     text-align: center;
-    font-size: 1rem;
-    margin-left: 0.5rem;
-    transition: 0.2s ease-in-out;
-}
+  }
 
-thead th:hover span.icon-arrow {
+  thead th:hover span.icon-arrow {
     border: 1.4px solid #6c00bd;
-}
+    }
 
-thead th:hover {
+    thead th:hover {
     color: #6c00bd;
-}
-
-tbody tr:nth-child(even) {
+    }
+  
+  tbody tr:nth-child(even) {
     background-color: #0000000b;
-}
-
-tbody tr:hover {
+  }
+  
+  tbody tr:hover {
     background-color: #fff6;
-}
+  }
 
-tbody td {
+  tbody td {
     padding: 1rem;
     border-bottom: 1px solid #eee;
-}
+    }
+  
+  .track-btn {
+    background-color: #ffcccc;
+    color: #b30000;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .track-btn:hover {
+    background-color: #ff9999;
+    color: #800000;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    /* Search box takes full width */
+    .search-container {
+      width: 90%;
+      margin: 20px auto;
+    }
+  
+    /* Shipments table takes full width */
+    main.table {
+      width: 95vw;
+    }
 
-
-/* Scrollbar styling */
-.table__body::-webkit-scrollbar {
-    width: 0.5rem;
-}
-
-.table__body::-webkit-scrollbar-thumb {
-    border-radius: 0.5rem;
-    background-color: rgba(0,0,0,0.25);
-}
-
-/* Responsive adjustments */
-@media (max-width: 1000px) {
     tbody td {
         padding: 0.8rem;
     }
@@ -146,29 +243,13 @@ tbody td {
     thead th {
         padding: 0.8rem;
     }
-}
+    }
 
-tbody tr {
+    tbody tr {
     transition: background-color 0.3s ease;
-}
+    }
 
-tbody tr:hover {
-    background-color: rgba(0, 128, 255, 0.2); /* Light blue highlight */
-}
-
-.track-btn {
-    background-color: #ffcccc; /* Light red background */
-    color: #b30000; /* Dark red text */
-    font-weight: bold;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px; /* Rounded edges */
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}
-
-.track-btn:hover {
-    background-color: #ff9999; /* Slightly darker red */
-    color: #800000;
-    transform: scale(1.05); /* Slight zoom effect */
-}
+    tbody tr:hover {
+    background-color: rgba(0, 128, 255, 0.2);
+    } 
+  
