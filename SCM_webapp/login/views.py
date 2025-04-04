@@ -19,8 +19,20 @@ def login(request):
             else:
                 messages.info(request,'Invalid Credentials!')
                 return redirect("/")
+
+        
+        if role=='Manager':
+            user = auth.authenticate(username=username,password=password)
+            if user is not None:
+                auth.login(request,user)
+                # return render(request,'customer_home.html',{'username':username})
+                return redirect('/manager')
+            else:
+                messages.info(request,'Invalid Credentials!')
+                return redirect("/")
         else:
             return redirect('/')
+        
     elif request.method == 'GET':
         return render(request,'login.html',{})
 
@@ -35,6 +47,7 @@ def register(request):
         cnf_password = request.POST['cnf_password']
 
         if role == 'Customer':
+        # if role == 'Customer' or role == 'Manager':
             if password==cnf_password:
 
                 if User.objects.filter(username=username).exists():
