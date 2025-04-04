@@ -4,10 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer</title>
+    <title>Customer Home</title>
+    <link rel="stylesheet" href='{%static 'css/customer_home.css'%}'>
 </head>
 <body>
-    <h1>Hi customer {{username}} </h1>
-
+    <div class="navbar">
+        <div class="logo">Supply Chain</div>
+        <div class="menu">
+            <a href="#">Profile</a>
+            <a href="#">Change Password</a>
+            <a href="#">Logout</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>Track Your Shipment</h2>
+        <input type="text" id="tracking_id" placeholder="Enter Tracking ID">
+        <button id="search">Search</button>
+        
+        <h2>Active Shipments</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Shipment ID</th>
+                    <th>Tracking Number</th>
+                    <th>Status</th>
+                    <th>Estimated Delivery</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>SH12345</td>
+                    <td>TRK56789</td>
+                    <td>In Transit</td>
+                    <td>April 10, 2025</td>
+                </tr>
+                <tr>
+                    <td>SH67890</td>
+                    <td>TRK12345</td>
+                    <td>Out for Delivery</td>
+                    <td>April 12, 2025</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button id="view_all">View All Shipments</button>
+    </div>
 </body>
 </html>
