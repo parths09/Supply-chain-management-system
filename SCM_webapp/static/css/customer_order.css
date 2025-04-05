@@ -116,19 +116,41 @@
     font-weight: bold; /* Makes it stand out */
 }
 
-  .query-container{
-    width: 100%;
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 20px;
-    
-    background-color: rgb(245, 232, 120);
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: all 0.3s ease-in-out;
-  
+.filter-container {
+  width: 90%;
+  max-width: 1800px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+  margin: 1rem auto -1rem auto;
 }
+
+.filter-container form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-container label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.filter-container select {
+  padding: 8px 14px;
+  font-size: 16px;
+  border: 2px solid #0073e6;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: white;
+  transition: border 0.3s ease;
+}
+
+.filter-container select:focus {
+  border-color: #005bb5;
+  outline: none;
+}
+
   /* Shipments Table */
   main.table {
     width: 90% auto;
