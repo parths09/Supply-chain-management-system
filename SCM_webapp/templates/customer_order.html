@@ -47,12 +47,12 @@
     <form method="GET" action="{% url 'customer_orders' %}">
       <label for="status">Filter by Status:</label>
       <select id="status" name="status" onchange="this.form.submit()">
-        <option value="" disabled selected>Select Status</option>
-        <option value="pending">Pending</option>
-        <option value="on the way">Arriving</option>
-        <option value="delivered">Delivered</option>
-        <option value=""></option>
+        <option value="all" {% if request.GET.status == "all" or not request.GET.status %}selected{% endif %}>---ALL---</option>
+        <option value="pending" {% if request.GET.status == "pending" %}selected{% endif %}>Pending</option>
+        <option value="on the way" {% if request.GET.status == "on the way" %}selected{% endif %}>Arriving</option>
+        <option value="delivered" {% if request.GET.status == "delivered" %}selected{% endif %}>Delivered</option>
       </select>
+      
     </form>
   </div>
   
