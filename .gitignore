@@ -1,2 +1,3 @@
-.$SCM ER diagram.drawio.bkp
+/SCM_webapp/venv
 *.pyc
+/SCM_webapp/venv2
