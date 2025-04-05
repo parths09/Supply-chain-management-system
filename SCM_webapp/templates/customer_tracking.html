@@ -24,5 +24,17 @@
         {% endfor %}
       </div>
     {% endif %}
+
+    {%for row in tracking_details%}
+    <p> From warehouse {{row.currently_in}} -> 
+        {% if row.move_to %} To Warehouse {{row.move_to}}
+        {% else %} Out for Delivery
+        {% endif %}  </p>
+    {% endfor %}
+      <br>
+    <p>{{shipping_status}}</p>
+
+
+
   </body>
 </html>

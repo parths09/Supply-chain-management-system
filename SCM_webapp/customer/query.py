@@ -18,3 +18,23 @@ def cus_orders(id=None,name=None):
         
     except Exception as err:
         print(f'Failed to fetch customer shipments -- {err}')
+
+def cus_tracking(tracking_no):
+    """
+    """
+    try:
+        query = f''' select * from get_tracking('{tracking_no}');'''
+        result = db.execute_dql_commands(query)
+        tracking_details=result.mappings().all()
+        return tracking_details
+    except Exception as err:
+        print(f'Failed to fetch tracking details -- {err}')
+
+def cus_shipping_status(tracking_no):
+    try:
+        query = f''' select shipping_status from shippings where tracking_number = '{tracking_no}' ;'''
+        result = db.execute_dql_commands(query)
+        shipping_status=list(result)[0]
+        return shipping_status
+    except Exception as err:
+        print(f'Failed to fetch tracking details -- {err}')

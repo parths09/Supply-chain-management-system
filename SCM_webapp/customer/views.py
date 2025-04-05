@@ -36,4 +36,14 @@ def customer_orders(request):
 
 
 def tracking_page(request, tracking_number):
-    return render(request, "customer_tracking.html", {"tracking_number": tracking_number})
+    tracking_details=cus_tracking(tracking_number)
+    # print(tracking_details)
+    # if tracking_details[-1]["move_to"] is None:
+    #     tracking_details[-1]["move_to"] = "Delivering"
+    shipping_stautus = cus_shipping_status(tracking_number)[0]
+    # print(shipping_stautus)
+    context = {
+        "tracking_number": tracking_number,
+        "tracking_details":tracking_details,
+        "shipping_status" : shipping_stautus}
+    return render(request, "customer_tracking.html",context )
