@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Shipments</title>
-  <link rel="stylesheet" href="{% static 'css/cus_shipment.css' %}">
+  <title>My Orders</title>
+  <link rel="stylesheet" href="{% static 'css/customer_order.css' %}">
 </head>
 <body>
   <!-- Navbar -->
@@ -28,32 +28,36 @@
   
   <!-- Search Container (Below Navbar) -->
   <div class="search-container">
-    <h2>Track Your Shipment</h2>
-    <form method="GET" action="{% url 'customer_shipments' %}">
+    <h2>Track Your Order!!</h2>
+    <form method="GET" action="{% url 'customer_orders' %}">
         <div class="search-box">
             <input type="text" name="tracking_number" placeholder="Enter Tracking ID" required />
             <button type="submit">Track</button>
         </div>
     </form>
 
-  <div>
-    {% if error_message %}
-    <p style="color: red;">{{ message }}</p>
-    {% endif %}
-  </div>
+    <div>
+      {% if error_message %}
+      <p style="color: red;">{{ message }}</p>
+      {% endif %}
+    </div>
   </div>
 
+  <div class="query-container">
+    <h2>Hello</h2>
+  </div>
   
   <!-- Shipments Table -->
-  <main class="table" id="shipments_table">
+  <main class="table" id="orders_table">
     <section class="table__header">
-      <h1>Shipments</h1>
+      <h1>Orders</h1>
     </section>
     <section class="table__body">
       <table>
         <thead>
           <tr>
-            <th>Tracking Number</th>
+            <th>S.No</th>
+            <th>Tracking ID</th>
             <th>Product</th>
             <th>Quantity</th>
             <th>Amount</th>
@@ -62,22 +66,23 @@
           </tr>
         </thead>
         <tbody>
-          {% for shipment in shipments %}
+          {% for order in shipments %}
           <tr>
-            <td>{{ shipment.tracking_number }}</td>
-            <td>{{ shipment.product_name }}</td>
-            <td>{{ shipment.quantity }}</td>
-            <td>{{ shipment.amount }}</td>
-            <td>{{ shipment.status }}</td>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ order.tracking_number }}</td>
+            <td>{{ order.product_name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.amount }}</td>
+            <td>{{ order.status }}</td>
             <td>
-              <form action="{% url 'tracking_page' shipment.tracking_number %}" method="GET">
+              <form action="{% url 'tracking_page' order.tracking_number %}" method="GET">
                 <button type="submit" class="track-btn">Track</button>
               </form>
             </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="6">No shipments found.</td>
+            <td colspan="6">No orders found.</td>
           </tr>
           {% endfor %}
         </tbody>

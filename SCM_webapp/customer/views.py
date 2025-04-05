@@ -10,25 +10,25 @@ def customer_home(request):
         return render(request,'customer_home.html',{'username': request.user.username})
     
 
-def customer_shipments(request):
+def customer_orders(request):
 
-    shipments = cus_shipments(request.user.username)
+    orders = cus_orders(name=request.user.username)
 
     if request.method == 'GET' and 'tracking_number' in request.GET:
         tracking_number = request.GET.get('tracking_number')
-        tracking_numbers = [shipment['tracking_number'] for shipment in shipments]
+        tracking_numbers = [shipment['tracking_number'] for shipment in orders]
         if tracking_number in tracking_numbers:
             return redirect('tracking_page', tracking_number=tracking_number)
         else:
             messages.error(request, "Invalid Tracking Number.")
-            return redirect('customer_shipments')
+            return redirect('customer_orders')
 
     
     context = {
         "username": request.user.username,
-        "shipments": shipments
+        "shipments": orders
     }
-    return render(request, "customer_shipment.html", context)
+    return render(request, "customer_order.html", context)
 
 
 def tracking_page(request, tracking_number):
