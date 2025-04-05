@@ -24,7 +24,7 @@ select * from get_warehouse_products(3);
 
 
 -- 2) Function: get_orders
--- Input: cus_id (bigint) - The ID of the customerInput: cus_id (bigint)  or  name (varchar(30)) - the name of the customer
+-- Input: cus_id (bigint) - The ID of the customer or Input: cus_id (bigint)  or  name (varchar(30)) - the name of the customer
 -- Returns: A table containing details of all orders placed by the specified customer
 
 drop function if exists get_orders(id bigint default NULL , u_name varchar(30) default NULL )
