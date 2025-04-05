@@ -8,10 +8,37 @@ def customer_home(request):
 
 
 def customer_orders(request):
+    dict_1={
+        'pending': 'pending',
+        'processing': 'pending',
+        'shipped': 'arriving',
+        'in transit': 'arriving',
+        'out for delivery': 'out for delivery',
+        'delivered': 'delivered',
+        'cancelled': 'cancelled',
+    }
+                
+    dict_2={
+            'pending': ('pending','processing'),
+            'arriving': ('shipped','in transit'),
+            'out for delivery': ('out for delivery'),
+            'delivered': ('delivered'),
+            'cancelled': ('cancelled'),
+
+            }
     
     all_orders = cus_orders(name=request.user.username)
-    print(all_orders)
-    filtered_orders = all_orders  # initially keep all
+    filtered_orders = all_orders 
+    for i in range(len(filtered_orders)):
+        order = dict(filtered_orders[i]) 
+        status = order.get('status')
+        if status in ('shipped', 'in transit'):
+            order['status'] = 'arriving'
+        elif status in ('pending', 'processing'):
+            order['status'] = 'pending'
+
+        filtered_orders[i] = order 
+
     if request.method == 'GET':
 
         tracking_number = request.GET.get('tracking_number', '').strip()
@@ -31,13 +58,8 @@ def customer_orders(request):
         # If status filter is provided — filter
         if status_filter and status_filter != 'all':
             #status=('pending', 'confirmed', 'completed', 'on the way')
-            dict={
-                'pending': ('pending'),
-                'delivered': ('completed'),
-                'on the way': ('on the way' , 'confirmed')
-            }
-            status=dict.get(status_filter)
-            filtered_orders = [order for order in all_orders if order.get('status') in status]
+
+            filtered_orders = [order for order in filtered_orders if order.get('status')==status_filter]
 
     context = {
             "username": request.user.username,
