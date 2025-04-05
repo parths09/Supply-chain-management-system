@@ -5,10 +5,10 @@ SCM_webapp/login/__pycache__/views.cpython-312.pyc
 *.pyc
 *.pyc
 *.pyc
+<<<<<<< Updated upstream
+=======
+*.pyc
+>>>>>>> Stashed changes
 *.pyc
 *.pyc
 *.pyc
-/SCM_webapp/login/__pycache__
-*.pyc
-SCM_webapp/SCM_webapp/__pycache__/settings.cpython-312.pyc
-SCM_webapp/login/__pycache__/urls.cpython-312.pyc

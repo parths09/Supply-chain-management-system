@@ -27,31 +27,28 @@ select * from get_warehouse_products(3);
 -- Input: cus_id (bigint) - The ID of the customer.
 -- Returns: A table containing details of all orders placed by the specified customer
 
-drop function if exists get_orders(cus_id bigint);
+drop function if exists get_orders(id bigint default NULL , u_name varchar(30) default NULL )
 
-create or replace function get_orders(cus_id bigint)
+create or replace function get_orders(id bigint default NULL , u_name varchar(30) default NULL )
 
-returns table (tracking_number varchar(15),product_name varchar(50), supplier_name varchar(50), 
+returns table (tracking_number varchar(15),product_name varchar(50),
 quantity int, amount numeric(10,2), status varchar(20))
 
 language plpgsql as $$
+declare 
+	cus_id bigint;
 
 begin 
-
+	cus_id = coalesce(id,(select customer_id from customers where name=u_name));
 	return query
-	select shp.tracking_number, p.name, sup.name, od.quantity, od.amount, shp.shipping_status
-	
-	from products as p, suppliers as sup, order_details as od, orders as o , inventory as i,
-	shippings as shp 
-	
-	where o.customer_id = cus_id  and o.order_id = od.order_id and 
-	od.shipping_id = shp.shipping_id and od.inventory_id = i.inventory_id and 
-	i.product_id= p.product_id and i.supplier_id = sup.supplier_id;
-
+	select co.tracking_number,co.name,co.quantity,
+	co.amount,co.order_status from customer_orders as co where customer_id = cus_id;
 end;
 $$;
 
 select * from get_orders(1);
+
+select * from get_orders(NULL,'Alice Johnson');
 
 
 -- 3) Function: get_shipment_details

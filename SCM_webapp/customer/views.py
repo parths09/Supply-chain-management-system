@@ -1,24 +1,39 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from customer.query import *
+from django.contrib import messages
 
 # Create your views here.
 def customer_home(request):
-    if request.method=='POST':
-        return render(request,'customer_home.html',{'username': request.user.username})
-    else:
-        return render(request,'customer_home.html',{'username': request.user.username})
-    
+    return render(request, 'customer_home.html', {'username': request.user.username})
 
-def customer_shipments(request):
-    # Example data (replace with real data from DB)
-    shipments = cus_shipments(request.user.username)
-    context = {
-        "username": request.user.username ,
-        "shipments": shipments
-    }
-    print(shipments)
+
+def customer_orders(request):
+    all_orders = cus_orders(name=request.user.username)
+    filtered_orders = all_orders  # initially keep all
     
-    return render(request, "customer_shipment.html", context)
+    tracking_number = request.GET.get('tracking_number', '').strip()
+    status_filter = request.GET.get('status', '').strip()
+
+    if tracking_number:
+        tracking_numbers = [order['tracking_number'] for order in all_orders]
+        if tracking_number in tracking_numbers:
+            return redirect('tracking_page', tracking_number=tracking_number)
+        else:
+            messages.error(request, "Invalid Tracking Number.")
+            return redirect('customer_orders')
+
+
+    # If status filter is provided — filter
+    if status_filter:
+        filtered_orders = [order for order in all_orders if order.get('status') == status_filter]
+
+    context = {
+        "username": request.user.username,
+        "orders": filtered_orders,
+    }
+
+    return render(request, "customer_order.html", context)
+
 
 def tracking_page(request, tracking_number):
     return render(request, "customer_tracking.html", {"tracking_number": tracking_number})

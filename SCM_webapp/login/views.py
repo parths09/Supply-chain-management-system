@@ -70,5 +70,11 @@ def register(request):
             return redirect('register')
     else:
         return render(request,'register.html',{})
+    
+def logout(request):
+    auth.logout(request)
+    request.session.flush()  # Clears session data
+    return redirect('/')     # Redirect to login
+
 
 
