@@ -1,13 +1,28 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/customer_tracking.css' %}">
     <title>Customer</title>
-</head>
-<body>
-    <h1>Tracking_number {{tracking_number}}</h1> </h1>
-
-</body>
+  </head>
+  <body>
+    <h1>Tracking_number {{ tracking_number }}</h1>
+    <div class="navbar">
+      <div class="logo">{{ username }}</div>
+      <div class="menu">
+        <a href="#">Profile</a>
+        <a href="#">Change Password</a>
+        <a href="{% url 'logout' %}">Logout</a>
+      </div>
+    </div>
+    {% if messages %}
+      <div class="message-box">
+        {% for message in messages %}
+          <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </body>
 </html>
