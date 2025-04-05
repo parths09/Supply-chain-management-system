@@ -9,13 +9,13 @@ def customer_home(request):
 
 def customer_orders(request):
     dict_1={
-        'pending': 'pending',
-        'processing': 'pending',
-        'shipped': 'arriving',
-        'in transit': 'arriving',
-        'out for delivery': 'out for delivery',
-        'delivered': 'delivered',
-        'cancelled': 'cancelled',
+        'pending': 'Pending',
+        'processing': 'Pending',
+        'shipped': 'Arriving',
+        'in transit': 'Arriving',
+        'out for delivery': 'Out for delivery',
+        'delivered': 'Delivered',
+        'cancelled': 'Cancelled',
     }
                 
     dict_2={
@@ -32,11 +32,7 @@ def customer_orders(request):
     for i in range(len(filtered_orders)):
         order = dict(filtered_orders[i]) 
         status = order.get('status')
-        if status in ('shipped', 'in transit'):
-            order['status'] = 'arriving'
-        elif status in ('pending', 'processing'):
-            order['status'] = 'pending'
-
+        order['status'] = dict_1.get(status)
         filtered_orders[i] = order 
 
     if request.method == 'GET':

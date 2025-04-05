@@ -14,7 +14,7 @@
     <div class="menu">
       <a href="#">Profile</a>
       <a href="#">Change Password</a>
-      <a href="{%url 'logout' %}">Logout</a>
+      <a href="{% url 'logout' %}">Logout</a>
     </div>
   </div>
 
@@ -24,21 +24,21 @@
       <p style="color: red;">{{ message }}</p>
     {% endfor %}
   </div>
-`{% endif %}
+  {% endif %}
   
   <!-- Search Container (Below Navbar) -->
   <div class="search-container">
     <h2>Track Your Order!!</h2>
     <form method="GET" action="{% url 'customer_orders' %}">
-        <div class="search-box">
-            <input type="text" name="tracking_number" placeholder="Enter Tracking ID" required />
-            <button type="submit">Track</button>
-        </div>
+      <div class="search-box">
+        <input type="text" name="tracking_number" placeholder="Enter Tracking ID" required />
+        <button type="submit">Track</button>
+      </div>
     </form>
 
     <div>
       {% if error_message %}
-      <p style="color: red;">{{ message }}</p>
+      <p style="color: red;">{{ error_message }}</p>
       {% endif %}
     </div>
   </div>
@@ -48,13 +48,12 @@
       <label for="status">Filter by Status:</label>
       <select id="status" name="status" onchange="this.form.submit()">
         <option value="all" {% if request.GET.status == "all" or not request.GET.status %}selected{% endif %}>--ALL--</option>
-        <option value="pending" {% if request.GET.status == "pending" %}selected{% endif %}>Pending</option>
-        <option value="arriving" {% if request.GET.status == "arriving" %}selected{% endif %}>Arriving</option>
-        <option value="out for delivery" {% if request.GET.status == "out for delivery" %}selected{% endif %}>Out for Delivery</option>
-        <option value="delivered" {% if request.GET.status == "delivered" %}selected{% endif %}>Delivered</option>
-        <option value="cancelled" {% if request.GET.status == "cancelled" %}selected{% endif %}>Cancelled</option>
+        <option value="Pending" {% if request.GET.status == "Pending" %}selected{% endif %}>Pending</option>
+        <option value="Arriving" {% if request.GET.status == "Arriving" %}selected{% endif %}>Arriving</option>
+        <option value="Out for delivery" {% if request.GET.status == "Out for delivery" %}selected{% endif %}>Out for Delivery</option>
+        <option value="Delivered" {% if request.GET.status == "Delivered" %}selected{% endif %}>Delivered</option>
+        <option value="Cancelled" {% if request.GET.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
       </select>
-      
     </form>
   </div>
   
@@ -93,7 +92,7 @@
           </tr>
           {% empty %}
           <tr>
-            <td colspan="6">No orders found.</td>
+            <td colspan="7">No orders found.</td>
           </tr>
           {% endfor %}
         </tbody>
