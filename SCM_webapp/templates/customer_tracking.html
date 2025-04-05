@@ -4,7 +4,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/customer_tracking.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/customer_tracking.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/progress.css' %}" />
     <title>Customer</title>
   </head>
   <body>
@@ -25,16 +26,58 @@
       </div>
     {% endif %}
 
-    {%for row in tracking_details%}
-    <p> From warehouse {{row.currently_in}} -> 
-        {% if row.move_to %} To Warehouse {{row.move_to}}
-        {% else %} Out for Delivery
-        {% endif %}  </p>
+    {% for row in tracking_details %}
+      <p>
+        From warehouse {{ row.currently_in }} ->{% if row.move_to %}
+          To Warehouse {{ row.move_to }} on {{ row.date }}
+        {% else %}
+          Out for Delivery on {{ row.date }}
+        {% endif %}
+      </p>
     {% endfor %}
-      <br>
-    <p>{{shipping_status}}</p>
+    <br />
+    <p>{{ shipping_status }}</p>
 
+    {% comment %}Timeline{% endcomment %}
+    <div class="timeline-wrapper">
+      <div class="timeline-container" style="--progress-height:{{progress_height}}px;">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>Ordered</h4>
+            <p class="timestamp">{{ order_date }}</p>
+          </div>
+        </div>
 
+        {% for step in tracking_details %}
+          <div class="timeline-item {% if forloop.last and fill_circle %}complete{% endif %}">
+            <div class="timeline-content">
+              <h4>Shipped</h4>
+              <p>
+                <strong><i>Location:</i></strong> Warehouse {{ step.currently_in }}
+              </p>
+              <p class="timestamp">{{ step.date }}</p>
+            </div>
+          </div>
+        {% endfor %}
 
+        {% if shipping_status == 'delivered' %}
+        <div class="timeline-item delivered">
+          <div class="timeline-content">
+            <h4>Delivered</h4>
+            <p class="timestamp">{{ expected_delivery }}</p>
+          </div>
+        </div>
+        {% else %}
+        <div class="timeline-item expected">
+          <div class="timeline-content">
+            <h4>Expected Delivery</h4>
+            <p class="timestamp">{{ expected_delivery }}</p>
+          </div>
+        </div>
+        {% endif %}
+
+        
+      </div>
+    </div>  
   </body>
 </html>

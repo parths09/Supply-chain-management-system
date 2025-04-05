@@ -82,6 +82,41 @@ select * from get_shipment_details(2);
 
 
 
+-- Function to get tracking details from tracking number
+drop function if exists get_tracking
+
+create or replace function get_tracking(trk varchar(15))
+returns table(shipping_id bigint, date date, currently_in integer, move_to integer)
+language plpgsql as $$
+begin 
+
+	return query
+	select s.shipping_id,sd.shipping_date,sd.curr_warehouse,sd.next_warehouse
+	from shippings s
+	join shipping_details sd on s.shipping_id = sd.shipping_id
+	where s.tracking_number = trk;
+	
+end;
+$$;
 
 
+-- Function to get order date from tracking number
+drop function if exists get_order_date
+
+create or replace function get_order_date(trk varchar(15))
+returns date
+language plpgsql as $$
+declare
+orderdate date;
+begin 
+	select o.order_date  into orderdate
+	from shippings s
+	join order_details od on od.shipping_id = s.shipping_id
+	join orders o on o.order_id = od.order_id
+	where s.tracking_number = trk;
+	return orderdate;
+end;
+$$;
+
+--
 
