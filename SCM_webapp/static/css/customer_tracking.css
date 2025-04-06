@@ -48,4 +48,19 @@
   .menu a:hover {
     color: #ff4500;
   }
-  
+
+.details-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    gap: 2rem;
+    margin: 2rem;
+    flex-wrap: wrap; /* Helps with responsiveness */
+
+    padding:4rem;
+    border-radius: 15px;
+    background: linear-gradient(to right, #f5f7fa, #cddaee);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+
+
+}
