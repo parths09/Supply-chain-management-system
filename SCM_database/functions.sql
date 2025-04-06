@@ -24,10 +24,12 @@ select * from get_warehouse_products(3);
 
 
 -- 2) Function: get_orders
+
 -- Input: cus_id (bigint) - The ID of the customer or Input: cus_id (bigint)  or  name (varchar(30)) - the name of the customer
 -- Returns: A table containing details of all orders placed by the specified customer
 
-drop function if exists get_orders(id bigint default NULL , u_name varchar(30) default NULL )
+drop function if exists get_orders(id bigint, u_name varchar(30));
+
 
 create or replace function get_orders(id bigint default NULL , u_name varchar(30) default NULL )
 
@@ -42,7 +44,7 @@ begin
 	cus_id = coalesce(id,(select customer_id from customers where name=u_name));
 	return query
 	select co.tracking_number,co.name,co.quantity,
-	co.amount,co.order_status from customer_orders as co where customer_id = cus_id;
+	co.amount,co.shipping_status from customer_orders as co where customer_id = cus_id;
 end;
 $$;
 
@@ -79,9 +81,4 @@ end;
 $$;
 
 select * from get_shipment_details(2);
-
-
-
-
-
 
