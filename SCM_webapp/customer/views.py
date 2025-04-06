@@ -68,4 +68,40 @@ def customer_orders(request):
 
 
 def tracking_page(request, tracking_number):
-    return render(request, "customer_tracking.html", {"tracking_number": tracking_number})
+    tracking_details=cus_tracking(tracking_number)
+    # print(tracking_details)
+    # if tracking_details[-1]["move_to"] is None:
+    #     tracking_details[-1]["move_to"] = "Delivering"
+    shipping_status = cus_shipping_status(tracking_number)[0]
+    # print(shipping_stautus)
+    order_date=cus_order_date(tracking_number)
+    delivery=cus_expected_delivery(tracking_number)
+    progress_unit = len(tracking_details)-1
+    # print(order_date)
+    # print(delivery)
+    print(progress_unit)
+    fill_circle = False
+    if shipping_status == 'shipped':
+        progress_height = 90 + 110*progress_unit
+        fill_circle = True
+    elif shipping_status == 'processing':
+        progress_height = 45
+    elif shipping_status == 'delivered':
+        progress_height = 90 + 110*progress_unit+110
+    else:
+        progress_height = 90 + 110*progress_unit + 55
+
+
+
+    
+
+    context = {
+        "tracking_number": tracking_number,
+        "tracking_details":tracking_details,
+        "shipping_status" : shipping_status,
+        "order_date" : order_date   ,
+        "expected_delivery" : delivery,
+        "progress_height" : progress_height,
+        "fill_circle" : fill_circle
+        }
+    return render(request, "customer_tracking.html",context )
