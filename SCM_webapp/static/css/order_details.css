@@ -1,0 +1,70 @@
+
+.order-details-card {
+    max-width: 650px;
+    padding: 2rem;
+    margin: 2rem;
+    border-radius: 15px;
+    /* background: linear-gradient(to right, #f5f7fa, #c3cfe2); */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    /* border-style: solid; */
+    /* border-color: #c3cfe2; */
+    background-color: white;
+    border-left: 6px solid #3498db;
+    font-family: 'Segoe UI', sans-serif;
+    flex: 1;
+  }
+
+  
+  .order-details-card h2 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .shipping-status {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .shipping-status .label {
+    color: #333;
+    font-weight: 500;
+  }
+  
+  .shipping-status .status {
+    color: #27ae60;
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  
+  .order-info p {
+    margin: 0.6rem 0;
+    font-size: 1.1rem;
+    color: #2c3e50;
+  }
+  
+  .product-name {
+    font-weight: bold;
+    color: #2980b9;
+  }
+  
+  .product-description {
+    font-style: italic;
+    color: #555;
+  }
+  
+  .price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #e67e22;
+    margin-top: 1rem;
+  }
+  
+  .supplier-location {
+    color: #7f8c8d;
+  }
+  
