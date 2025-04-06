@@ -12,3 +12,4 @@ create or replace view  customer_orders as
 );
 
 select * from customer_orders;
+
