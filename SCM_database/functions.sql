@@ -126,12 +126,12 @@ drop function if exists get_product_details;
 
 create or replace function get_product_details(trk varchar(15))
 returns table(order_id bigint,product_name varchar(50),product_description text,supplier_name varchar(50), supplier_address text,
-quantity integer,price numeric(10,2), shipping_address text)
+quantity integer,price numeric(10,2), shipping_address text,shipping_status varchar(20), order_date date, expected_delivery date)
 language plpgsql as $$
 begin
 	return query
 	select od.order_id,p.name as product_name,p.description as product_description,sup.name as supplier_name,
-	sup.address as supplier_address,od.quantity,od.amount as price,c.shipping_address
+	sup.address as supplier_address,od.quantity,od.amount as price,c.shipping_address,s.shipping_status,o.order_date,s.delivery_date
 	from shippings s
 	join order_details od on od.shipping_id=s.shipping_id
 	join orders o on od.order_id = o.order_id
