@@ -1,0 +1,139 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    align-items:center;
+    justify-content: center;
+    display: flex;
+    height:100vh;
+  }
+  
+  /* Container for the whole form */
+  .registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 50px 20px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* Left box styling */
+  .left-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1 1 400px;
+    max-width: 500px;
+    box-sizing: border-box;
+  }
+  
+  /* Right box styling */
+  .right-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1 1 400px;
+    max-width: 500px;
+    box-sizing: border-box;
+    margin: auto;
+  }
+  
+  /* Headings */
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Inputs and dropdowns */
+  input, textarea, select {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #fdfdfd;
+  }
+  
+  /* Role dropdown specifically */
+  .role-switch select {
+    font-weight: 500;
+  }
+  
+  /* Hide/show role sections */
+  .role-box.hidden {
+    display: none;
+  }
+  
+  /* Submit button styling */
+  button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 17px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Back to login link */
+  .bottom-links {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .bottom-links a {
+    color: #007BFF;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  
+  .bottom-links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 900px) {
+    .registration-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .left-box, .right-box {
+      max-width: 100%;
+    }
+  }
+  
+/* Wrap both boxes side-by-side */
+.form-wrapper {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Form action (submit + link) section */
+  .form-actions {
+    width: 100%;
+    text-align: right;
+    margin-top: 30px;
+  }
+  

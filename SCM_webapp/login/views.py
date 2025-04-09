@@ -33,8 +33,9 @@ def login(request):
                 messages.info(request,'Invalid Credentials!')
                 return redirect("/")
         
-    elif request.method == 'GET':
-        return render(request,'login.html',{})
+        
+        
+    return render(request,'login.html',{})
 
 def register(request):
     
@@ -58,9 +59,21 @@ def register(request):
         if User.objects.filter(email=email).exists():
             messages.info(request, 'Email Exists')
             return redirect('register') 
-        group= Group.objects.get(name=role)
         
+        if role == 'Customer':
+            pincode = request.POST['pincode_customer']
+            pincode=int(pincode)
+            phone_number = request.POST['phone_number_customer']
+            billing_address = request.POST['billing_address']
+            shipping_address = request.POST['shipping_address']
 
+        elif role == 'Supplier':
+            pincode = request.POST['pincode_supplier']
+            pincode=int(pincode)
+            phone_number= request.POST['phone_number_supplier']
+            business_address = request.POST['business_address']
+
+        group= Group.objects.get(name=role)
         user = User.objects.create_user(first_name=first_name,last_name=last_name,username=username,password=password,email=email)
         group.user_set.add(user)
         user.save()
