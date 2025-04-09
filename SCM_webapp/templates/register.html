@@ -21,8 +21,7 @@
               <option value="Supplier">Supplier</option>
             </select>
           </div>
-          <input type="text" name="first_name" placeholder="First Name" required />
-          <input type="text" name="last_name" placeholder="Last Name" required />
+
           <input type="text" name="username" placeholder="Username" required />
           <input type="email" name="email" placeholder="Email" required />
           <input type="password" name="password" placeholder="Password" required />
@@ -32,6 +31,8 @@
         <!-- Right Box: Role-Specific Details and Actions -->
         <div class="right-box">
           <div id="customer-box" class="role-box hidden">
+            <input type="text" name="first_name" placeholder="First Name" required />
+            <input type="text" name="last_name" placeholder="Last Name" required />
             <input type="text" name="phone_number_customer" placeholder="Phone number" />
             <textarea name="billing_address" placeholder="Billing Address" rows="4"></textarea>
             <textarea name="shipping_address" placeholder="Shipping Address" rows="4"></textarea>
@@ -39,6 +40,7 @@
           </div>
 
           <div id="supplier-box" class="role-box hidden">
+            <input type="text" name="name" placeholder="Name" required />
             <input type="text" name="phone_number_supplier" placeholder="Phone number" />
             <textarea name="business_address" placeholder="Business Address" rows="4"></textarea>
             <input type="text" name="pincode_supplier" placeholder="Pincode (between 100000 and 999999)" required pattern="\d{6}" maxlength="6" inputmode="numeric"/>

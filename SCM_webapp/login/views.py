@@ -41,8 +41,6 @@ def register(request):
     
     if request.method == 'POST':
         role = request.POST['role']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
@@ -61,22 +59,30 @@ def register(request):
             return redirect('register') 
         
         if role == 'Customer':
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
             pincode = request.POST['pincode_customer']
             pincode=int(pincode)
             phone_number = request.POST['phone_number_customer']
             billing_address = request.POST['billing_address']
             shipping_address = request.POST['shipping_address']
+            
+            group= Group.objects.get(name=role)
+            user = User.objects.create_user(first_name=first_name,last_name=last_name,username=username,password=password,email=email)
+            group.user_set.add(user)
+            user.save()
 
         elif role == 'Supplier':
+            name = request.POST['name']
             pincode = request.POST['pincode_supplier']
             pincode=int(pincode)
             phone_number= request.POST['phone_number_supplier']
             business_address = request.POST['business_address']
 
-        group= Group.objects.get(name=role)
-        user = User.objects.create_user(first_name=first_name,last_name=last_name,username=username,password=password,email=email)
-        group.user_set.add(user)
-        user.save()
+            group= Group.objects.get(name=role)
+            user = User.objects.create_user(first_name=name,username=username,password=password,email=email)
+            group.user_set.add(user)
+            user.save()
 
         print(f"{role} created")
         return redirect('/')
