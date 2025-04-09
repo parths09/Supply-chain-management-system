@@ -13,12 +13,12 @@ drop table if exists suppliers cascade;
 
 create table suppliers(
 supplier_id bigint primary key,
-name varchar(50) not null,
+username varchar(150) not null,
+supplier_name varchar(150) not null,
 phone_number varchar(15) not null unique,
 email_id varchar(30) not null unique,
 address text,
-pincode int not null,
-password varchar(30) not null
+pincode int not null
 );
 
 --prices table
@@ -39,14 +39,15 @@ drop table if exists customers cascade;
 create table customers
 (
 customer_id bigint primary key,
-name varchar(30) not null,
+username varchar(150) not null,
+first_name varchar(150) not null,
+last_name varchar(150) not null,
 age smallint not null check(age>=18),
 phone_number varchar(15) not null unique,
 email_id varchar(30) not null unique,
 pincode int not null,
 billing_address text,
-shipping_address text,
-password varchar(30) not null
+shipping_address text
 );
 
 
@@ -58,7 +59,6 @@ warehouse_id int primary key,
 name varchar(50) not null,
 location varchar(255),
 phone_number varchar(15) unique,
-manager_id bigint,
 pincode int not null
 );
 
@@ -68,21 +68,28 @@ drop table if exists employees cascade;
 
 create table employees(
 employee_id bigint primary key,
-name varchar(50) not null,
+first_name varchar(150) not null,
+last_name varchar(150) not null,
 warehouse_id bigint not null,
 phone_number varchar(15) not null unique,
 email_id varchar(50) not null unique,
 salary numeric(10,2),
-password varchar(30),
 role varchar(20) not null check (role in ('worker', 'manager')),
 foreign key (warehouse_id) references warehouses(warehouse_id) on delete set null -- say the wh is closed, but we can still relocate the employees to diff wh
 );
 
 
---setting foreign key constraints in warehouse table
-alter table warehouses 
-add constraint FK_warehouse_manager 
-foreign key (manager_id) references employees(employee_id) on delete set null;
+--manager table
+drop table if exists managers cascade;
+
+create table managers(
+manager_id bigint primary key,
+warehouse_id bigint not null,
+username varchar(150),
+foreign key (manager_id) references employees(employee_id) on delete set null,
+foreign key (warehouse_id) references warehouses(warehouse_id) on delete cascade,
+foreign key (username) references auth_user(username) on delete set null
+);
 
 
 --inventory table
@@ -120,7 +127,7 @@ order_id bigint primary key,
 customer_id bigint not null,
 order_date date not null,
 total_amount numeric(10,2),
-order_status varchar(15) default 'pending' not null check(order_status in ('pending','confirmed','on the way','completed')),
+order_status varchar(15) default 'pending' not null check(order_status in ('Pending','Confirmed','On the way','Completed')),
 foreign key (customer_id) references customers(customer_id) on delete cascade
 );
 
@@ -131,7 +138,7 @@ create table shippings(
 shipping_id bigint primary key,
 delivery_date date,
 tracking_number varchar(15) not null,
-shipping_status varchar(20) default 'pending' not null check(shipping_status in ('pending',  'processing', 'shipped','in transit', 'out for delivery', 'delivered', 'cancelled'))
+shipping_status varchar(20) default 'Pending' not null check(shipping_status in ('Pending',  'Processing', 'Shipped','In Transit', 'Out for Delivery', 'Delivered'))
 );
 --shipping_details
 drop table if exists shipping_details cascade;
@@ -162,8 +169,6 @@ foreign key (order_id) references orders(order_id) on delete restrict,
 foreign key (inventory_id) references inventory(inventory_id) on delete restrict,
 foreign key (shipping_id) references shippings(shipping_id) on delete restrict
 );
-
-
 
 
 
