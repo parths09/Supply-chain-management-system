@@ -5,39 +5,96 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registration</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}" />
   </head>
   <body>
-    <div class="login-container">
-      <h2>Register</h2>
-      <form action="register" method="post">
-        {% csrf_token %}
+    <form id="registration-form" action="{% url 'register' %}" method="POST">
+      {% csrf_token %}
+      <div class="registration-container">
+        <!-- Left Box: Common Details -->
+        <div class="left-box">
+          <h2>Details</h2>
+          <div class="role-switch">
+            <select id="role" name="role" required>
+              <option value="" disabled selected>Select a Role</option>
+              <option value="Customer">Customer</option>
+              <option value="Supplier">Supplier</option>
+            </select>
+          </div>
+          <input type="text" name="first_name" placeholder="First Name" required />
+          <input type="text" name="last_name" placeholder="Last Name" required />
+          <input type="text" name="username" placeholder="Username" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <input type="password" name="cnf_password" placeholder="Confirm Password" required />
+        </div>
 
-        <select id="role" name="role" required>
-          <option value="" disabled selected>Select a Role</option>
-          <option value="Customer">Customer</option>
-          <option value="Supplier">Supplier</option>
-          <option value="Manager">Manager</option>
-        </select>
+        <!-- Right Box: Role-Specific Details and Actions -->
+        <div class="right-box">
+          <div id="customer-box" class="role-box hidden">
+            <input type="text" name="phone_number_customer" placeholder="Phone number" />
+            <textarea name="billing_address" placeholder="Billing Address" rows="4"></textarea>
+            <textarea name="shipping_address" placeholder="Shipping Address" rows="4"></textarea>
+            <input type="text" name="pincode_customer" placeholder="Pincode (between 100000 and 999999)" required pattern="\d{6}" maxlength="6" inputmode="numeric"/>
+          </div>
 
-        <input type="text" name="first_name" placeholder="First Name" required />
-        <input type="text" name="last_name" placeholder="Last Name" required />
-        <input type="text" name="username" placeholder="Username" required />
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <input type="password" name="cnf_password" placeholder="Confirm Password" required />
-        <button type="submit">Register</button>
-      </form>
+          <div id="supplier-box" class="role-box hidden">
+            <input type="text" name="phone_number_supplier" placeholder="Phone number" />
+            <textarea name="business_address" placeholder="Business Address" rows="4"></textarea>
+            <input type="text" name="pincode_supplier" placeholder="Pincode (between 100000 and 999999)" required pattern="\d{6}" maxlength="6" inputmode="numeric"/>
+          </div>
 
-      <div>
-        {% for message in messages %}
-        <p style="color: red;">{{ message }}</p>
-        {% endfor %}
+          <button type="submit">Submit</button>
+          <div>
+            {% for message in messages %}
+            <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+          </div>
+          <div class="bottom-links">
+            <a href="/" class="link-text">Back to Login</a>
+          </div>
+        </div>
       </div>
-    
-      <div class="bottom-links">
-        <a href="/" class="link-text">Back to Login</a>
-      </div>
-    </div>
+    </form>
+
+    <script>
+      {% comment %} console.log("JavaScript loaded"); {% endcomment %}
+      const roleSelect = document.getElementById('role');
+      const customerBox = document.getElementById('customer-box');
+      const supplierBox = document.getElementById('supplier-box');
+
+      // Get all input and textarea fields under a given container element
+      function getFormFields(container) {
+        return container.querySelectorAll('input, textarea');
+      }
+
+      function setRequired(fields, isRequired) {
+        fields.forEach(field => {
+          if (isRequired) {
+            field.setAttribute('required', 'required');
+          } else {
+            field.removeAttribute('required');
+          }
+        });
+      }
+      
+      roleSelect.addEventListener('change', function () {
+        // Hide both boxes and remove required attribute from their fields.
+        customerBox.classList.add('hidden');
+        supplierBox.classList.add('hidden');
+        setRequired(getFormFields(customerBox), false);
+        setRequired(getFormFields(supplierBox), false);
+
+        // Show the selected role box and add required attribute to its fields.
+        if (this.value === 'Customer') {
+          customerBox.classList.remove('hidden');
+          setRequired(getFormFields(customerBox), true);
+        } else if (this.value === 'Supplier') {
+          supplierBox.classList.remove('hidden');
+          setRequired(getFormFields(supplierBox), true);
+        }
+      });
+      {% comment %} console.log("Role selection event listener added"); {% endcomment %}
+    </script>
   </body>
 </html>
