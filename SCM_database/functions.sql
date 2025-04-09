@@ -41,7 +41,7 @@ declare
 	cus_id bigint;
 
 begin 
-	cus_id = coalesce(id,(select customer_id from customers where name=u_name));
+	cus_id = coalesce(id,(select customer_id from customers where username=u_name));
 	return query
 	select co.tracking_number,co.name,co.quantity,
 	co.amount,co.shipping_status from customer_orders as co where customer_id = cus_id;
@@ -130,7 +130,7 @@ quantity integer,price numeric(10,2), shipping_address text,shipping_status varc
 language plpgsql as $$
 begin
 	return query
-	select od.order_id,p.name as product_name,p.description as product_description,sup.name as supplier_name,
+	select od.order_id,p.name as product_name,p.description as product_description,sup.supplier_name as supplier_name,
 	sup.address as supplier_address,od.quantity,od.amount as price,c.shipping_address,s.shipping_status,o.order_date,s.delivery_date
 	from shippings s
 	join order_details od on od.shipping_id=s.shipping_id
@@ -142,3 +142,5 @@ begin
 	where s.tracking_number=trk;
 end;
 $$;
+
+

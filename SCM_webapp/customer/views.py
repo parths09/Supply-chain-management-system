@@ -9,13 +9,13 @@ def customer_home(request):
 
 def customer_orders(request):
     dict_1={
-        'pending': 'Pending',
-        'processing': 'Pending',
-        'shipped': 'Arriving',
-        'in transit': 'Arriving',
-        'out for delivery': 'Out for delivery',
-        'delivered': 'Delivered',
-        'cancelled': 'Cancelled',
+        'Pending': 'Pending',
+        'Processing': 'Pending',
+        'Shipped': 'Arriving',
+        'In Transit': 'Arriving',
+        'Out for Delivery': 'Out for delivery',
+        'Delivered': 'Delivered',
+        'Cancelled': 'Cancelled',
     }
                 
     dict_2={
@@ -27,6 +27,7 @@ def customer_orders(request):
 
             }
     
+
     all_orders = cus_orders(name=request.user.username)
     filtered_orders = all_orders 
     for i in range(len(filtered_orders)):
