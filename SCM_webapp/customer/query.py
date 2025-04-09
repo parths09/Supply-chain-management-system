@@ -67,3 +67,11 @@ def cus_product_details(tracking_no):
     except Exception as err:
         print(f'Failed to fetch product details -- {err}')
 
+def get_tableid(username):
+    try:
+        query = f''' select table_id from auth_user where username = '{username}';'''
+        result = db.execute_dql_commands(query)
+        table_id = list(list(result)[0])[0]
+        return table_id
+    except Exception as err:
+        print(f'Failed to fetch product details -- {err}')
