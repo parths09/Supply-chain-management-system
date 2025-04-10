@@ -80,14 +80,14 @@ def tracking_page(request, tracking_number):
     progress_unit = len(tracking_details)-1
     fill_circle = False
     if shipping_status == 'Shipped':
-        progress_height = 90 + 110*progress_unit
+        progress_height = 6  + 6*progress_unit
         fill_circle = True
     elif shipping_status == 'Processing':
-        progress_height = 45
+        progress_height = 3
     elif shipping_status == 'Delivered':
-        progress_height = 90 + 110*progress_unit+110
+        progress_height = 6 + 6*progress_unit+6
     else:
-        progress_height = 90 + 110*progress_unit + 55
+        progress_height = 6 + 6*progress_unit + 4
 
     product_details = cus_product_details(tracking_number)
 
