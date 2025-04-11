@@ -3,7 +3,7 @@ from django.utils.deprecation import MiddlewareMixin
 
 class NoCacheAndAuthMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        protected_paths = ['/customer/', '/manager/']
+        protected_paths = ['/customer/', '/manager/', '/supplier/']
         for path in protected_paths:
             if request.path.startswith(path) and not request.user.is_authenticated:
                 return redirect('/')

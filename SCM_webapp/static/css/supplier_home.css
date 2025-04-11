@@ -1,0 +1,83 @@
+/* Reset & General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+  
+  body {
+    background: #f5f5f5;
+    padding-top: 60px;
+  }
+  
+  /* Navbar Container */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: #586de4;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Navigation Links Container */
+  .nav {
+    display: flex;
+    gap: 20px;
+  }
+  
+  /* Nav Links Styling (Underline Stroke) */
+  .nav a {
+    display: inline-block;
+    line-height: 60px;
+    padding: 0 20px;
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease;
+  }
+  
+  .nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: width 0.2s ease;
+  }
+  
+  .nav a:hover::after {
+    width: 100%;
+  }
+  
+  /* Menu styling remains unchanged */
+  .menu {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .menu a:hover {
+    color: #ff4500;
+  }
+  
