@@ -28,8 +28,7 @@ drop owned by supplier ;
 drop role supplier;
 create role supplier with login password 'supplier_pass';
 
-grant select on products to supplier;
-grant select on prices to supplier;
+grant all on products,prices  to supplier;
 grant select on suppliers to supplier;
 
 
