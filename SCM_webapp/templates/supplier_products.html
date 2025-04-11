@@ -4,14 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link rel="stylesheet" href="{% static 'css/supplier_home.css' %}">
+  <title>Products</title>
+  <link rel="stylesheet" href="{% static 'css/supplier_products.css' %}">
 </head>
 <body>
-      <!-- Navbar -->
+  <!-- Navbar -->
   <div class="navbar">
     <nav class="nav">
-      <!-- The active page gets "active" class so the highlight appears on load -->
       <a href="{% url 'supplier_home' %}" class="active">Home</a>
       <a href="{% url 'supplier_products' %}">Products</a>
       <a href="#">Procurements</a>
@@ -53,7 +52,5 @@
       }
     });
   </script>
- <h1>Hi supplier {{username}} </h1>
-
 </body>
 </html>

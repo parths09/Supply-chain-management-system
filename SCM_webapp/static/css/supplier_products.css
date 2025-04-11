@@ -1,0 +1,87 @@
+/* Reset & General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+  
+  body {
+    background: #f5f5f5;
+    padding-top: 60px;
+  }
+  
+  /* Navbar Container */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: #586de4;  /* Your original navbar background */
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Navigation Links Container */
+  .nav {
+    position: relative;
+    width: auto;
+    height: 50px;
+    border-radius: 8px;
+    /* Remove any extra background that ruins your original style */
+    background: none;
+  }
+  
+  /* Nav Links Styling */
+  .nav a {
+    display: inline-block;
+    line-height: 50px;
+    padding: 0 20px;   /* Adjust padding if you want a larger/smaller highlight */
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease;
+  }
+  
+  /* Animated Rectangular Highlight */
+  .animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    border: 2px solid rgba(209, 208, 121, 0.8);
+    border-radius: 8px;
+    background: transparent; /* No extra fill so it doesn't cover the original style */
+    transition: left 0.3s ease, width 0.3s ease;
+    pointer-events: none;  /* So that it doesn't block link clicks */
+    box-sizing: border-box;
+  }
+  
+  /* Menu styling remains unchanged */
+  .menu {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .menu a:hover {
+    color: #ff4500;
+  }
+  
