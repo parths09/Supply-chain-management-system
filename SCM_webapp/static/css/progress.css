@@ -12,6 +12,8 @@
     position: relative;
     margin: 2rem;
     padding-left: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* The vertical line */
@@ -41,7 +43,7 @@
 /* Individual timeline item */
 .timeline-item {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
 }
 
 /* The circle marker */
@@ -49,7 +51,7 @@
     content: '';
     position: absolute;
     left: -22px;  /* Aligns circle with the vertical line */
-    top: 0.4rem;
+    top: 1rem;
     width: 12px;
     height: 12px;
     background-color: #ffffff;

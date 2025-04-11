@@ -6,7 +6,7 @@ drop function if exists get_warehouse_products;
 
 create or replace function get_warehouse_products(w_id int)
 
-returns table (inventory_id int, product_id bigint, supplier_id bigint, quantity_in_stock int, 
+returns table (inventory_id int, product_name varchar(50), supplier_name varchar(150), quantity_in_stock int, 
 reorder_level int) 
 
 language plpgsql as $$
@@ -14,7 +14,10 @@ language plpgsql as $$
 begin
 
 	return query
-	select i.inventory_id, i.product_id, i.supplier_id , i.quantity_in_stock,i.reorder_level from inventory as i
+	select i.inventory_id, p.name as product_name, s.supplier_name as supplier_name , i.quantity_in_stock,i.reorder_level
+	from inventory as i
+	join products p on p.product_id = i.product_id
+	join suppliers s on s.supplier_id = i.supplier_id
 	where i.warehouse_id=w_id;
 	
 end;

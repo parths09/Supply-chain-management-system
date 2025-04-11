@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manager</title>
+    <link rel="stylesheet" href="{% static 'css/manager_stocks.css' %}">
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <nav class="nav stroke">
+        <!-- Note: Added 'stroke' class -->
+        <a href="{% url 'manager_home' %}" class="active">Home</a>
+      </nav>
+      <div class="menu">
+        <a href="#">Profile</a>
+        <a href="#">Change Password</a>
+        <a href="{% url 'logout' %}">Logout</a>
+      </div>
+    </div>
+
+    <h1>Hi manager {{ username }}. This is Stocks</h1>
+    <br>
+    <br>
+    <br>
+
+    {% comment %} Warehouse Inventory {% endcomment %}
+    <div class="table-container">
+    <main class="table" id="orders_table">
+        <section class="table__header">
+          <h1>Warehouse Inventory</h1>
+          <br>
+        </section>
+        <section class="table__body">
+          <table>
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Product</th>
+                <th>Supplier</th>
+                <th>Quantity in Stock</th>
+                <th>Reorder Level</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in warehouse_products %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.supplier_name }}</td>
+                <td>{{ product.quantity_in_stock }}</td>
+                <td>{{ product.reorder_level }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="7">No orders found.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+
+
+
+  </body>
+</html>
