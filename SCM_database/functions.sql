@@ -147,3 +147,24 @@ end;
 $$;
 
 
+--SUPPLIER FUNCTIONS
+
+--1) 
+drop function if exists get_supplier_products ;
+
+create or replace function get_supplier_products(u_name varchar (150))
+
+returns table( name varchar(50) ,id bigint,description text ,price numeric(10,2),category text)
+language plpgsql as $$
+
+begin 
+	return query
+	
+	select p.name,p.product_id,p.description,ps.unit_price,p.category
+	from products as  p join prices as  ps on p.product_id = ps.product_id
+	join suppliers  as s on ps.supplier_id = s.supplier_id where s.username = u_name;
+
+end;
+$$;
+
+select * from get_supplier_products('techworld');
