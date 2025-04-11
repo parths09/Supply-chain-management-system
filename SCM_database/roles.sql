@@ -23,4 +23,14 @@ drop owned by manager;
 drop role manager;
 create role manager with login password 'manager_pass';
 
+--3)
+drop owned by supplier ; 
+drop role supplier;
+create role supplier with login password 'supplier_pass';
+
+grant all on products,prices  to supplier;
+grant select on suppliers to supplier;
+
+
+
 
