@@ -8,51 +8,19 @@
   <link rel="stylesheet" href="{% static 'css/supplier_home.css' %}">
 </head>
 <body>
-      <!-- Navbar -->
-  <div class="navbar">
-    <nav class="nav">
-      <!-- The active page gets "active" class so the highlight appears on load -->
-      <a href="{% url 'supplier_home' %}" class="active">Home</a>
-      <a href="{% url 'supplier_products' %}">Products</a>
-      <a href="#">Procurements</a>
-      <!-- The animated highlight element -->
-      <div class="animation"></div>
-    </nav>
-    <div class="menu">
-      <a href="#">Profile</a>
-      <a href="#">Change Password</a>
-      <a href="{% url 'logout' %}">Logout</a>
+    <!-- Navbar -->
+    <div class="navbar">
+      <nav class="nav stroke"> <!-- Note: Added 'stroke' class -->
+        <a href="{% url 'supplier_home' %}" class="active">Home</a>
+        <a href="{% url 'supplier_products' %}">Products</a>
+        <a href="#">Procurements</a>
+      </nav>
+      <div class="menu">
+        <a href="#">Profile</a>
+        <a href="#">Change Password</a>
+        <a href="{% url 'logout' %}">Logout</a>
+      </div>
     </div>
-  </div>
-
-  <!-- JavaScript to adjust the animation box dynamically -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const nav = document.querySelector('.nav');
-      const animation = nav.querySelector('.animation');
-      const navLinks = nav.querySelectorAll('a');
-
-      function moveAnimation(target) {
-        // Get the position and width of the hovered link relative to the nav container
-        const targetRect = target.getBoundingClientRect();
-        const navRect = nav.getBoundingClientRect();
-        animation.style.left = (targetRect.left - navRect.left) + "px";
-        animation.style.width = targetRect.width + "px";
-      }
-
-      navLinks.forEach(link => {
-        link.addEventListener('mouseover', function() {
-          moveAnimation(link);
-        });
-      });
-
-      // On page load, position the animation box on the active link if present
-      const active = nav.querySelector('a.active');
-      if (active) {
-        moveAnimation(active);
-      }
-    });
-  </script>
  <h1>Hi supplier {{username}} </h1>
 
 </body>
