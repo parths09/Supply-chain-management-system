@@ -5,14 +5,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manager</title>
-    <link rel="stylesheet" href="{% static 'css/supplier_home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/manager_static.css' %}">
   </head>
   <body>
     <!-- Navbar -->
     <div class="navbar">
       <nav class="nav stroke">
         <!-- Note: Added 'stroke' class -->
-        <a href="{% url 'manager_home' %}" class="active">Home</a>
+        <a href="{% url 'manager_home' %}">Home</a>
+        <a href="{% url 'manager_shipments' %}">Shipments</a>
+        <a href="{% url 'manager_stocks' %}">Warehouse Stock</a>
+        <a href="{% url 'manager_employees' %}">Employees</a>
+        <a href="{% url 'manager_procurements' %}"> Order Procurements</a>
       </nav>
       <div class="menu">
         <a href="#">Profile</a>
@@ -21,10 +25,85 @@
       </div>
     </div>
 
-    <h1>Hi manager {{ username }}. This is Employees</h1>
+    <br>
+    <br>
+    {% comment %} Create search bar {% endcomment %}
+   
 
     {% comment %} Display all the Employees in table format for current warehouse {% endcomment %}
+    <div class="table-container">
+      <main class="table" id="orders_table">
+          <section class="table__header">
+            <h1>Employee Details for {{warehouse_name}}</h1>
+            <div class="search-wrapper">
+              <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search...">
+            </div>
+          </section>
+          
+          <section class="table__body">
+            <table>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Employee ID</th>
+                  <th>Name</th>
+                  <th>Phone Number</th>
+                  <th>Email</th>
+                  <th>Salary</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for emp in employees %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ emp.employee_id }}</td>
+                  <td>{{ emp.name }}</td>
+                  <td>{{ emp.phone_number }}</td>
+                  <td>{{ emp.email_id }}</td>
+                  <td>{{ emp.salary }}</td>
+                  <td>{{ emp.role }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="7">No orders found.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p id="noMatchMessage" style="display: none; text-align: center; color: #333; font-weight: bold; margin-top: 1rem;">
+              No match found.
+            </p>
+          </section>
+        </main>
+        
+      </div>
 
+      <script>
+        function filterTable() {
+          const input = document.getElementById("searchInput");
+          const filter = input.value.toLowerCase();
+          const table = document.querySelector(".table__body table");
+          const rows = table.getElementsByTagName("tr");
+          const noMatch = document.getElementById("noMatchMessage");
 
+          let found = false;
+      
+          for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName("td");
+
+            const employeeId = cells[1]?.textContent.toLowerCase() || "";
+            const name = cells[2]?.textContent.toLowerCase() || "";
+            const role = cells[6]?.textContent.toLowerCase() || "";
+
+            const match = employeeId.includes(filter) || name.includes(filter) || role.includes(filter);
+
+            rows[i].style.display = match ? "" : "none";
+
+            if (match) found = true;
+          }
+          noMatch.style.display = found ? "none" : "block";
+        }
+      </script>
   </body>
 </html>
