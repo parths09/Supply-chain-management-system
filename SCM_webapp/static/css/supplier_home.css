@@ -32,6 +32,8 @@
   .nav {
     display: flex;
     gap: 5px;
+    height: 60px;
+    flex-wrap: wrap-reverse;
   }
   
   /* Nav Links Styling (Underline Stroke) */

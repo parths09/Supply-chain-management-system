@@ -26,6 +26,10 @@ grant select on managers to manager
 grant select on inventory to manager
 grant select on products to manager
 grant select on suppliers to manager
+grant select on employees to manager;
+grant select on warehouses to manager;
+grant select on shippings to manager;
+grant select on shipping_details to manager;
 
 --3)
 drop owned by supplier ; 
