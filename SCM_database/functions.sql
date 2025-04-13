@@ -6,7 +6,7 @@ drop function if exists get_warehouse_products;
 
 create or replace function get_warehouse_products(w_id int)
 
-returns table (inventory_id int, product_id bigint, supplier_id bigint, quantity_in_stock int, 
+returns table (inventory_id int, product_name varchar(50), supplier_name varchar(150), quantity_in_stock int, 
 reorder_level int) 
 
 language plpgsql as $$
@@ -14,7 +14,10 @@ language plpgsql as $$
 begin
 
 	return query
-	select i.inventory_id, i.product_id, i.supplier_id , i.quantity_in_stock,i.reorder_level from inventory as i
+	select i.inventory_id, p.name as product_name, s.supplier_name as supplier_name , i.quantity_in_stock,i.reorder_level
+	from inventory as i
+	join products p on p.product_id = i.product_id
+	join suppliers s on s.supplier_id = i.supplier_id
 	where i.warehouse_id=w_id;
 	
 end;
@@ -63,7 +66,7 @@ drop function if exists get_shipment_details;
 
 create or replace function get_shipment_details(w_id int)
 
-returns table (shp_id bigint, currently_in int, move_to int)
+returns table (shp_id bigint, move_to integer,shipping_status varchar(20),tracking_number varchar(15),delivery_date date)
 language plpgsql as $$
 
 begin 
@@ -75,8 +78,10 @@ begin
 	from shipping_details 
 	window w as (partition by shipping_id order by detail_id desc))
 	
-	select cs.shipping_id, curr_warehouse, next_warehouse from curr_shipment as cs,shippings as s 
-	where cs.curr_warehouse=w_id and s.shipping_status = 'shipped' and s.shipping_id=cs.shipping_id;
+	select cs.shipping_id,next_warehouse, s.shipping_status,s.tracking_number,s.delivery_date
+	from curr_shipment as cs
+	join shippings as s on cs.shipping_id =s.shipping_id
+	where cs.curr_warehouse=w_id and s.shipping_status in ('Shipped','Pending','Processing',null);
 	
 end;
 $$;

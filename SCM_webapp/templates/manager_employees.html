@@ -12,7 +12,7 @@
     <div class="navbar">
       <nav class="nav stroke">
         <!-- Note: Added 'stroke' class -->
-        <a href="{% url 'manager_home' %}" class="active">Home</a>
+        <a href="{% url 'manager_home' %}">Home</a>
         <a href="{% url 'manager_shipments' %}">Shipments</a>
         <a href="{% url 'manager_stocks' %}">Warehouse Stock</a>
         <a href="{% url 'manager_employees' %}">Employees</a>
@@ -26,37 +26,43 @@
     </div>
 
     <br>
+    <br>
+    {% comment %} Create search bar {% endcomment %}
+   
 
-    {% comment %} Get all the active shipments {% endcomment %}
+    {% comment %} Display all the Employees in table format for current warehouse {% endcomment %}
     <div class="table-container">
       <main class="table" id="orders_table">
           <section class="table__header">
-            <h1>Active Shipments in {{warehouse_name}}</h1>
+            <h1>Employee Details for {{warehouse_name}}</h1>
             <div class="search-wrapper">
               <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search...">
             </div>
           </section>
+          
           <section class="table__body">
             <table>
               <thead>
                 <tr>
                   <th>S.No</th>
-                  <th>Shipping ID</th>
-                  <th>Tracking Number</th>
-                  <th>Shipping Status</th>
-                  <th>Move to</th>
-                  <th>Expected Delivery</th>
+                  <th>Employee ID</th>
+                  <th>Name</th>
+                  <th>Phone Number</th>
+                  <th>Email</th>
+                  <th>Salary</th>
+                  <th>Role</th>
                 </tr>
               </thead>
               <tbody>
-                {% for shipment in active_shipments %}
+                {% for emp in employees %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td>{{ shipment.shipping_id }}</td>
-                  <td>{{ shipment.tracking_number }}</td>
-                  <td>{{ shipment.shipping_status }}</td>
-                  <td>{{ shipment.move_to }}</td>
-                  <td>{{ shipment.delivery_date }}</td>
+                  <td>{{ emp.employee_id }}</td>
+                  <td>{{ emp.name }}</td>
+                  <td>{{ emp.phone_number }}</td>
+                  <td>{{ emp.email_id }}</td>
+                  <td>{{ emp.salary }}</td>
+                  <td>{{ emp.role }}</td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -70,6 +76,7 @@
             </p>
           </section>
         </main>
+        
       </div>
 
       <script>
@@ -79,25 +86,24 @@
           const table = document.querySelector(".table__body table");
           const rows = table.getElementsByTagName("tr");
           const noMatch = document.getElementById("noMatchMessage");
-      
+
           let found = false;
-  
+      
           for (let i = 1; i < rows.length; i++) {
             const cells = rows[i].getElementsByTagName("td");
-  
-            const trkid = cells[2]?.textContent.toLowerCase() || "";
-            const status = cells[3]?.textContent.toLowerCase() || "";
-            const move_to = cells[4]?.textContent.toLowerCase() || "";
-  
-            const match = status.includes(filter) || move_to.includes(filter) || trkid.includes(filter);
-  
+
+            const employeeId = cells[1]?.textContent.toLowerCase() || "";
+            const name = cells[2]?.textContent.toLowerCase() || "";
+            const role = cells[6]?.textContent.toLowerCase() || "";
+
+            const match = employeeId.includes(filter) || name.includes(filter) || role.includes(filter);
+
             rows[i].style.display = match ? "" : "none";
-  
-              if (match) found = true;
+
+            if (match) found = true;
           }
           noMatch.style.display = found ? "none" : "block";
         }
       </script>
-
   </body>
 </html>

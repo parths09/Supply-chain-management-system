@@ -1,0 +1,226 @@
+/* Reset & General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+    padding-top: 60px;
+}
+
+/* Navbar Container */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: #586de4;
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation Links Container */
+.nav {
+    display: flex;
+    gap: 20px;
+    height: 60px;
+    flex-wrap: wrap-reverse;
+}
+
+/* Nav Links Styling (Underline Stroke) */
+.nav a {
+    display: inline-block;
+    line-height: 60px;
+    padding: 0 20px;
+    font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+    transition: color 0.1s ease;
+    text-align: center;
+    font-weight: bold;
+  }
+
+.nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: width 0.1s ease;
+}
+
+
+.nav a:hover::after {
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.3rem;
+    color: whitesmoke;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.menu a:hover {
+    color: #ff4500;
+}
+
+/* Search bar */
+.search-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#searchInput {
+    width: 300px;
+    padding: 10px 16px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+#searchInput:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 6px rgba(52, 152, 219, 0.4);
+}
+
+
+
+/* Table */
+
+.table-container {
+    background-color: rgb(239, 243, 243);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: fit-content;
+    min-width: 80%;
+    max-width: 95%;
+    overflow-x: auto;
+}
+
+.table__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* handles smaller screens */
+    border-radius: 12px;
+}
+
+.table__header h1 {
+    font-size: 1.8rem;
+    color: #333;
+    margin: 0;
+}
+
+.table__body {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table__body::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb {
+    border-radius: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.25);
+    visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
+table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th,
+td {
+    padding: 1rem;
+    text-align: center;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #d5d1defe;
+    padding: 1rem;
+    text-transform: capitalize;
+    cursor: pointer;
+    text-align: center;
+}
+
+thead th:hover span.icon-arrow {
+    border: 1.4px solid #6c00bd;
+}
+
+thead th:hover {
+    color: #6c00bd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #0000000b;
+}
+
+tbody tr:hover {
+    background-color: rgba(0, 128, 255, 0.2);
+}
+
+tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+@media screen and (max-width: 768px) {
+
+    /* Navbar adjustments */
+  
+    .navbar {
+        padding: 0 1rem;
+    }
+    .logo {
+        font-size: 1.1rem;
+    }
+    .menu {
+        gap: 10px;
+    }
+    .menu a {
+        font-size: 0.9rem;
+    }
+
+  }

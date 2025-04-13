@@ -22,6 +22,14 @@ grant select on inventory to customer;
 drop owned by manager;
 drop role manager;
 create role manager with login password 'manager_pass';
+grant select on managers to manager
+grant select on inventory to manager
+grant select on products to manager
+grant select on suppliers to manager
+grant select on employees to manager;
+grant select on warehouses to manager;
+grant select on shippings to manager;
+grant select on shipping_details to manager;
 
 --3)
 drop owned by supplier ; 
@@ -30,6 +38,7 @@ create role supplier with login password 'supplier_pass';
 
 grant all on products,prices  to supplier;
 grant select on suppliers to supplier;
+
 
 
 
