@@ -75,3 +75,40 @@ def get_active_shipments(warehouse_id):
      except Exception as err:
           print(f'Failed to fetch warehouse products -- {err}')
 
+def get_low_stock(warehouse_id):
+     """
+     Get details of products which are low in stock.
+     """
+     try:
+         query = f'''select * from get_low_stock({warehouse_id})'''
+         result = db.execute_dql_commands(query)
+         low_stock = result.mappings().all()
+         return low_stock
+         
+     except Exception as err:
+          print(f'Failed to fetch low stock -- {err}')
+
+def get_incoming_procurements(warehouse_id):
+     """
+     Get details of procurements arriving at a warehouse.
+     """
+     try:
+         query = f'''select * from get_incoming_procurements({warehouse_id})'''
+         result = db.execute_dql_commands(query)
+         incoming_procurements = result.mappings().all()
+         return incoming_procurements
+         
+     except Exception as err:
+          print(f'Failed to fetch low stock -- {err}')
+
+def update_ignore_alert(i_id):
+     """
+     Set value of 'alert' in inventory to false.
+     """
+     try:
+         query = f'''update inventory set alert = false where inventory_id = {i_id}'''
+         db.execute_ddl_and_dml_commands(query)
+         
+     except Exception as err:
+          print(f'Failed to update ignore alert -- {err}')
+     

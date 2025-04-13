@@ -7,4 +7,5 @@ urlpatterns = [
     path('stocks', views.manager_stocks, name='manager_stocks'),
     path('employees', views.manager_employees, name='manager_employees'),
     path('order_procurements', views.manager_procurements, name='manager_procurements'),
+    path('ignore_alert-<str:inventory_id>',views.ignore_alert,name='ignore_alert'),
 ]

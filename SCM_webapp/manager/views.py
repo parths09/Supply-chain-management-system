@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from manager.query import *
 
 # Create your views here.
@@ -7,7 +7,16 @@ def manager_home(request):
     if request.method=='POST':
         return render(request,'manager_home.html',{'username': request.user.username})
     else:
-        return render(request,'manager_home.html',{'username': request.user.username})
+        w_id = get_warehouse_id(request.user.username)
+        low_stocks= get_low_stock(w_id)
+        incoming_procurements=get_incoming_procurements(w_id)
+        context = {
+            'username': request.user.username,
+            'low_stocks':low_stocks,
+            'warehouse_name':get_warehouse_name(w_id),
+            'incoming_procurements':incoming_procurements,
+        }
+        return render(request,'manager_home.html',context)
      
 
 def manager_shipments(request):
@@ -66,3 +75,12 @@ def manager_procurements(request):
         return render(request,'manager_procurements.html',{'username': request.user.username})
     else:
         return render(request,'manager_procurements.html',{'username': request.user.username})
+    
+
+def ignore_alert(request,inventory_id):
+    if request.method=='POST':
+        update_ignore_alert(inventory_id)
+        return redirect('/manager')
+    else:
+        return render(request,'manager_procurements.html',{'username': request.user.username})
+    

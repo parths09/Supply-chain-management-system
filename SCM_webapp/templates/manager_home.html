@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manager</title>
-    <link rel="stylesheet" href="{% static 'css/manager_static.css' %}">
+    <link rel="stylesheet" href="{% static 'css/manager_home.css' %}" />
   </head>
   <body>
     <!-- Navbar -->
@@ -16,7 +16,7 @@
         <a href="{% url 'manager_shipments' %}">Shipments</a>
         <a href="{% url 'manager_stocks' %}">Warehouse Stock</a>
         <a href="{% url 'manager_employees' %}">Employees</a>
-        <a href="{% url 'manager_procurements' %}"> Order Procurements</a>
+        <a href="{% url 'manager_procurements' %}">Order Procurements</a>
       </nav>
       <div class="menu">
         <a href="#">Profile</a>
@@ -27,15 +27,114 @@
 
     <h1>Hi manager {{ username }}</h1>
 
-    {% comment %} Low products alert {% endcomment %}
+    <div class="major-wrapper">
+      {% comment %}Low products alert{% endcomment %}
+      <div class="table-container">
+        <main class="table" id="orders_table">
+          <section class="table__header">
+            <h1 style="color: rgb(255, 57, 57);">Alert! Low stock in {{ warehouse_name }}</h1>
+          </section>
+          <br />
 
+          <section class="table__body">
+            <table>
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Inventory ID</th>
+                  <th>Product</th>
+                  <th>Supplier</th>
+                  <th>Quantity</th>
+                  <th>Reorder Level</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for stock in low_stocks %}
+                  {% if stock.alert %}
+                    <tr class="main-row" onclick="toggleDetails1(this)">
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ stock.inventory_id }}</td>
+                      <td>{{ stock.product_name }}</td>
+                      <td>{{ stock.supplier_name }}</td>
+                      <td>{{ stock.quantity_in_stock }}</td>
+                      <td>{{ stock.reorder_level }}</td>
+                    </tr>
+                    <tr class="buttons-row" style="display:none;">
+                      <td colspan="3">
+                        <form action="{% url 'manager_procurements' %}" method="POST">
+                          {% csrf_token %}
+                          <div style="display:flexbox; padding-left:30px; padding-right: 30px;">
+                            <button type="submit" class="reorder-btn" style="width: 100%;">Reorder</button>
+                          </div>
+                        </form>
+                      </td>
+                      <td colspan="3">
+                        <form action="{% url 'ignore_alert' stock.inventory_id %}" method="POST">
+                          {% csrf_token %}
+                          <div style="display:flexbox; padding-left:30px; padding-right: 30px;">
+                            <button type="submit" class="ignore-btn" style="width: 100%;">Ignore</button>
+                          </div>
+                        </form>
+                      </td>
+                    </tr>
+                    {% endif %}
+                    {% empty %}
+                    <tr>
+                      <td colspan="7">No orders found.</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <p id="noMatchMessage" style="display: none; text-align: center; color: #333; font-weight: bold; margin-top: 1rem;">No match found.</p>
+          </section>
+        </main>
+      </div>
 
-
-
-    {% comment %} Incoming Procurements {% endcomment %}
-
-
-
-
+      {% comment %}Incoming Procurements{% endcomment %}
+      <div class="procurement-wrapper">
+        <h1>Incoming Procurements</h1>
+        <br />
+        <table class="compact-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Delivery Date</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in incoming_procurements %}
+              <tr class="main-row" onclick="toggleDetails(this)">
+                <td>{{ item.product_name }}</td>
+                <td>{{ item.delivery_date }}</td>
+                <td>{{ item.quantity }}</td>
+              </tr>
+              <tr class="details-row" style="display:none;">
+                <td colspan="3">
+                  <strong>Inventory ID:</strong> {{ item.inventory_id }}<br />
+                  <strong>Order Date:</strong> {{ item.order_date }}<br />
+                  <strong>Status:</strong> {{ item.status }}<br />
+                  <strong>Supplier:</strong> {{ item.supplier_name }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <script>
+      function toggleDetails(row) {
+        const nextRow = row.nextElementSibling
+        if (nextRow && nextRow.classList.contains('details-row')) {
+          nextRow.style.display = nextRow.style.display === 'table-row' ? 'none' : 'table-row'
+        }
+      }
+      function toggleDetails1(row) {
+        const nextRow = row.nextElementSibling
+        if (nextRow && nextRow.classList.contains('buttons-row')) {
+          nextRow.style.display = nextRow.style.display === 'table-row' ? 'none' : 'table-row'
+        }
+      }
+    </script>
   </body>
 </html>
