@@ -6,6 +6,9 @@ urlpatterns = [
     path('shipments', views.manager_shipments, name='manager_shipments'),
     path('stocks', views.manager_stocks, name='manager_stocks'),
     path('employees', views.manager_employees, name='manager_employees'),
-    path('order_procurements', views.manager_procurements, name='manager_procurements'),
+    path('procurements', views.manager_procurements, name='manager_procurements'),
+    path('order_procurement',views.order_procurement,name='order_procurements'),
     path('ignore_alert-<str:inventory_id>',views.ignore_alert,name='ignore_alert'),
+    path('get_suppliers', views.get_suppliers, name='get_suppliers'),  # AJAX call
+    path('get_price', views.get_price, name='get_price'),              # AJAX call
 ]

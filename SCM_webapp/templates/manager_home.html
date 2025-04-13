@@ -61,7 +61,7 @@
                     </tr>
                     <tr class="buttons-row" style="display:none;">
                       <td colspan="3">
-                        <form action="{% url 'manager_procurements' %}" method="POST">
+                        <form action="{% url 'manager_procurements' %}" method="GET">
                           {% csrf_token %}
                           <div style="display:flexbox; padding-left:30px; padding-right: 30px;">
                             <button type="submit" class="reorder-btn" style="width: 100%;">Reorder</button>

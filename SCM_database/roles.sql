@@ -32,6 +32,9 @@ grant select on shippings to manager;
 grant select on shipping_details to manager;
 grant select on procurements to manager;
 grant update on inventory to manager;
+grant select on prices to manager;
+grant select,insert on requests to manager;
+GRANT USAGE, SELECT ON SEQUENCE requests_request_id_seq TO manager;
 
 --3)
 drop owned by supplier ; 

@@ -111,4 +111,63 @@ def update_ignore_alert(i_id):
          
      except Exception as err:
           print(f'Failed to update ignore alert -- {err}')
-     
+
+def get_filtered_suppliers(product_id):
+     """
+     Get suppliers' data for a paricular product_id.
+     """
+     try:
+         query = f'''select s.*
+                    from suppliers s
+                    join prices p on p.supplier_id = s.supplier_id
+                    where p.product_id = {product_id}'''
+         result = db.execute_dql_commands(query)
+         data = result.mappings().all()
+         return data
+         
+     except Exception as err:
+          print(f'Failed to get filtered suppliers -- {err}')
+
+def get_price_detail(product_id,supplier_id):
+     """
+     Get suppliers' data for a paricular product_id.
+     """
+     try:
+         query = f'''select unit_price
+                    from prices p
+                    where p.product_id = {product_id} and p.supplier_id={supplier_id}
+                    '''
+         result = db.execute_dql_commands(query)
+         price = list(list(result)[0])[0]
+         return price
+         
+     except Exception as err:
+          print(f'Failed to get filtered suppliers -- {err}')
+
+def get_products():
+     """
+     Get suppliers' data for a paricular product_id.
+     """
+     try:
+         query = f'''select *
+                    from products p;
+                    '''
+         result = db.execute_dql_commands(query)
+         result= result.mappings().all()
+         return result
+         
+     except Exception as err:
+          print(f'Failed to get filtered suppliers -- {err}')
+
+def add_request(product_id,supplier_id,warehouse_id,contact_email,unit_price,quantity):
+     """
+     Add procurement request into requests table.
+     """
+     try:
+          query = f'''insert into requests(product_id,supplier_id,warehouse_id,contact_email,unit_price,quantity)
+                    values ({product_id},{supplier_id},{warehouse_id},'{contact_email}',{unit_price},{quantity});
+                    ''' 
+          db.execute_ddl_and_dml_commands(query)
+         
+     except Exception as err:
+          print(f'Failed to add request -- {err}')
