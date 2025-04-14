@@ -22,10 +22,10 @@ grant select on inventory to customer;
 drop owned by manager;
 drop role manager;
 create role manager with login password 'manager_pass';
-grant select on managers to manager
-grant select on inventory to manager
-grant select on products to manager
-grant select on suppliers to manager
+grant select on managers to manager;
+grant select on inventory to manager;
+grant select on products to manager;
+grant select on suppliers to manager;
 grant select on employees to manager;
 grant select on warehouses to manager;
 grant select on shippings to manager;

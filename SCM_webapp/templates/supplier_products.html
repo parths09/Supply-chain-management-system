@@ -28,6 +28,7 @@
   <main class="table" id="products_table">
     <section class="table__header">
       <h1>Products</h1>
+      <button class="edit-btn add-btn" onclick="openAddModal()">Add Product + </button>
     </section>
 
     <section class="table__body">
@@ -48,13 +49,13 @@
               <td>{{ forloop.counter }}</td>
               <td>{{ product.name }}</td>
               <td>{{ product.description }}</td>
-              <td>{{ product.price }}</td>
+              <td>{{ product.price }}
+                <button class="edit-btn inline-edit" title="Edit Product" onclick="openModal('{{ product.id }}', '{{ product.price }}')">
+                  <i class="fas fa-pen-to-square"></i>
+                </button>             
+              </td>
               <td>{{ product.category }}</td>
               <td class="action-buttons">
-                <button class="edit-btn" title="Edit Product" onclick="openModal('{{ product.id }}', '{{ product.name|escapejs }}', '{{ product.description|escapejs }}', '{{ product.price }}', '{{ product.category|escapejs }}')">
-                  <i class="fas fa-pen-to-square"></i>
-                </button>
-
                 <form method="POST" action="{% url 'supplier_products' %}" onsubmit="return confirmDelete()">
                   {% csrf_token %}
                   <input type="hidden" name="action" value="delete">
@@ -84,22 +85,69 @@
         {% csrf_token %}
         <input type="hidden" name="action" value="edit">
         <input type="hidden" name="product_id" id="modal_product_id">
-        <input type="text" name="name" id="modal_name" required>
-        <textarea name="description" rows="4" id="modal_description" required></textarea>
-        <input type="text" name="price" id="modal_price" required>
-        <input type="text" name="category" id="modal_category" required>
+        <input type="number" name="price" id="modal_price" step="0.01" min="0.01" required>
         <button type="submit" class="edit-btn">Save</button>
       </form>
     </div>
   </div>
+
+  <div id="addModal" class="add_modal">
+    <div class="add_modal-content">
+      <span class="close" onclick="closeAddModal()">&times;</span>
+      <h2>Add Product</h2>
+      <form id="addProductForm">
+        {% csrf_token %}
+        <input type="hidden" name="action" id="actionInput" value="add">
+        <input type="text" name="name" id="productNameInput" list="productNames" placeholder="Name" required autocomplete="off" />
+        <datalist id="productNames">
+          {% for name in existing_names %}
+            <option value="{{ name }}">
+          {% endfor %}
+        </datalist>
+        <input type="text" name="description" placeholder="Description"  />
+        <input type="number" name="price" id="modal_price" step="0.01" min="0.01" required>
+        <input type="text" name="category" placeholder="Category" r />
+        <button type="submit" class="edit-btn">Add</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    const existingNames = {{ existing_names|safe }};
+  
+    function isExistingProduct(name) {
+      return existingNames.map(n => n.toLowerCase()).includes(name.trim().toLowerCase());
+    }
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      const nameInput = document.querySelector("#productNameInput");
+      const descriptionInput = document.querySelector("#addModal input[name='description']");
+      const categoryInput = document.querySelector("#addModal input[name='category']");
+      const actionInput = document.querySelector("#addProductForm input[name='action']");
+  
+  
+      if (nameInput) {
+        nameInput.addEventListener("input", () => {
+          const val = nameInput.value;
+          if (isExistingProduct(val)) {
+            descriptionInput.style.display = "none";
+            categoryInput.style.display = "none";
+            actionInput.value = "exist_add";
+          } else {
+            descriptionInput.style.display = "block";
+            categoryInput.style.display = "block";
+            actionInput.value = "new_add";
+          }
+        });
+      }
+    });
+  </script>
+  
+
   <!-- JS for Modal & Confirm -->
   <script>
-    function openModal(id, name, description, price, category) {
+    function openModal(id, price) {
       document.getElementById("modal_product_id").value = id;
-      document.getElementById("modal_name").value = name;
-      document.getElementById("modal_description").value = description;
       document.getElementById("modal_price").value = price;
-      document.getElementById("modal_category").value = category;
       document.getElementById("editModal").style.display = "block";
     }
 
@@ -119,5 +167,37 @@
     }
   </script>
 
+  <script>
+    function openAddModal() {
+      document.getElementById("addModal").style.display = "block";
+    }
+  
+    function closeAddModal() {
+      document.getElementById("addModal").style.display = "none";
+    }
+  
+    // AJAX for adding product
+    document.getElementById("addProductForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+  
+      const form = e.target;
+      const formData = new FormData(form);
+      const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+  
+      const response = await fetch("{% url 'supplier_products' %}", {
+        method: "POST",
+        headers: {
+          'X-CSRFToken': csrfToken
+        },
+        body: formData
+      });
+  
+      if (response.ok) {
+        location.reload(); // Refresh to see new product
+      } else {
+        alert("Failed to add product.");
+      }
+    });
+  </script>
 </body>
 </html>

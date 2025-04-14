@@ -12,12 +12,12 @@ INSERT INTO suppliers (supplier_id, supplier_name, phone_number, email_id, addre
 (4, 'BookDepot', '8765432109', 'info@bookdepot.com', '101 Reading Blvd, SF', 94101, 'book_depot'),
 (5, 'ToyLand Inc.', '7553311223', 'hello@toyland.com', '202 Happy St, FL', 33101, 'toyland');
 
-INSERT INTO prices (product_id, supplier_id, unit_price) VALUES
-(1, 1, 1200.00),
-(2, 2, 250.00),
-(3, 3, 90.00),
-(4, 4, 15.00),
-(5, 5, 30.00);
+INSERT INTO prices (product_id, supplier_id, unit_price,active) VALUES
+(1, 1, 1200.00,TRUE),
+(2, 2, 250.00,TRUE),
+(3, 3, 90.00,TRUE),
+(4, 4, 15.00,TRUE),
+(5, 5, 30.00,TRUE);
 
 INSERT INTO warehouses (warehouse_id, name, location, phone_number, pincode) VALUES
 (1, 'Warehouse A', 'New York', '9876543211', 10001),
@@ -123,6 +123,8 @@ INSERT INTO procurement (inventory_id,quantity,order_date,delivery_date,status) 
 select * from order_details;
 select * from procurement;
 select * from warehouses;
+select * from prices;
+select * from products;
 
 select * from shipping_details where shipping_id = 3;
 drop function get_orders

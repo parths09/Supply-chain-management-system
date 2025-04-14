@@ -90,7 +90,7 @@ select * from get_shipment_details(2);
 
 
 -- Function to get tracking details from tracking number
-drop function if exists get_tracking
+drop function if exists get_tracking;
 
 create or replace function get_tracking(trk varchar(15))
 returns table(shipping_id bigint, date date, currently_in integer, move_to integer)
@@ -108,7 +108,7 @@ $$;
 
 
 -- Function to get order date from tracking number
-drop function if exists get_order_date
+drop function if exists get_order_date;
 
 create or replace function get_order_date(trk varchar(15))
 returns date
@@ -164,7 +164,7 @@ begin
 	
 	select p.name,p.product_id,p.description,ps.unit_price,p.category
 	from products as  p join prices as  ps on p.product_id = ps.product_id
-	join suppliers  as s on ps.supplier_id = s.supplier_id where s.username = u_name;
+	join suppliers  as s on ps.supplier_id = s.supplier_id where s.username = u_name and ps.active=true;
 
 end;
 $$;
