@@ -1,0 +1,137 @@
+.procurement-form-container {
+    background: #fff8f0;
+    padding: 24px;
+    border-radius: 16px;
+    max-width: 550px;
+    margin: 2rem auto;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
+  }
+  
+  .procurement-form-container h2 {
+    text-align: center;
+    color: #2d6a4f;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin: 18px 0 6px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .select-box,
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    font-size: 1rem;
+    transition: border 0.2s ease-in-out;
+  }
+  
+  .select-box:focus,
+  input[type="number"]:focus {
+    border-color: #2d6a4f;
+    outline: none;
+    box-shadow: 0 0 5px rgba(45, 106, 79, 0.3);
+  }
+  
+  .unit-price,
+  .total-price {
+    margin-top: 18px;
+    font-size: 1.1rem;
+    color: #2d6a4f;
+    background: #e9f7ef;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-block;
+  }
+  
+  .submit-btn {
+    margin-top: 24px;
+    padding: 12px 20px;
+    background-color: #2d6a4f;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #225c3f;
+  }
+
+
+
+  /* Target the Select2 container background */
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    height: auto;
+    padding: 1px 0px;
+    font-size: 1rem;
+  }
+  
+  /* Add your custom dropdown arrow */
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100%;
+    right: 12px;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%232d6a4f' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    width: 30px;
+  }
+  
+  /* Hide the default arrow that Select2 adds */
+  .select2-container--default .select2-selection--single .select2-selection__arrow b {
+    display: none;
+  }
+  
+  /* Style the dropdown menu background */
+  .select2-dropdown {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0 0 10px 10px;
+  }
+  
+  /* For hover states */
+  .select2-container--default .select2-selection--single:hover {
+    border-color: #aaa;
+  }
+  
+  /* For focus states */
+  .select2-container--default.select2-container--focus .select2-selection--single,
+  .select2-container--default.select2-container--open .select2-selection--single {
+    border-color: #2d6a4f;
+    box-shadow: 0 0 5px rgba(45, 106, 79, 0.3);
+  }
+
+  /* Style the search field container */
+.select2-search--dropdown {
+    padding: 8px;
+  }
+  
+  /* Style the search input */
+  .select2-search--dropdown .select2-search__field {
+    border-radius: 20px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  /* Style the search input when focused */
+  .select2-search--dropdown .select2-search__field:focus {
+    border-color: #2d6a4f;
+    box-shadow: 0 0 4px rgba(45, 106, 79, 0.3);
+  }

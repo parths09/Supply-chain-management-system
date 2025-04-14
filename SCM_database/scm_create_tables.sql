@@ -103,20 +103,24 @@ supplier_id bigint not null,
 warehouse_id int not null,
 quantity_in_stock int not null check(quantity_in_stock>=0),
 reorder_level int,
+alert boolean default true not null,
 foreign key (product_id) references products(product_id) on delete restrict,
 foreign key (supplier_id) references suppliers(supplier_id) on delete restrict,
 foreign key (warehouse_id) references warehouses(warehouse_id) on delete restrict
 );
+
+alter table inventory add alert boolean default true not null;
 
 --procurement table
 drop table if exists procurement;
 
 create table procurement(
 procurement_id serial primary key,
-inventory_id bigint not null	,
+inventory_id bigint not null,
 quantity int not null,
 order_date date not null,
 delivery_date date not null, --delivery date > order date
+status varchar(20) default 'Processing' not null check (status in ('Delivered','In transit','Processing')),
 foreign key (inventory_id) references inventory(inventory_id) on delete cascade --you dont want to erase 
 );
 
@@ -171,9 +175,21 @@ foreign key (inventory_id) references inventory(inventory_id) on delete restrict
 foreign key (shipping_id) references shippings(shipping_id) on delete restrict
 );
 
+drop table if exists requests;
 
-
-
+create table requests(
+request_id serial primary key,
+product_id bigint not null,
+supplier_id bigint not null,
+warehouse_id integer not null,
+quantity integer not null,
+contact_email varchar(50),
+unit_price numeric(10,2) not null,
+approval varchar(20) default 'Pending' check (approval in ('Pending','Accepted','Denied')) not null,
+foreign key (product_id) references products(product_id) on delete cascade,
+foreign key (supplier_id) references suppliers(supplier_id) on delete cascade,
+foreign key (warehouse_id) references warehouses(warehouse_id) on delete cascade
+);
 
 
 

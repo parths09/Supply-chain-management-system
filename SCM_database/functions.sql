@@ -170,3 +170,38 @@ end;
 $$;
 
 select * from get_supplier_products('techworld');
+
+
+drop function if exists get_low_stock;
+
+create or replace function get_low_stock(w_id int)
+returns TABLE(inventory_id integer, supplier_id bigint, product_id bigint, product_name character varying, 
+supplier_name character varying, quantity_in_stock integer, reorder_level integer,alert boolean)
+language plpgsql as $$
+begin 
+	return query
+	select i.inventory_id,i.supplier_id,i.product_id,p.name as product_name,s.supplier_name,i.quantity_in_stock,i.reorder_level,i.alert
+	from inventory i
+	join products p on p.product_id = i.product_id
+	join suppliers s on s.supplier_id = i.supplier_id
+	where warehouse_id = w_id and i.quantity_in_stock<=i.reorder_level;
+end;
+$$;
+
+
+drop function if exists get_incoming_procurements;
+
+create or replace function get_incoming_procurements(w_id int)
+returns TABLE(inventory_id bigint, quantity integer, order_date date, delivery_date date,
+status character varying, product_name character varying, supplier_name character varying)
+language plpgsql as $$
+begin 
+	return query
+	select p.inventory_id,p.quantity,p.order_date,p.delivery_date,p.status,pr.name as product_name,s.supplier_name
+	from procurements p
+	join inventory i on i.inventory_id = p.inventory_id
+	join products pr on pr.product_id = i.product_id
+	join suppliers s on s.supplier_id = i.supplier_id
+	where i.warehouse_id = w_id and p.status in ('In transit','Processing');
+end;
+$$;

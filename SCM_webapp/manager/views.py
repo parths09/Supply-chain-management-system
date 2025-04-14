@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from manager.query import *
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -7,7 +9,16 @@ def manager_home(request):
     if request.method=='POST':
         return render(request,'manager_home.html',{'username': request.user.username})
     else:
-        return render(request,'manager_home.html',{'username': request.user.username})
+        w_id = get_warehouse_id(request.user.username)
+        low_stocks= get_low_stock(w_id)
+        incoming_procurements=get_incoming_procurements(w_id)
+        context = {
+            'username': request.user.username,
+            'low_stocks':low_stocks,
+            'warehouse_name':get_warehouse_name(w_id),
+            'incoming_procurements':incoming_procurements,
+        }
+        return render(request,'manager_home.html',context)
      
 
 def manager_shipments(request):
@@ -43,7 +54,6 @@ def manager_stocks(request):
             'username': request.user.username,
             "warehouse_products":warehouse_products,
         }
-        print(warehouse_products)
         return render(request,'manager_stocks.html',context)
 
 def manager_employees(request):
@@ -65,4 +75,53 @@ def manager_procurements(request):
     if request.method=='POST':
         return render(request,'manager_procurements.html',{'username': request.user.username})
     else:
+        product_details = get_products()
+        context = {
+            'products':product_details,
+            'username':request.user.username,
+        }
+        return render(request,'manager_procurements.html',context)
+    
+
+def ignore_alert(request,inventory_id):
+    if request.method=='POST':
+        update_ignore_alert(inventory_id)
+        return redirect('/manager')
+    else:
         return render(request,'manager_procurements.html',{'username': request.user.username})
+    
+def get_suppliers(request):
+    product_id = request.GET.get('product_id')
+    suppliers_data = get_filtered_suppliers(product_id)
+    data = [dict(row) for row in suppliers_data]  # Convert each RowMapping to dict
+    return JsonResponse(data,safe=False)
+
+def get_price(request):
+    product_id = request.GET.get('product_id')
+    supplier_id = request.GET.get('supplier_id')
+    price = get_price_detail(product_id,supplier_id)
+    return JsonResponse({'unit_price': price})
+
+@require_POST
+def order_procurement(request):
+    if request.method=='POST':
+        product_id = request.POST.get('product')
+        supplier_id = request.POST.get('supplier')
+        quantity = request.POST.get('quantity')
+        w_id=get_warehouse_id(request.user.username)
+        unit_price=get_price_detail(product_id,supplier_id)
+        contact_email = request.user.email
+
+        #insert these data in to requests table
+        add_request(product_id,supplier_id,w_id,contact_email,unit_price,quantity)
+        
+        return redirect('/manager')
+    else:
+        #should I remove it?
+        product_details = get_products()
+        context = {
+            'products':product_details,
+            'username':request.user.username,
+        }
+        return render(request,'manager_procurements.html',context)
+    
