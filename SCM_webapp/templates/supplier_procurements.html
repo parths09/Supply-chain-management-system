@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procurements</title>
+  <link rel="stylesheet" href="{% static 'css/supplier_procurements.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <nav class="nav stroke"> <!-- Note: Added 'stroke' class -->
+        <a href="{% url 'supplier_home' %}" class="active">Home</a>
+        <a href="{% url 'supplier_products' %}">Products</a>
+        <a href="{%url 'supplier_procurement' %}">Procurements</a>
+      </nav>
+      <div class="menu">
+        <a href="#">Profile</a>
+        <a href="#">Change Password</a>
+        <a href="{% url 'logout' %}">Logout</a>
+      </div>
+    </div>
+    <main class="table">
+        <section class="table__header">
+            <h1>Outgoing Procurements</h1>
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search...">
+            </div>
+        </section>
+        <section class="table__body">
+                <table >
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Warehouse</th>
+                      <th>Quantity</th>
+                      <th>Order Date</th>
+                      <th>Delivery Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in procurements %}
+                      <tr >
+                        <td>{{ item.product_name }}</td>
+                        <td> {{ item.warehouse_name }} , {{item.warehouse_location}}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.order_date }}</td>
+                        <td>{{ item.delivery_date }}</td>
+                        <td>{{ item.status }}</td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="7">No orders found.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            <div id="noMatchMessage" style="display:none; text-align:center; padding:20px; font-weight:bold;">
+                No matching procurements found.
+            </div>
+        </section>
+    </main>
+    <script>
+        function filterTable() {
+          const input = document.getElementById("searchInput");
+          const filter = input.value.toLowerCase();
+          const table = document.querySelector(".table__body table");
+          const rows = table.getElementsByTagName("tr");
+          const noMatch = document.getElementById("noMatchMessage");
+      
+          let found = false;
+  
+          for (let i = 1; i < rows.length; i++) {
+            if (rows[i].cells.length <= 1) continue;
+            const cells = rows[i].getElementsByTagName("td");
+            if (cells.length < 5) continue; // Ensure there are enough cells
+            const product = cells[0]?.textContent.toLowerCase() || "";
+            const warehouse = cells[1]?.textContent.toLowerCase() || "";
+            const status = cells[5]?.textContent.toLowerCase() || "";
+            const orderDate = cells[3]?.textContent.toLowerCase() || "";
+
+            const match = product.includes(filter) || warehouse.includes(filter) ||  status.includes(filter) || orderDate.includes(filter);
+            rows[i].style.display = match ? "" : "none";
+            if (match) found = true;
+            }
+            noMatch.style.display = found ? "none" : "block";
+        }
+      </script>
+</body>
+</html>

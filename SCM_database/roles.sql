@@ -42,7 +42,7 @@ drop role supplier;
 create role supplier with login password 'supplier_pass';
 
 grant all on products,prices  to supplier;
-grant select on suppliers to supplier;
+grant select on suppliers,inventory,warehouses,procurements to supplier;
 
 
 
