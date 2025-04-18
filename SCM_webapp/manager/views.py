@@ -12,11 +12,13 @@ def manager_home(request):
         w_id = get_warehouse_id(request.user.username)
         low_stocks= get_low_stock(w_id)
         incoming_procurements=get_incoming_procurements(w_id)
+        notifications = get_manager_notifications(w_id)
         context = {
             'username': request.user.username,
             'low_stocks':low_stocks,
             'warehouse_name':get_warehouse_name(w_id),
             'incoming_procurements':incoming_procurements,
+            'notifications':notifications,
         }
         return render(request,'manager_home.html',context)
      
@@ -113,8 +115,13 @@ def order_procurement(request):
         contact_email = request.user.email
 
         #insert these data in to requests table
-        add_request(product_id,supplier_id,w_id,contact_email,unit_price,quantity)
+        request_id = add_request(product_id,supplier_id,w_id,contact_email,unit_price,quantity)
         
+        # Add into notifications here
+        add_notification(request_id,supplier_id,'Supplier',context='RequestProcurement')
+        add_notification(request_id,w_id,'Manager',context='RequestProcurement')
+        
+
         return redirect('/manager')
     else:
         #should I remove it?
@@ -124,4 +131,9 @@ def order_procurement(request):
             'username':request.user.username,
         }
         return render(request,'manager_procurements.html',context)
-    
+
+def mark_all_notifications_read(request):
+    if request.method=='POST':
+        w_id = get_warehouse_id(request.user.username)
+        set_notifications_read(id=w_id,type = "Manager")
+        return redirect('/manager')

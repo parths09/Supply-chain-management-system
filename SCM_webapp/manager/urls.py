@@ -11,4 +11,5 @@ urlpatterns = [
     path('ignore_alert-<str:inventory_id>',views.ignore_alert,name='ignore_alert'),
     path('get_suppliers', views.get_suppliers, name='get_suppliers'),  # AJAX call
     path('get_price', views.get_price, name='get_price'),              # AJAX call
+    path('mark_all_notifications_read',views.mark_all_notifications_read,name='mark_all_notifications_read'),
 ]

@@ -146,7 +146,7 @@ def get_price_detail(product_id,supplier_id):
 
 def get_products():
      """
-     Get suppliers' data for a paricular product_id.
+     Get all products' details.
      """
      try:
          query = f'''select *
@@ -165,9 +165,100 @@ def add_request(product_id,supplier_id,warehouse_id,contact_email,unit_price,qua
      """
      try:
           query = f'''insert into requests(product_id,supplier_id,warehouse_id,contact_email,unit_price,quantity)
-                    values ({product_id},{supplier_id},{warehouse_id},'{contact_email}',{unit_price},{quantity});
+                    values ({product_id},{supplier_id},{warehouse_id},'{contact_email}',{unit_price},{quantity})
+                    returning request_id;
                     ''' 
-          db.execute_ddl_and_dml_commands(query)
+          result = db.execute_ddl_and_dml_commands(query)
+          id = list(list(result)[0])[0]
+          return id
          
      except Exception as err:
           print(f'Failed to add request -- {err}')
+
+def get_request_info(request_id):
+     """
+     Get product_name,supplier_name,warehouse_name and quantity for particular request.
+     """
+     try:
+         query = f'''select p.name as product_name,s.supplier_name,r.quantity,w.name as warehouse_name
+         from requests r
+         join products p on r.product_id = p.product_id
+         join suppliers s on r.supplier_id = s.supplier_id
+         join warehouses w on r.warehouse_id = w.warehouse_id
+         where r.request_id = {request_id};
+                    '''
+         result = db.execute_dql_commands(query)
+         result= result.mappings().all()[0]
+         return result
+         
+     except Exception as err:
+          print(f'Failed to get request info -- {err}')
+
+def add_notification(request_id,recipent_id,recipent_type,context):
+     """
+     Add procurement request into requests table.
+     """
+     try:
+          request_info = get_request_info(request_id)
+          print(request_info)
+          # formulate message:
+          if recipent_type=='Manager':
+
+               # Get info about product_name,supplier_name and quantity
+               if context=='RequestProcurement':
+                    message = f"You requested for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']}."
+                    pass
+               elif context=='RequestApproval':
+                    pass
+               elif context=="ProcurementArriving":
+                    pass
+               elif context=="ProcurementDelivered":
+                    pass
+          elif recipent_type=='Supplier':
+               if context=='RequestProcurement':
+                    message=f"Procurement request for {request_info['quantity']} {request_info['product_name']} from {request_info['warehouse_name']}."
+                    pass
+               elif context=='RequestApproval':
+                    pass
+               elif context=="ProcurementArriving":
+                    pass
+               elif context=="ProcurementDelivered":
+                    pass
+
+          query = f'''insert into notifications(request_id,recipent_id,recipent_type,context,message)
+          values ({request_id},{recipent_id},'{recipent_type}','{context}','{message}');
+          ''' 
+          db.execute_ddl_and_dml_commands(query)
+         
+     except Exception as err:
+          print(f'Failed to add notification -- {err}')
+
+def get_manager_notifications(w_id):
+     """
+     Get all notification for a particular warehouse manager.
+     """
+     try:
+         query = f'''select *
+         from notifications n
+         where n.recipent_type = 'Manager' and n.recipent_id = {w_id}
+         order by created_at desc;
+          '''
+         result = db.execute_dql_commands(query)
+         result= result.mappings().all()
+         return result
+         
+     except Exception as err:
+          print(f'Failed to get manager notifications -- {err}')
+
+def set_notifications_read(id,type):
+     """
+     Set all notification as read.
+     """
+     try:
+         query = f'''update notifications set is_read = true
+           where recipent_type='{type}' and recipent_id = {id};
+          '''
+         db.execute_ddl_and_dml_commands(query)
+         
+     except Exception as err:
+          print(f'Failed to mark all notifications read -- {err}')
