@@ -47,10 +47,10 @@ INSERT INTO managers(manager_id,warehouse_id,username) VALUES
 
 INSERT INTO inventory(supplier_id,product_id,warehouse_id,quantity_in_stock,reorder_level) VALUES
 ( 1, 1, 1, 50, 10),
-( 2, 2, 2, 30, 5),
 ( 3, 3, 3, 100, 20),
 ( 4, 4, 4, 75, 15),
-( 5, 5, 5, 40, 8);
+( 5, 5, 5, 40, 8),
+( 2, 2, 2, 30, 5);
 
 INSERT INTO customers (customer_id, username,first_name,last_name, age, phone_number, email_id, pincode, billing_address, shipping_address) VALUES
 (1,'alice_johnson' ,'Alice','Johnson', 30, '9871234567', 'alice@mail.com', 110001, '123 Main St, NY', '456 Elm St, NY'),
@@ -93,12 +93,13 @@ INSERT INTO order_details (order_id,shipping_id, inventory_id, quantity, amount)
 (4, 4, 4, 3, 45),
 (5, 5, 5, 2, 60);
 
-INSERT INTO procurement (inventory_id,quantity,order_date,delivery_date) VALUES
-(1,2,'2025-02-16','2025-02-18'),
-(2,3,'2025-02-15','2025-02-17'),
-(4,2,'2025-02-11','2025-02-15'),
-(4,1,'2025-02-12','2025-02-19'),
-(3,5,'2025-02-16','2025-02-18');
+INSERT INTO procurement (inventory_id,quantity,order_date,delivery_date,status) VALUES
+(1,2,'2025-02-16','2025-02-18','Processing'),
+(6,100,'2025-02-16','2025-02-18','In transit'),
+(2,3,'2025-02-12','2025-02-14','Delivered'),
+(4,2,'2025-02-11','2025-02-17','In transit'),
+(4,1,'2025-02-12','2025-02-15','Delivered'),
+(3,5,'2025-02-16','2025-02-18','Processing');
 
 
 -- username, password
