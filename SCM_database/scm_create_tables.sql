@@ -28,10 +28,12 @@ create table prices(
 product_id bigint,
 supplier_id bigint ,
 unit_price numeric(10,2) not null check(unit_price > 0),
-active boolean,
+active boolean default true not null,
 foreign key (product_id) references products(product_id) on delete cascade,
 foreign key (supplier_id) references suppliers(supplier_id) on delete cascade
 );
+
+alter table prices add column active default true not null;
 
 
 --Customer table
