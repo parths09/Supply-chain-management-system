@@ -186,7 +186,7 @@ begin
 	join products pr on pr.product_id = i.product_id
 	join suppliers s on s.supplier_id = i.supplier_id
 	join warehouses w on i.warehouse_id = w.warehouse_id
-	where s.username = sup_name and p.status in ('In transit','Processing');
+	where s.username = sup_name ;
 end;
 $$;
 
