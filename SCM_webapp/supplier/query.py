@@ -52,3 +52,13 @@ def add_existing_products(product_name,username,price):
         return result
     except Exception as err:
         print(f'Failed to insert product details -- {err}')
+
+
+def fetch_procurement(username):
+    try:
+        query = f''' select * from get_procurements_supplier('{username}');'''
+        result = db.execute_dql_commands(query)
+        products = list(result.mappings().all())
+        return products
+    except Exception as err:
+        print(f'Failed to fetch product details -- {err}')

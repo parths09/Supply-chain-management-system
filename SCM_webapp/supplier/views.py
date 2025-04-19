@@ -7,6 +7,17 @@ from django.contrib import messages
 def supplier_home(request):
     return render(request, 'supplier_home.html', {'username': request.user.username})
 
+def suppler_procurement(request):
+    if request.method == 'POST':
+        return render(request, 'supplier_procurements.html', {'username': request.user.username})
+    all_procurements = fetch_procurement(request.user.username)
+    context= {
+        'username': request.user.username,
+        'procurements': all_procurements
+    }
+    print(all_procurements)
+    return render(request, 'supplier_procurements.html', context)
+
 def supplier_products(request):
 
     all_products=sup_products(username=request.user.username)
