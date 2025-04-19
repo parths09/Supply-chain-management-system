@@ -79,6 +79,7 @@ class PostgresqlDB:
         except Exception as err:
             trans.rollback()
             print(f'Failed to execute ddl and dml commands -- {err}')
+            return False
 
 
 #Defining Db Credentials

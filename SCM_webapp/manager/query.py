@@ -164,7 +164,8 @@ def add_request(product_id,supplier_id,warehouse_id,contact_email,unit_price,qua
      Add procurement request into requests table.
      """
      try:
-          query = f'''insert into requests(product_id,supplier_id,warehouse_id,contact_email,unit_price,quantity)
+          query = f'''
+                    insert into requests(product_id,supplier_id,warehouse_id,contact_email,unit_price,quantity)
                     values ({product_id},{supplier_id},{warehouse_id},'{contact_email}',{unit_price},{quantity})
                     returning request_id;
                     ''' 
@@ -267,3 +268,32 @@ def set_notifications_read(id,type):
          
      except Exception as err:
           print(f'Failed to mark all notifications read -- {err}')
+
+def check_inventory_exists(product_id,supplier_id,warehouse_id):
+     """
+     Check if combination exists in inventory.
+     """
+     try:
+         query = f'''select exists(select * from inventory where
+         product_id = {product_id} and supplier_id={supplier_id} and warehouse_id={warehouse_id});
+          '''
+         result = db.execute_dql_commands(query)
+         result = list(list(result)[0])[0]
+         return result
+         
+     except Exception as err:
+          print(f'Failed to check existence of inventory -- {err}')
+
+def add_inventory(product_id,supplier_id,warehouse_id,reorder_level):
+     """
+     Check if combination exists in inventory.
+     """
+     try:
+         query = f'''insert into inventory(product_id,supplier_id,warehouse_id,reorder_level,quantity_in_stock)
+         values ({product_id},{supplier_id},{warehouse_id},{reorder_level},0);
+          '''
+         result = db.execute_ddl_and_dml_commands(query)
+         return result
+         
+     except Exception as err:
+          print(f'Failed to add into inventory -- {err}')

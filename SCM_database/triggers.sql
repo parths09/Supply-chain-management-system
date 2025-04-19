@@ -26,7 +26,16 @@ begin
 	join suppliers s on s.supplier_id = i.supplier_id
 	join warehouses w on w.warehouse_id = i.warehouse_id
 	where pr.procurement_id = new.procurement_id;
-	
+
+	-- Change stock in inventory
+	update inventory set quantity_in_stock = quantity_in_stock+qty
+	where inventory_id=new.inventory_id;
+
+	-- Change alert in inventory
+	update inventory set alert = true 
+	where inventory_id=new.inventory_id and alert = false;
+
+	-- Add notification
 	message1:=format('Your request for %s %s from %s has been DELIVERED.',qty,p_name,s_name);
 	message2:=format('Procurement for %s %s from %s has been COMPLETED.',qty,p_name,w_name);
 	

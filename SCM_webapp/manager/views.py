@@ -142,6 +142,15 @@ def get_price(request):
     price = get_price_detail(product_id,supplier_id)
     return JsonResponse({'unit_price': price})
 
+def check_inventory(request):
+    product_id = request.GET.get("product_id")
+    supplier_id = request.GET.get("supplier_id")
+    w_id=get_warehouse_id(request.user.username)
+    
+    check = check_inventory_exists(product_id,supplier_id,w_id)
+
+    return JsonResponse({'exists': check})
+
 @require_POST
 def order_procurement(request):
     if request.method=='POST':
@@ -152,6 +161,15 @@ def order_procurement(request):
         unit_price=get_price_detail(product_id,supplier_id)
         contact_email = request.user.email
 
+        check = check_inventory_exists(product_id,supplier_id,w_id)
+        if check==False:
+            #create an entry in inventory
+            reorder_level = request.POST.get('reorder-level')
+            result = add_inventory(product_id,supplier_id,w_id,reorder_level)
+            if result is False:
+                return redirect('/manager')
+            print("Created inventory entry.")
+
         #insert these data in to requests table
         request_id = add_request(product_id,supplier_id,w_id,contact_email,unit_price,quantity)
         
@@ -159,7 +177,6 @@ def order_procurement(request):
         add_notification(request_id,supplier_id,'Supplier',context='RequestProcurement')
         add_notification(request_id,w_id,'Manager',context='RequestProcurement')
         
-
         return redirect('/manager')
     else:
         #should I remove it?
