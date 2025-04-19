@@ -5,7 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/supplier_static.css' %}">
   <link rel="stylesheet" href="{% static 'css/supplier_home.css' %}">
+  <link rel="stylesheet" href="{% static 'css/notification.css' %}" />
+  <script src = "{% static 'js/notify.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -17,12 +21,46 @@
         <a href="{%url 'supplier_procurement' %}">Procurements</a>
       </nav>
       <div class="menu">
+                <!-- 🔔 Notification Bell -->
+                <div class="notification-wrapper">
+                  <button id="notification-button">
+                    <i class="fa-solid fa-bell notification-bell-icon"></i>
+                    {% if notifications_unread %}
+                    <span class="notification-dot"></span>
+                    {% endif %}
+                  </button>
+                  <div id="notification-dropdown" class="notification-dropdown">
+                    <div class="dropdown-header">
+                      <span class="dropdown-title">Notifications</span>
+                      <form method="POST" action="{% url 'mark_all_notifications_read' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="mark-read-btn" title="Mark all as read">
+                          ✓
+                        </button>
+                      </form>
+                    </div>
+                    <div class="dropdown-content-scroll">
+                    {% if notifications %}
+                      <ul>
+                        {% for note in notifications %}
+                        {% if note.is_read %}
+                          <li><p>{{ note.message }}</p></li>
+                        {% else %}
+                          <li><strong>{{ note.message }}</strong></li>
+                        {% endif %}
+                        {% endfor %}
+                      </ul>
+                    {% else %}
+                      <p>No new notifications.</p>
+                    {% endif %}
+                    </div>
+                  </div>
+                </div>
         <a href="#">Profile</a>
         <a href="#">Change Password</a>
         <a href="{% url 'logout' %}">Logout</a>
       </div>
     </div>
- <h1>Hi supplier {{username}} </h1>
     <main class="table">
         <section class="table__header">
             <h1>Requests!!</h1>
@@ -47,10 +85,11 @@
                         <td>{{ request.quantity }}</td>
                         <td>{{ request.unit_price }}</td>
                         <td>
-                            <button type="button" class="accept-btn" onclick="handleAccept('{{ request.id }}',  '{{ request.product_name }}', '{{ request.quantity }}')">Accept</button>
+                            <button type="button" class="accept-btn"onclick="handleAccept(event, '{{ request.id }}',  '{{ request.product_name }}', '{{ request.quantity }}', {{request.w_id}})">Accept</button>
                         </td>
                         <td>
-                          <button type="button" class="decline-btn" onclick="handleDeny('{{ request.id }}')">Deny</button>
+                          {% comment %} <button type="button" class="decline-btn" onclick="handleDeny('{{ request.id }}',{{request.w_id}})">Deny</button> {% endcomment %}
+                          <button type="button" class="decline-btn" onclick="handleDeny(event, '{{ request.id }}', {{request.w_id}})">Deny</button>
                         </td>
                       </tr>
                       <tr class="details-row" style="display:none;">
@@ -69,118 +108,116 @@
                 </table>
         </section>
     </main>
-
     <script>
       function toggleDetails(row) {
-        const nextRow = row.nextElementSibling
+        const nextRow = row.nextElementSibling;
         if (nextRow && nextRow.classList.contains('details-row')) {
-          nextRow.style.display = nextRow.style.display === 'table-row' ? 'none' : 'table-row'
+          nextRow.style.display = nextRow.style.display === 'table-row' ? 'none' : 'table-row';
         }
       }
-      function handleDeny(requestId) {
-        Swal.fire({
-          title: 'Deny Request',
-          text: 'Are you sure you want to deny this request?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Yes, deny it',
-          cancelButtonText: 'Cancel'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // Send data via AJAX POST
-            fetch("{% url 'supplier_home' %}", {
-              method: "POST",
-              headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                action: "deny",
-                request_id: requestId
+    
+      function handleDeny(event, requestId, w_id) {
+          event.stopPropagation(); // Prevent parent row click
+          Swal.fire({
+            title: 'Deny Request',
+            text: 'Are you sure you want to deny this request?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, deny it',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              fetch("{% url 'supplier_home' %}", {
+                method: "POST",
+                headers: {
+                  "X-CSRFToken": "{{ csrf_token }}",
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  action: "deny",
+                  request_id: requestId,
+                  warehouse_id: w_id
+                })
               })
-            }).then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            }).then(data => {
-              Swal.fire({
-                title: "Deny request",
-                text: "Request has been  denied",
-                icon: "info"
-              }).then(() => {
-                location.reload();
+              .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+              })
+              .then(() => {
+                Swal.fire("Denied!", "Request has been denied.", "info")
+                  .then(() => location.reload());
+              })
+              .catch(error => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
               });
-            }).catch(error => {
-              Swal.showValidationMessage(`Request failed: ${error}`);
-            });
-          }
-        });
-      }
-    function handleAccept(requestId, productName, Quantity) {
-      const orderDate = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
-    
-      Swal.fire({
-        title: 'Accept Request',
-        html: `
-          <div class="swal-input-container">
-            <label for="product-name">Product:</label>
-            <input id="product-name" class="swal2-input" value="${productName}" readonly>
-    
-            <label for="quantity">Quantity:</label>
-            <input id="quantity" class="swal2-input" value="${Quantity}" readonly>
-    
-            <label for="order-date">Order Date:</label>
-            <input id="order-date" class="swal2-input" value="${orderDate}" readonly>
-    
-            <label for="delivery-date">Delivery Date:</label>
-            <input id="delivery-date" type="date" class="swal2-input" required>
-          </div>
-        `,
-        focusConfirm: false,
-        showCancelButton: true,
-        confirmButtonText: 'Confirm Accept',
-        preConfirm: () => {
-          const deliveryDate = document.getElementById('delivery-date').value;
-          if (!deliveryDate) {
-            Swal.showValidationMessage('Please select a delivery date.');
-            return false;
-          }
-          if (new Date(deliveryDate) < new Date(orderDate)) {
-            Swal.showValidationMessage('Invalid deliver date');
-            return false;
-          }
-    
-          // Send data via AJAX POST
-          return fetch("{% url 'supplier_home' %}", {
-            method: "POST",
-            headers: {
-              "X-CSRFToken": "{{ csrf_token }}",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              quantity: Quantity,
-              action: "accept",
-              request_id: requestId,
-              delivery_date: deliveryDate,
-              order_date: orderDate
-            })
-          }).then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
             }
-            return response.json();
-          }).catch(error => {
-            Swal.showValidationMessage(`Request failed: ${error}`);
           });
         }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire('Accepted!', 'The request has been accepted.', 'success')
-            .then(() => location.reload());
+      
+      function handleAccept(event, requestId, productName, Quantity, w_id) {
+          event.stopPropagation(); // Prevent row toggle
+      
+          const orderDate = new Date().toISOString().split('T')[0];
+      
+          Swal.fire({
+            title: 'Accept Request',
+            html: `
+              <div class="swal-input-container">
+                <label for="product-name">Product:</label>
+                <input id="product-name" class="swal2-input" value="${productName}" readonly>
+          
+                <label for="quantity">Quantity:</label>
+                <input id="quantity" class="swal2-input" value="${Quantity}" readonly>
+          
+                <label for="order-date">Order Date:</label>
+                <input id="order-date" class="swal2-input" value="${orderDate}" readonly>
+          
+                <label for="delivery-date">Delivery Date:</label>
+                <input id="delivery-date" type="date" class="swal2-input" required>
+              </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Accept',
+            preConfirm: () => {
+              const deliveryDate = document.getElementById('delivery-date').value;
+              if (!deliveryDate) {
+                Swal.showValidationMessage('Please select a delivery date.');
+                return false;
+              }
+              if (new Date(deliveryDate) < new Date(orderDate)) {
+                Swal.showValidationMessage('Invalid delivery date.');
+                return false;
+              }
+            
+              return fetch("{% url 'supplier_home' %}", {
+                method: "POST",
+                headers: {
+                  "X-CSRFToken": "{{ csrf_token }}",
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  quantity: Quantity,
+                  action: "accept",
+                  request_id: requestId,
+                  delivery_date: deliveryDate,
+                  order_date: orderDate,
+                  warehouse_id: w_id
+                })
+              }).then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+              }).catch(error => {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+              });
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire('Accepted!', 'The request has been accepted.', 'success')
+                .then(() => location.reload());
+            }
+          });
         }
-      });
-    }
     </script>
 </body>
 </html>

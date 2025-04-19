@@ -88,3 +88,30 @@ def decline_request(request_id):
         return result
     except Exception as err:
         print(f'Failed to insert product details -- {err}')
+
+def get_id(username):
+    try:
+        query = f''' select supplier_id from suppliers where username ='{username}';'''
+        result = db.execute_dql_commands(query)
+        id = list(result.mappings().all())
+        return id[0]['supplier_id']
+    except Exception as err:
+        print(f'Failed to fetch product details -- {err}')
+
+def get_supplier_notifications(sup_id):
+     """
+     Get all notification for a particular warehouse manager.
+     """
+     print(f'Fetching notifications for supplier {sup_id}')
+     try:
+         query = f'''select *
+         from notifications n
+         where n.recipent_type = 'Supplier' and n.recipent_id = {sup_id}
+         order by created_at desc;
+          '''
+         result = db.execute_dql_commands(query)
+         result= result.mappings().all()
+         return result
+         
+     except Exception as err:
+          print(f'Failed to get manager notifications -- {err}')

@@ -4,5 +4,6 @@ from . import views
 urlpatterns = [
     path('',views.supplier_home,name='supplier_home'),
     path('products/', views.supplier_products, name='supplier_products'),
-    path('procurement/', views.suppler_procurement, name='supplier_procurement'),
+    path('procurement/', views.supplier_procurement, name='supplier_procurement'),
+    path('mark_all_notifications_read',views.mark_all_notifications_read,name='mark_all_notifications_read'),
 ]
