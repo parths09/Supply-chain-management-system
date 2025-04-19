@@ -79,8 +79,6 @@ def dijkstra(graph, start, end):
 
     return (float("inf"), [])  # If no path found
 
-print(dijkstra(graph,'W1','C5'))
-
 def get_next_position(current, destination):
     
     total_cost,steps = dijkstra(graph,current,destination)

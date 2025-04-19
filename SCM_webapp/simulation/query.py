@@ -35,4 +35,34 @@ def get_current_position(shipping_id):
         return result
         
     except Exception as err:
+        print(f'Failed to fetch current position -- {err}')
+
+def get_source(shipping_id):
+    try:
+        query = f'''select i.warehouse_id
+        from shippings s
+        join order_details od on s.shipping_id = od.shipping_id
+        join inventory i on i.inventory_id = od.inventory_id
+        where s.shipping_id = {shipping_id};
+        '''
+        result=db.execute_dql_commands(query)
+        result = list(list(result)[0])[0]
+        return result
+        
+    except Exception as err:
+        print(f'Failed to fetch current position -- {err}')
+
+def get_destination(shipping_id):
+    try:
+        query = f'''select o.customer_id
+        from shippings s
+        join order_details od on od.shipping_id = s.shipping_id
+        join orders o on o.order_id = od.order_id
+        where s.shipping_id = {shipping_id};
+        '''
+        result=db.execute_dql_commands(query)
+        result = list(list(result)[0])[0]
+        return f"C{result}"
+        
+    except Exception as err:
         print(f'Failed to fetch customer shipments -- {err}')
