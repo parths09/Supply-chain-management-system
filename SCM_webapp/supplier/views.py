@@ -1,13 +1,51 @@
 from django.shortcuts import render, redirect
 from supplier.query import *
 from django.contrib import messages
+from django.http     import JsonResponse
+import json
 
 
 # Create your views here.
 def supplier_home(request):
-    return render(request, 'supplier_home.html', {'username': request.user.username})
+    if request.method == 'POST' and request.content_type == 'application/json':
+        try:
+            data = json.loads(request.body)
+            if data.get('action') == 'accept':
+                quantity = data['quantity']
+                request_id = data['request_id']
+                order_date = data['order_date']
+                delivery_date = data['delivery_date']
+                print(quantity, request_id,  order_date, delivery_date)
+                # Call the function to add procurement
+                add_procurement(request_id, quantity, order_date, delivery_date)
+                # Add your database operation here
+                return JsonResponse({'status': 'ok'})
+            
+            elif data.get('action') == 'deny':
+                request_id = data['request_id']
+                # Call the function to reject the request
+                # Add your database operation here
+                decline_request(request_id)
+                return JsonResponse({'status': 'ok'})
+            else:
+                return JsonResponse({'error': 'Invalid JSON action'}, status=400)
+            
+
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    if request.method == 'POST':
+        return render(request, 'supplier_home.html', {'username': request.user.username})
+    
+    all_requests = fetch_requests(request.user.username)
+    context={
+        'username': request.user.username,
+        'requests': all_requests
+    }
+    return render(request, 'supplier_home.html', context)
 
 def suppler_procurement(request):
+        
     if request.method == 'POST':
         return render(request, 'supplier_procurements.html', {'username': request.user.username})
     all_procurements = fetch_procurement(request.user.username)
