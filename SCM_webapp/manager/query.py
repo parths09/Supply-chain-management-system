@@ -177,16 +177,16 @@ def add_request(product_id,supplier_id,warehouse_id,contact_email,unit_price,qua
 
 def get_request_info(request_id):
      """
-     Get product_name,supplier_name,warehouse_name and quantity for particular request.
+     Get product_name,supplier_name,warehouse_name, approval and quantity for particular request.
      """
      try:
-         query = f'''select p.name as product_name,s.supplier_name,r.quantity,w.name as warehouse_name
+         query = f'''select p.name as product_name,s.supplier_name,r.quantity,w.name as warehouse_name,r.approval
          from requests r
          join products p on r.product_id = p.product_id
          join suppliers s on r.supplier_id = s.supplier_id
          join warehouses w on r.warehouse_id = w.warehouse_id
          where r.request_id = {request_id};
-                    '''
+          '''
          result = db.execute_dql_commands(query)
          result= result.mappings().all()[0]
          return result
@@ -200,29 +200,34 @@ def add_notification(request_id,recipent_id,recipent_type,context):
      """
      try:
           request_info = get_request_info(request_id)
-          print(request_info)
           # formulate message:
           if recipent_type=='Manager':
-
                # Get info about product_name,supplier_name and quantity
                if context=='RequestProcurement':
                     message = f"You requested for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']}."
-                    pass
                elif context=='RequestApproval':
-                    pass
+                    if request_info['approval']=='Accepted':
+                         message=f"Your request for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']} has been ACCEPTED."
+                    elif request_info['approval']=='Denied':
+                         message=f"Your request for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']} has been DENIED."
                elif context=="ProcurementArriving":
-                    pass
+                    message=f"Your request for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']} is ARRIVING."
                elif context=="ProcurementDelivered":
+                    # this is handled by trigger
                     pass
+          
           elif recipent_type=='Supplier':
                if context=='RequestProcurement':
                     message=f"Procurement request for {request_info['quantity']} {request_info['product_name']} from {request_info['warehouse_name']}."
-                    pass
                elif context=='RequestApproval':
-                    pass
+                    if request_info['approval']=='Accepted':
+                         message=f"You ACCEPTED request for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']}."
+                    elif request_info['approval']=='Denied':
+                         message=f"You DENIED request for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']}."
                elif context=="ProcurementArriving":
-                    pass
+                    message=f"Procurement process for {request_info['quantity']} {request_info['product_name']} from {request_info['supplier_name']} has STARTED."
                elif context=="ProcurementDelivered":
+                    # this is handled by trigger
                     pass
 
           query = f'''insert into notifications(request_id,recipent_id,recipent_type,context,message)

@@ -13,12 +13,18 @@ def manager_home(request):
         low_stocks= get_low_stock(w_id)
         incoming_procurements=get_incoming_procurements(w_id)
         notifications = get_manager_notifications(w_id)
+        notifications_unread = False
+        for note in notifications:
+            if note['is_read']==False:
+                notifications_unread=True
+                break
         context = {
             'username': request.user.username,
             'low_stocks':low_stocks,
             'warehouse_name':get_warehouse_name(w_id),
             'incoming_procurements':incoming_procurements,
             'notifications':notifications,
+            'notifications_unread':notifications_unread,
         }
         return render(request,'manager_home.html',context)
      
@@ -39,10 +45,18 @@ def manager_shipments(request):
             shipments_dict['shipping_status'] = row.shipping_status
             shipments_dict['delivery_date'] = row.delivery_date
             active_shipments.append(shipments_dict)
+        notifications = get_manager_notifications(w_id)
+        notifications_unread = False
+        for note in notifications:
+            if note['is_read']==False:
+                notifications_unread=True
+                break
         context = {
             'username': request.user.username,
             'active_shipments':active_shipments,
             'warehouse_name':w_name,
+            'notifications':notifications,
+            'notifications_unread':notifications_unread,
         }
         return render(request,'manager_shipments.html',context)
 
@@ -52,9 +66,17 @@ def manager_stocks(request):
     else:
         w_id=get_warehouse_id(request.user.username)
         warehouse_products=get_warehouse_products(w_id)
+        notifications = get_manager_notifications(w_id)
+        notifications_unread = False
+        for note in notifications:
+            if note['is_read']==False:
+                notifications_unread=True
+                break
         context = {
             'username': request.user.username,
             "warehouse_products":warehouse_products,
+            'notifications':notifications,
+            'notifications_unread':notifications_unread
         }
         return render(request,'manager_stocks.html',context)
 
@@ -65,11 +87,18 @@ def manager_employees(request):
         w_id=get_warehouse_id(request.user.username)
         w_name = get_warehouse_name(w_id)
         employees = get_employees(w_id)
-
+        notifications = get_manager_notifications(w_id)
+        notifications_unread = False
+        for note in notifications:
+            if note['is_read']==False:
+                notifications_unread=True
+                break
         context = {
             'username': request.user.username,
             'employees': employees,
             'warehouse_name':w_name,
+            'notifications':notifications,
+            'notifications_unread':notifications_unread
         }
         return render(request,'manager_employees.html',context)
 
@@ -77,10 +106,19 @@ def manager_procurements(request):
     if request.method=='POST':
         return render(request,'manager_procurements.html',{'username': request.user.username})
     else:
+        w_id = get_warehouse_id(request.user.username)
         product_details = get_products()
+        notifications = get_manager_notifications(w_id)
+        notifications_unread = False
+        for note in notifications:
+            if note['is_read']==False:
+                notifications_unread=True
+                break
         context = {
             'products':product_details,
             'username':request.user.username,
+            'notifications':notifications,
+            'notifications_unread':notifications_unread
         }
         return render(request,'manager_procurements.html',context)
     
@@ -136,4 +174,4 @@ def mark_all_notifications_read(request):
     if request.method=='POST':
         w_id = get_warehouse_id(request.user.username)
         set_notifications_read(id=w_id,type = "Manager")
-        return redirect('/manager')
+        return redirect(request.META.get('HTTP_REFERER', '/'))

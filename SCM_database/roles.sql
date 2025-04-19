@@ -35,7 +35,8 @@ grant update on inventory to manager;
 grant select on prices to manager;
 grant select,insert on requests to manager;
 GRANT USAGE, SELECT ON SEQUENCE requests_request_id_seq TO manager;
-
+grant select,insert,update on notifications to manager;
+GRANT USAGE, SELECT ON SEQUENCE notifications_notification_id_seq to manager;
 --3)
 drop owned by supplier ; 
 drop role supplier;
@@ -43,7 +44,8 @@ create role supplier with login password 'supplier_pass';
 
 grant all on products,prices  to supplier;
 grant select on suppliers to supplier;
-
+grant select,insert on notifications to supplier;
+grant select,update on requests to supplier;
 
 
 
