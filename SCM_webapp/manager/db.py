@@ -75,6 +75,7 @@ class PostgresqlDB:
             trans.commit()
             connection.close()
             print('Command executed successfully.')
+            return result
         except Exception as err:
             trans.rollback()
             print(f'Failed to execute ddl and dml commands -- {err}')
