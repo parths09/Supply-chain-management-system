@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>This is Simulation</h1>
+    <p>Date is {{ date }}</p>
+    <form action="{% url 'run_simulation' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="sim_date" value="{{ date }}" />
+      <button type="submit" class="btn btn-warning">Simulate Next Day</button>
+    </form>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  </body>
+</html>
