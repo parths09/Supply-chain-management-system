@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from manager import views
 
 urlpatterns = [
     path('',views.manager_home,name='manager_home'),
@@ -11,7 +11,7 @@ urlpatterns = [
     path('ignore_alert-<str:inventory_id>',views.ignore_alert,name='ignore_alert'),
     path('get_suppliers', views.get_suppliers, name='get_suppliers'),  # AJAX call
     path('get_price', views.get_price, name='get_price'),              # AJAX call
-    path('mark_all_notifications_read',views.mark_all_notifications_read,name='mark_all_notifications_read'),
+    path('mark_all_notifications_read',views.mark_all_notifications_read,name='mark_all_notifications_read_manager'),
     path("check_inventory/", views.check_inventory, name="check_inventory"),
 
 ]

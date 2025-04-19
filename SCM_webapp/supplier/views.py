@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from supplier.query import *
-from manager import query as m
 from django.contrib import messages
 from django.http     import JsonResponse
 import json
@@ -20,11 +19,11 @@ def add_procurement_function(username,request_id, quantity, order_date, delivery
             add_procurement(request_id, quantity, order_date, delivery_date)
             supplier_id=get_id(username)
             # ADD NOTIFICATION
-            m.add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
-            m.add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
+            add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
+            add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
             # ADD NOTIFICATION
-            m.add_notification(request_id,supplier_id,'Supplier',context='ProcurementArriving')
-            m.add_notification(request_id,warehouse_id,'Manager',context='ProcurementArriving')
+            add_notification(request_id,supplier_id,'Supplier',context='ProcurementArriving')
+            add_notification(request_id,warehouse_id,'Manager',context='ProcurementArriving')
 
 
 # Create your views here.
@@ -53,8 +52,8 @@ def supplier_home(request):
                 # Add your database operation here
                 decline_request(request_id)
 
-                m.add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
-                m.add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
+                add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
+                add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
 
                 return JsonResponse({'status': 'ok'})
             else:
@@ -158,5 +157,5 @@ def supplier_products(request):
 def mark_all_notifications_read(request):
     if request.method=='POST':
         supplier_id=get_id(request.user.username)
-        m.set_notifications_read(id=supplier_id,type = "Supplier")
+        set_notifications_read(id=supplier_id,type = "Supplier")
         return redirect(request.META.get('HTTP_REFERER', '/'))
