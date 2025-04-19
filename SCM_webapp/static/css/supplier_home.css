@@ -44,45 +44,6 @@
   background-color: #0000000b;
 }
 
-/* .accept-btn,
-.decline-btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.accept-btn {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.decline-btn {
-  background-color: #f44336;
-  color: white;
-}
-
-.accept-btn:hover {
-  background-color: #45a049;
-  transform: scale(1.03);
-}
-
-.decline-btn:hover {
-  background-color: #d32f2f;
-  transform: scale(1.03);
-}
-.details-row td {
-  background-color: #f9f9f9;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  padding: 1rem 2rem;
-  text-align: left;
-  line-height: 1.6;
-} */
-
 /* 1) Make popup content a two‑column grid: labels + inputs side‑by‑side */
 .swal-input-container {
   display: grid;

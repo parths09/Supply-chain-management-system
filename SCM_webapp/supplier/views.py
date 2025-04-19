@@ -113,6 +113,26 @@ def supplier_products(request):
                 # messages.success(request, 'Product deleted successfully!')
                 return JsonResponse({'status': 'ok'})
             
+            elif data.get('action') == 'exist_add':
+                name = data['name']
+                price = data['price']
+                # if product_name not in product_names:
+                #     messages.error(request, 'Product name does not exist.')
+                #     return redirect('supplier_products')
+
+                add_existing_products(name, request.user.username, price)
+                # messages.success(request, 'Product added successfully!')
+                return JsonResponse({'status': 'ok'})
+
+            elif data.get('action') == 'new_add':
+                name = data['name']
+                price = data['price']
+                description = data['description']
+                category = data['category']
+                add_new_product(request.user.username,name, price, description, category)
+                # messages.success(request, 'Product added successfully!')
+                return JsonResponse({'status': 'ok'})
+            
             else:
                 return JsonResponse({'error': 'Invalid JSON action'}, status=400)
             
@@ -120,46 +140,10 @@ def supplier_products(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     # print(filtered_products)
+
     if request.method == 'POST':
-        action = request.POST.get('action')  
-        print(action)
-
-        if action == 'edit':
-            product_id = request.POST.get('product_id')
-            price = request.POST.get('price')
-
-            update_products(product_id, request.user.username,price)
-            
-            # messages.success(request, 'Product updated successfully!')
-            return redirect('supplier_products')
-        elif action == 'delete':
-            product_id = request.POST.get('product_id')
-            delete_products(product_id, request.user.username)
-            print(product_id)
-
-            # messages.success(request, 'Product deleted successfully!')
-            return redirect('supplier_products')
-        
-        if action == 'exist_add':
-            name = request.POST.get('name')
-            price = request.POST.get('price')
-
-            # if product_name not in product_names:
-            #     messages.error(request, 'Product name does not exist.')
-            #     return redirect('supplier_products')
-            
-            add_existing_products(name, request.user.username, price)
-            # messages.success(request, 'Product added successfully!')
-            return redirect('supplier_products')
-
-        elif action == 'new_add':
-            name = request.POST.get('name')
-            price = request.POST.get('price')
-            description = request.POST.get('description')
-            category = request.POST.get('category')
-            add_new_product(request.user.username,name, price, description, category)
-            # messages.success(request, 'Product added successfully!')
-            return redirect('supplier_products')
+        return render(request, 'supplier_products.html', {'username': request.user.username})
+    
 
     context = {
             "username": request.user.username,

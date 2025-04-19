@@ -1,228 +1,234 @@
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-  }
-  
-  body {
-    background: #f5f5f5;
-    padding-top: 60px;
-  }
-  
-  /* Navbar Container */
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    background-color: #586de4;
-    color: white;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Navigation Links Container */
-  .nav {
-    display: flex;
-    gap: 5px;
-    height: 60px;
-    flex-wrap: wrap-reverse;
-  }
-  
-  /* Nav Links Styling (Underline Stroke) */
-  .nav a {
-    display: inline-block;
-    line-height: 60px;
-    padding: 0 20px;
-    font-size: 15px;
-    text-decoration: none;
-    text-transform: uppercase;
-    text-align: center;
-    color: white;
-    position: relative;
-    z-index: 1;
-    transition: color 0.1s ease;
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  .nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    width: 0%;
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.9);
-    transition: width 0.1s ease;
-  }
-  
-  .nav a:hover::after {
-    width: 100%;
-  }
-  
-  /* Menu styling remains unchanged */
-  .menu {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .menu a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
-  
-  .menu a:hover {
-    color: #ff4500;
-  }
-  
- /* Procurements Table */
- main.table {
-  width: 90%;
-  max-width: 1800px;
-  background-color: #fff;
-  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
-  border-radius: 0.8rem;
-  overflow: hidden;
-  margin: 2rem auto;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body {
+  background: #f5f5f5;
+  padding-top: 60px;
+}
+
+/* Navbar Container */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  background-color: #586de4;
+  color: white;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/* Navigation Links Container */
+.nav {
+  display: flex;
+  gap: 5px;
+  height: 60px;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav.logo {
+  justify-items: center;
+  font-size: 1.3rem;
+  color: whitesmoke;
+}
+
+/* Nav Links Styling (Underline Stroke) */
+.nav a {
+  display: inline-block;
+  line-height: 60px;
+  padding: 0 20px;
+  font-size: 15px;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 1;
+  transition: color 0.1s ease;
+  text-align: center;
+  font-weight: bold;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: width 0.1s ease;
+}
+
+.nav a:hover::after {
+  width: 100%;
+}
+
+/* Menu styling remains unchanged */
+.menu {
+  display: flex;
+  gap: 20px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.menu a:hover {
+  color: #ff4500;
+}
+
+/* Procurements Table */
+main.table {
+width: 90%;
+max-width: 1800px;
+background-color: #fff;
+box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+border-radius: 0.8rem;
+overflow: hidden;
+margin: 2rem auto;
 }
 
 /* Table Header */
 .table__header {
-  width: 100%;
-  padding: 1rem;
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+width: 100%;
+padding: 1rem;
+background-color: #f7f7f7;
+border-bottom: 1px solid #ddd;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
 .table__header h1 {
-  font-size: 1.8rem;
-  color: #333;
-  text-align: center;
-  width: 100%;
-  font-weight: bold;
+font-size: 1.8rem;
+color: #333;
+text-align: center;
+width: 100%;
+font-weight: bold;
 }
 
 
 /* Responsive Table Container */
 .table__body {
-  width: 100%;
-  overflow-x: auto;
+width: 100%;
+overflow-x: auto;
 }
 
 .table__body::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+width: 0.5rem;
+height: 0.5rem;
 }
 
 .table__body::-webkit-scrollbar-thumb {
-  border-radius: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.25);
-  visibility: hidden;
+border-radius: 0.5rem;
+background-color: rgba(0, 0, 0, 0.25);
+visibility: hidden;
 }
 
 .table__body:hover::-webkit-scrollbar-thumb { 
-  visibility: visible;
+visibility: visible;
 }
 
 table {
-  width: 100%;
-  min-width: 700px;
-  border-collapse: collapse;
-  border-spacing: 0;
+width: 100%;
+min-width: 700px;
+border-collapse: collapse;
+border-spacing: 0;
 }
 
 th, td {
-  padding: 1rem;
-  text-align: center;
+padding: 1rem;
+text-align: center;
 }
 
 thead th {
-  position: sticky;
-  top: 0;
-  background-color: #d5d1defe;
-  padding: 1rem;
-  text-transform: capitalize;
-  cursor: pointer;
-  text-align: center;
+position: sticky;
+top: 0;
+background-color: #d5d1defe;
+padding: 1rem;
+text-transform: capitalize;
+cursor: pointer;
+text-align: center;
 }
 
 thead th:hover span.icon-arrow {
-  border: 1.4px solid #6c00bd;
+border: 1.4px solid #6c00bd;
 }
 
 thead th:hover {
-  color: #6c00bd;
+color: #6c00bd;
 }
 
 tbody tr:nth-child(even) {
-  background-color: #0000000b;
+background-color: #0000000b;
 }
 
 tbody tr:hover {
-  background-color: rgba(0, 128, 255, 0.2);
+background-color: rgba(0, 128, 255, 0.2);
 }
 
 tbody td {
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+padding: 1rem;
+border-bottom: 1px solid #eee;
 }
 @media screen and (max-width: 768px) {
-    .search-container {
-        width: 5vw;
-    }
-    main.table {
-        width: 95vw;
-    }
-    tbody td {
-        padding: 0.8rem;
-    }
-    thead th {
-        padding: 0.8rem;
-    }
-    .filter-container {
-        width: 95vw
-    }
+  .search-container {
+      width: 5vw;
   }
-  @media screen and (max-width: 768px) {
+  main.table {
+      width: 95vw;
+  }
+  tbody td {
+      padding: 0.8rem;
+  }
+  thead th {
+      padding: 0.8rem;
+  }
+  .filter-container {
+      width: 95vw
+  }
+}
+@media screen and (max-width: 768px) {
 
-    /* Navbar adjustments */
-  
-    .navbar {
-        padding: 0 1rem;
-    }
-    .logo {
-        font-size: 1.1rem;
-    }
-    .menu {
-        gap: 10px;
-    }
-    .menu a {
-        font-size: 0.9rem;
-    }
-    main.table {
-        width: 95vw;
-        margin: 1.5rem auto;
-    }
-    .table__header {
-        padding: 0.8rem;
-    }
-    .table__header h1 {
-        font-size: 1.6rem;
-    }
-    th, td {
-        padding: 0.8rem;
-        font-size: 14px;
-    }
+  /* Navbar adjustments */
+
+  .navbar {
+      padding: 0 1rem;
   }
+  .logo {
+      font-size: 1.1rem;
+  }
+  .menu {
+      gap: 10px;
+  }
+  .menu a {
+      font-size: 0.9rem;
+  }
+  main.table {
+      width: 95vw;
+      margin: 1.5rem auto;
+  }
+  .table__header {
+      padding: 0.8rem;
+  }
+  .table__header h1 {
+      font-size: 1.6rem;
+  }
+  th, td {
+      padding: 0.8rem;
+      font-size: 14px;
+  }
+}
