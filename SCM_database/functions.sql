@@ -192,6 +192,26 @@ $$;
 
 select * from get_procurements_supplier('techworld');
 
+--3)
+drop function if exists get_requests_supplier;
+
+create or replace function get_requests_supplier(sup_name varchar)
+returns table(id int , warehouse_name varchar , warehouse_location varchar,quantity integer,  product_name varchar,
+contact varchar,unit_price numeric (10,2),total numeric (10,2))
+language plpgsql as $$
+begin
+	return query
+	select r.request_id,w.name,w.location,r.quantity,p.name,r.contact_email,r.unit_price,(r.unit_price * r.quantity)
+	from requests as r 
+	join (select * from suppliers where username=sup_name) as s on r.supplier_id = s.supplier_id
+	join warehouses as w on w.warehouse_id=r.warehouse_id
+	join products as p on p.product_id=r.product_id
+	where r.approval in('Pending');
+end;
+$$;
+
+select * from get_requests_supplier('techworld');
+
 
 drop function if exists get_low_stock;
 

@@ -95,3 +95,30 @@ $$;
 -- select * from products;
 
 -- call add_existing_products('techworld',1200,'Laptop');
+
+drop procedure if exists add_procurement;
+create or replace procedure add_procurement (req_id int, Quantity int, orderDate date, deliveryDate  date)
+language plpgsql as $$
+declare 
+	inv_id int;
+begin 
+	select i.inventory_id into inv_id from inventory as i 
+	join (select * from requests where request_id = req_id) as r 
+	on i.supplier_id=r.supplier_id and i.product_id=r.product_id and i.warehouse_id=r.warehouse_id;
+	--raise notice 'i_id : %',inv_id;
+	
+	update requests set approval ='Accepted' where request_id =req_id;
+
+	insert into procurements (inventory_id,quantity,order_date,delivery_date,status) VALUES
+	(inv_id,Quantity,orderDate,deliveryDate,'Processing');
+	
+end;
+$$;
+
+drop procedure if exists decline_request;
+create or replace procedure decline_request (req_id int)
+language plpgsql as $$
+begin 
+	update requests set approval ='Denied' where request_id =req_id;
+end;
+$$;

@@ -85,23 +85,233 @@
     color: #ff4500;
   }
   
+ /* Procurements Table */
+ main.table {
+  width: 90%;
+  max-width: 1800px;
+  background-color: #fff;
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.8rem;
+  overflow: hidden;
+  margin: 2rem auto;
+}
 
-  @media screen and (max-width: 768px) {
+/* Table Header */
+.table__header {
+  width: 100%;
+  padding: 1rem;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    /* Navbar adjustments */
-  
-    .navbar {
-        padding: 0 1rem;
-    }
-    .logo {
-        font-size: 1.1rem;
-    }
-    .menu {
-        gap: 10px;
-    }
-    .menu a {
-        font-size: 0.9rem;
-    }
+.table__header h1 {
+  font-size: 1.8rem;
+  color: #333;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}
 
+
+/* Responsive Table Container */
+.table__body {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table__body::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.25);
+  visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb { 
+  visibility: visible;
+}
+
+table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: center;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  background-color: #d5d1defe;
+  padding: 1rem;
+  text-transform: capitalize;
+  cursor: pointer;
+  text-align: center;
+}
+
+thead th:hover span.icon-arrow {
+  border: 1.4px solid #6c00bd;
+}
+
+thead th:hover {
+  color: #6c00bd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #0000000b;
+}
+
+tbody tr:hover {
+  background-color: rgba(0, 128, 255, 0.2);
+}
+
+tbody td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.accept-btn{
+  background-color: #d8ffcc;
+  color: #15b300;
+  font-weight: bold;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.accept-btn:hover{
+  background-color: #ff9999;
+  color: #158000;
+  transform: scale(1.05);
+}
+
+
+.decline-btn {
+  background-color: #ffcccc;
+  color: #b30000;
+  font-weight: bold;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.decline-btn:hover {
+  background-color: #ff9999;
+  color: #800000;
+  transform: scale(1.05);
+}
+
+.details-row td{
+  width:100%;
+  cursor: default;
+}
+.details-row:hover{
+  background-color: #0000000b;
+}
+
+/* .accept-btn,
+.decline-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.accept-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.decline-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.accept-btn:hover {
+  background-color: #45a049;
+  transform: scale(1.03);
+}
+
+.decline-btn:hover {
+  background-color: #d32f2f;
+  transform: scale(1.03);
+}
+.details-row td {
+  background-color: #f9f9f9;
+  border-top: 1px solid #ddd;
+  font-size: 0.9rem;
+  padding: 1rem 2rem;
+  text-align: left;
+  line-height: 1.6;
+} */
+
+/* 1) Make popup content a two‑column grid: labels + inputs side‑by‑side */
+.swal-input-container {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-row-gap: 0.4rem;     /* less vertical space */
+  grid-column-gap: 0.6rem;  /* small gap between label & input */
+  align-items: center;
+  text-align: left;
+  padding: 0.5rem 0;        /* tighten top/bottom padding */
+}
+
+/* 2) Tweak label and input font and spacing */
+.swal-input-container label {
+  margin: 0;               /* remove default margin */
+  font-size: 0.9rem;       /* a bit smaller */
+  color: #333;
+}
+.swal-input-container input {
+  margin: 0;               /* no extra space */
+  font-size: 0.9rem;       /* match label */
+  padding: 6px 8px;        /* slightly smaller input padding */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* 3) Shrink the entire popup’s base font */
+.swal2-popup {
+  font-size: 14px !important;
+}
+
+/* 4) Optional: reduce the vertical gap between lines inside the popup */
+.swal2-html-container p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+
+@media (max-width: 768px) {
+  th, td {
+    padding: 0.7rem;
+    font-size: 0.85rem;
   }
-  
+
+  .table__header h1 {
+    font-size: 1.3rem;
+  }
+
+  .nav a {
+    font-size: 12px;
+    padding: 0 10px;
+  }
+}
