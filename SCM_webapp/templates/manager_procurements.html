@@ -67,13 +67,12 @@
       </div>
     </div>
 
-    <h1>Hi manager {{ username }}. This is Order Procurements</h1>
     <br>
-
     {% comment %} Design a interface to order procurements {% endcomment %}
     <div class="procurement-form-container">
+      <h2>Request Procurement</h2>
       {% comment %} <form method="POST" action="{% url 'create_procurement' %}"> {% endcomment %}
-      <form method="POST" action="{%url 'order_procurements'%}">
+      <form id="procurement-form" method="POST" action="{%url 'order_procurements'%}">
         {% csrf_token %}
         <label for="product">Select Product</label>
         <select id="product" name="product" class="select-box" required >
@@ -92,7 +91,12 @@
     
         <label for="quantity">Quantity</label>
         <input type="number" name="quantity" id="quantity" min="1" value="1" required>
-    
+
+        <div id="reorder-level-block" style="display: none;">
+        <label for="reorder-level">Reorder Level</label>
+        <input type="number" name="reorder-level" id="reorder-level" min="1">
+        </div>
+
         <div id="unit-price-container" class="unit-price" style="display:none;">
           <strong>Unit Price:</strong> ₹<span id="unit-price-value"></span>
         </div>
@@ -114,7 +118,10 @@
             return $(this).data('placeholder') || $(this).find('option:first').text();
           }
         });
-
+        
+        $('#reorder-level-block').hide();
+        $('#reorder-level').prop('required', false);
+        $('#reorder-level').val('');
         // Set default quantity
         $('#quantity').val(1);
     
@@ -145,7 +152,24 @@
             $('#unit-price-container').show();
             calculateTotalPrice(); // 👈 Trigger total price calculation
           });
+
+          $.get("{% url 'check_inventory' %}", {
+            product_id: productId,
+            supplier_id: supplierId
+          }, function (response) {
+            if (!response.exists) {
+              $('#reorder-level-block').show();
+              $('#reorder-level').prop('required', true);
+              $('#reorder-level').val('');  
+            } else {
+              $('#reorder-level-block').hide();
+              $('#reorder-level').prop('required', false);
+              $('#reorder-level').val('');
+            }
+          });
+
         });
+
 
         // Watch for quantity changes
         $('#quantity').on('input', function () {
@@ -161,6 +185,18 @@
           $('#total-price-value').text(total.toFixed(2));
           $('#total-price-container').show();
         }
+
+        $('#procurement-form').on('submit', function (e) {
+          const productName = $('#product option:selected').text();
+          const supplierName = $('#supplier option:selected').text(); 
+          const qty = $('#quantity').val();
+          const totalPrice = $('#total-price-value').text();
+          const confirmMessage = `Are you sure you want to place order for ${qty} ${productName} from "${supplierName}" at ₹${totalPrice}?`
+          const confirmed = confirm(confirmMessage);
+          if (!confirmed) {
+            e.preventDefault(); // cancel the submission
+          }
+        });
       });
     </script>
   </body>
