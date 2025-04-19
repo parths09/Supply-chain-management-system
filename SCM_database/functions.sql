@@ -171,6 +171,27 @@ $$;
 
 select * from get_supplier_products('techworld');
 
+--2) 
+drop function if exists get_procurements_supplier;
+
+create or replace function get_procurements_supplier(sup_name varchar)
+returns TABLE(warehouse_name varchar , warehouse_location varchar,quantity integer, order_date date, delivery_date date,
+status varchar, product_name varchar)
+language plpgsql as $$
+begin 
+	return query
+	select w.name,w.location,p.quantity,p.order_date,p.delivery_date,p.status,pr.name
+	from procurements p
+	join inventory i on i.inventory_id = p.inventory_id
+	join products pr on pr.product_id = i.product_id
+	join suppliers s on s.supplier_id = i.supplier_id
+	join warehouses w on i.warehouse_id = w.warehouse_id
+	where s.username = sup_name ;
+end;
+$$;
+
+select * from get_procurements_supplier('techworld');
+
 
 drop function if exists get_low_stock;
 
