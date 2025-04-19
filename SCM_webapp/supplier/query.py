@@ -62,3 +62,29 @@ def fetch_procurement(username):
         return products
     except Exception as err:
         print(f'Failed to fetch product details -- {err}')
+
+def fetch_requests(username):
+    try:
+        query = f''' select * from get_requests_supplier('{username}');'''
+        result = db.execute_dql_commands(query)
+        products = list(result.mappings().all())
+        return products
+    except Exception as err:
+        print(f'Failed to fetch product details -- {err}')
+
+def add_procurement(request_id, quantity,orderDate,deliverDate):
+    try:
+        query = f''' call add_procurement({request_id},{quantity},'{orderDate}','{deliverDate}');'''
+        print(query)
+        result = db.execute_ddl_and_dml_commands(query)
+        return result
+    except Exception as err:
+        print(f'Failed to insert product details -- {err}')
+
+def decline_request(request_id):
+    try:
+        query = f''' call decline_request({request_id});'''
+        result = db.execute_ddl_and_dml_commands(query)
+        return result
+    except Exception as err:
+        print(f'Failed to insert product details -- {err}')

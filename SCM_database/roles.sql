@@ -43,10 +43,12 @@ drop role supplier;
 create role supplier with login password 'supplier_pass';
 
 grant all on products,prices  to supplier;
-grant select on suppliers to supplier;
+grant select on suppliers,inventory,warehouses,procurements,requests to supplier;
+
+GRANT USAGE, SELECT ON SEQUENCE procurements_procurement_id_seq TO supplier;
+grant all on procurements to supplier;
 grant select,insert on notifications to supplier;
 grant select,update on requests to supplier;
-grant select on suppliers,inventory,warehouses,procurements to supplier;
 
 
 
