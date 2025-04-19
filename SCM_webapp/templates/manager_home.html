@@ -5,7 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manager</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/manager_home.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notification.css' %}" />
+    <script src = "{% static 'js/notify.js' %}"></script>
   </head>
   <body>
     <!-- Navbar -->
@@ -19,13 +23,47 @@
         <a href="{% url 'manager_procurements' %}">Order Procurements</a>
       </nav>
       <div class="menu">
+        <!-- 🔔 Notification Bell -->
+        <div class="notification-wrapper">
+          <button id="notification-button">
+            <i class="fa-solid fa-bell notification-bell-icon"></i>
+            {% if notifications_unread %}
+            <span class="notification-dot"></span>
+            {% endif %}
+          </button>
+          <div id="notification-dropdown" class="notification-dropdown">
+            <div class="dropdown-header">
+              <span class="dropdown-title">Notifications</span>
+              <form method="POST" action="{% url 'mark_all_notifications_read' %}">
+                {% csrf_token %}
+                <button type="submit" class="mark-read-btn" title="Mark all as read">
+                  ✓
+                </button>
+              </form>
+            </div>
+            <div class="dropdown-content-scroll">
+            {% if  notifications %}
+              <ul>
+                {% for note in notifications %}
+                {% if note.is_read %}
+                  <li><p>{{ note.message }}</p></li>
+                {% else %}
+                  <li><strong>{{ note.message }}</strong></li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="margin: 5px;">No new notifications.</p>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        {% comment %} <i class="icon fa fa-bell fa-fw " title="Toggle notifications menu" role="img" aria-label="Toggle notifications menu"></i> {% endcomment %}
         <a href="#">Profile</a>
         <a href="#">Change Password</a>
         <a href="{% url 'logout' %}">Logout</a>
       </div>
     </div>
-
-    <h1>Hi manager {{ username }}</h1>
 
     <div class="major-wrapper">
       {% comment %}Low products alert{% endcomment %}

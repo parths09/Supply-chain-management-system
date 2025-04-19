@@ -114,9 +114,9 @@ foreign key (warehouse_id) references warehouses(warehouse_id) on delete restric
 alter table inventory add alert boolean default true not null;
 
 --procurement table
-drop table if exists procurement;
+drop table if exists procurements;
 
-create table procurement(
+create table procurements(
 procurement_id serial primary key,
 inventory_id bigint not null,
 quantity int not null,
@@ -194,8 +194,18 @@ foreign key (warehouse_id) references warehouses(warehouse_id) on delete cascade
 );
 
 
+drop table if exists notifications;
 
-
+create table notifications(
+notification_id serial primary key,
+request_id integer not null,
+recipent_id bigint not null,
+recipent_type varchar(20) check(recipent_type in ('Customer','Manager','Supplier')) not null,
+message text not null,
+is_read boolean default false not null,
+context varchar(30) check(context in ('RequestProcurement','RequestApproval','ProcurementDelivered','ProcurementArriving')),
+created_at timestamp default now()
+);
 
 
 
