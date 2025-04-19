@@ -58,7 +58,7 @@ def simulate_one_day(current_day:str):
             else:
                 shipment.shipping_status='Out for Delivery'
                 shipment.last_updated=current_day
-            pass
+                
         elif shipment.shipping_status=='Out for Delivery':
             # update shipping_status to Delivered and last_updated = current_date
             pass
