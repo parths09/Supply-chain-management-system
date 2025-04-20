@@ -8,12 +8,18 @@ from .simulator import simulate_one_day
 
 def simulation_home(request):
     date = "2025-04-10"
-    return render(request,'simulation.html',{'date':date})
+    with open('simulation/date.txt','w') as file:
+        file.write(date)
+    return render(request,'simulation.html',{'date':date,'seek':0})
 
 @require_POST
 def run_simulation(request):
     date = request.POST.get('sim_date')
-    print("Date is :",date)
-    next_day = simulate_one_day(date) # it will return next along with log maybe
+    seek = request.POST.get('seek')
+    
+    next_day,seek,logs = simulate_one_day(date,seek) # it will return next along with log maybe
+    
+    with open('simulation/date.txt','w') as file:
+        file.write(next_day[:10])
     messages.success(request, f"Simulation advanced by 1 day! Current day is {next_day}")
-    return render(request,'simulation.html',{'date':next_day})  # display the new day and logs here
+    return render(request,'simulation.html',{'date':next_day,'seek':seek,'log_messages':logs})  # display the new day and logs here
