@@ -13,6 +13,7 @@ grant select on customer_orders to customer;
 grant select on products to customer;
 grant select on suppliers to customer;
 grant select on inventory to customer;
+grant select,update on notifications to customer;
 --set role customer;
 --select * from get_orders('Alice Johnson');
 --set role postgres;
@@ -48,7 +49,7 @@ grant select on suppliers,inventory,warehouses,procurements,requests to supplier
 
 GRANT USAGE, SELECT ON SEQUENCE procurements_procurement_id_seq TO supplier;
 grant all on procurements to supplier;
-grant select,insert on notifications to supplier;
+grant select,insert,update on notifications to supplier;
 grant select,update on requests to supplier;
 
 

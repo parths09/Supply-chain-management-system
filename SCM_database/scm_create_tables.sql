@@ -203,7 +203,7 @@ recipent_id bigint not null,
 recipent_type varchar(20) check(recipent_type in ('Customer','Manager','Supplier')) not null,
 message text not null,
 is_read boolean default false not null,
-context varchar(30) check(context in ('RequestProcurement','RequestApproval','ProcurementDelivered','ProcurementArriving')),
+context varchar(30) check(context in ('RequestProcurement','RequestApproval','ProcurementDelivered','ProcurementArriving','ShipmentDelivered','ShipmentShipped','ShipmentOutforDelivery')),
 created_at timestamp default now()
 );
 

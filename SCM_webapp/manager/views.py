@@ -1,7 +1,10 @@
 from django.shortcuts import render,redirect
 from manager.query import *
+from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -192,3 +195,24 @@ def mark_all_notifications_read(request):
         w_id = get_warehouse_id(request.user.username)
         set_notifications_read(id=w_id,type = "Manager")
         return redirect(request.META.get('HTTP_REFERER', '/'))
+    
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        old = request.POST['old_password']
+        new = request.POST['new_password']
+        confirm = request.POST['confirm_password']
+
+        if new != confirm:
+            messages.error(request, "New passwords do not match.")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        if not request.user.check_password(old):
+            messages.error(request, "Old password is incorrect.")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        request.user.set_password(new)
+        request.user.save()
+        update_session_auth_hash(request, request.user)  # Keeps the user logged in
+        messages.success(request, "Password changed successfully.")
+        return redirect(request.META.get('HTTP_REFERER'))
