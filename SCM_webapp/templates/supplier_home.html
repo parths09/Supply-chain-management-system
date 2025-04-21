@@ -118,7 +118,8 @@
                         <td>{{ request.quantity }}</td>
                         <td>{{ request.unit_price }}</td>
                         <td>
-                            <button type="button" class="accept-btn"onclick="handleAccept(event, '{{ request.id }}',  '{{ request.product_name }}', '{{ request.quantity }}', {{request.w_id}})">Accept</button>
+                            <button type="button" class="accept-btn" onclick="handleAccept(event, '{{ request.id }}',  '{{ request.product_name }}', '{{order_date}}','{{ request.quantity }}', '{{request.w_id}}'
+                            ,'{{request.total}}')">Accept</button>
                         </td>
                         <td>
                           {% comment %} <button type="button" class="decline-btn" onclick="handleDeny('{{ request.id }}',{{request.w_id}})">Deny</button> {% endcomment %}
@@ -187,11 +188,9 @@
           });
         }
       
-      function handleAccept(event, requestId, productName, Quantity, w_id) {
+        function handleAccept(event, requestId, productName, orderDate, quantity, w_id,price) {
           event.stopPropagation(); // Prevent row toggle
-      
-          const orderDate = new Date().toISOString().split('T')[0];
-      
+          
           Swal.fire({
             title: 'Accept Request',
             html: `
@@ -200,29 +199,19 @@
                 <input id="product-name" class="swal2-input" value="${productName}" readonly>
           
                 <label for="quantity">Quantity:</label>
-                <input id="quantity" class="swal2-input" value="${Quantity}" readonly>
+                <input id="quantity" class="swal2-input" value="${quantity}" readonly>
+
+                <label for="price">Price:</label>
+                <input id="price" class="swal2-input" value="${price}" readonly>
           
                 <label for="order-date">Order Date:</label>
                 <input id="order-date" class="swal2-input" value="${orderDate}" readonly>
-          
-                <label for="delivery-date">Delivery Date:</label>
-                <input id="delivery-date" type="date" class="swal2-input" required>
               </div>
             `,
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Accept',
             preConfirm: () => {
-              const deliveryDate = document.getElementById('delivery-date').value;
-              if (!deliveryDate) {
-                Swal.showValidationMessage('Please select a delivery date.');
-                return false;
-              }
-              if (new Date(deliveryDate) < new Date(orderDate)) {
-                Swal.showValidationMessage('Invalid delivery date.');
-                return false;
-              }
-            
               return fetch("{% url 'supplier_home' %}", {
                 method: "POST",
                 headers: {
@@ -230,17 +219,18 @@
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                  quantity: Quantity,
+                  quantity: quantity,
                   action: "accept",
                   request_id: requestId,
-                  delivery_date: deliveryDate,
                   order_date: orderDate,
                   warehouse_id: w_id
                 })
-              }).then(response => {
+              })
+              .then(response => {
                 if (!response.ok) throw new Error('Network error');
                 return response.json();
-              }).catch(error => {
+              })
+              .catch(error => {
                 Swal.showValidationMessage(`Request failed: ${error}`);
               });
             }
