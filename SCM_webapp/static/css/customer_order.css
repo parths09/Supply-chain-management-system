@@ -28,6 +28,47 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Navigation Links Container */
+.nav {
+  display: flex;
+  gap: 0px;
+  height: 60px;
+  flex-wrap: wrap-reverse;
+}
+
+/* Nav Links Styling (Underline Stroke) */
+.nav a {
+  display: inline-block;
+  line-height: 60px;
+  padding: 0 20px;
+  font-size: 15px;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 1;
+  transition: color 0.1s ease;
+  text-align: center;
+  font-weight: bold;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: width 0.1s ease;
+}
+
+
+.nav a:hover::after {
+  width: 100%;
+}
+
 .logo {
   font-size: 1.3rem;
   color: whitesmoke;
@@ -153,6 +194,7 @@ body {
   border-color: #005bb5;
   outline: none;
 }
+
 
 /* Shipments Table */
 main.table {

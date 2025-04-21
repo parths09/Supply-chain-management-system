@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/manager_home.css' %}" />
     <link rel="stylesheet" href="{% static 'css/notification.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/change_password.css' %}" />
+    <script src = "{% static 'js/change_password.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src = "{% static 'js/notify.js' %}"></script>
   </head>
@@ -61,10 +63,41 @@
         </div>
         {% comment %} <i class="icon fa fa-bell fa-fw " title="Toggle notifications menu" role="img" aria-label="Toggle notifications menu"></i> {% endcomment %}
         <a href="#">Profile</a>
-        <a href="#">Change Password</a>
+        <a href="#" onclick="openChangePasswordModal()">Change Password</a>
         <a href="{% url 'logout' %}">Logout</a>
       </div>
     </div>
+
+    {% if messages %}
+    <div class="message-box">
+      {% for message in messages %}
+        <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  
+
+    <!-- Modal container -->
+  <div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeChangePasswordModal()">&times;</span>
+      <h2>Change Password</h2>
+      <br>
+      <form method="POST" action="{% url 'change_password_manager' %}">
+        {% csrf_token %}
+        <label>Old Password:</label><br>
+        <input type="password" name="old_password" required><br>
+
+        <label>New Password:</label><br>
+        <input type="password" name="new_password" required><br>
+
+        <label>Confirm New Password:</label><br>
+        <input type="password" name="confirm_password" required><br><br>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
 
     <div class="major-wrapper">
       {% comment %}Low products alert{% endcomment %}

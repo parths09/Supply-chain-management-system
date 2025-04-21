@@ -120,8 +120,10 @@ def simulate_one_day(current_day:str,seek):
             # update shipping_status to Delivered and last_updated = current_date
             shipment.shipping_status='Delivered'
             shipment.last_updated=current_day_str
+            shipment.save()
             log_messages.append(f"Updated shipment {shipment.shipping_id} status to {shipment.shipping_status}.")
-        shipment.save()
+        if shipment.shipping_status!='Delivered':
+            shipment.save()
 
 
 
@@ -132,24 +134,26 @@ def simulate_one_day(current_day:str,seek):
         if p.status=="Processing":
             p.status='In transit'
             p.last_updated=current_day_str
+            p.save()
             log_messages.append(f"Procurement {p.procurement_id} status updated to {p.status}.")
         elif p.status=='In transit':
             if current_day_str==datetime.strftime(p.delivery_date,"%Y-%m-%d"): # it can be done using graphs too
                 p.status='Delivered'
                 p.last_updated=current_day_str
                 log_messages.append(f"Procurement {p.procurement_id} status updated to {p.status}.")
-        p.save()
+                p.save()
 
     # Go through orders table, check if all of its shipments are delivered
     for order in Order.objects.filter():
         if order.order_status=='Pending' or order.order_status=='Confirmed':
             order.order_status='On the way'
+            order.save()
             log_messages.append(f"Order {order.order_id} status updated to {order.order_status}.")
         check=check_order_completed(order.order_id)
         if check is True:
             order.order_status='Completed'
+            order.save()
             log_messages.append(f"Order {order.order_id} status updated to {order.order_status}.")
-        order.save()
 
 
     #increment the day and return it

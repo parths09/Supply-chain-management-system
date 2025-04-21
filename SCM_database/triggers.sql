@@ -51,3 +51,69 @@ create or replace trigger notify_procurement_trigger
 after update on procurements
 for each row
 execute procedure notify_procurement();
+
+
+drop trigger notify_customer_shipment_trigger on shippings;
+drop function notify_customer_shipment;
+
+create or replace function notify_customer_shipment()
+returns trigger
+language plpgsql as $$
+declare
+message1 text;
+trk varchar(15);
+c_id bigint;
+
+begin
+	if new.shipping_status='Shipped' then
+		select s.tracking_number,o.customer_id into trk,c_id
+		from shippings s
+		join order_details od on od.shipping_id = s.shipping_id
+		join orders o on o.order_id = od.order_id
+		where s.shipping_id = new.shipping_id;
+			
+		-- Add notification
+		message1:=format('Your shipment with tracking number %s has been SHIPPED.',trk);
+		
+		insert into notifications(request_id,recipent_id,recipent_type,context,message) 
+		values (new.shipping_id,c_id,'Customer','ShipmentShipped',message1);
+
+	elsif new.shipping_status = 'Delivered' then
+		select s.tracking_number,o.customer_id into trk,c_id
+		from shippings s
+		join order_details od on od.shipping_id = s.shipping_id
+		join orders o on o.order_id = od.order_id
+		where s.shipping_id = new.shipping_id;
+			
+		-- Add notification
+		message1:=format('Your shipment with tracking number %s has been DELIVERED',trk);
+		
+		insert into notifications(request_id,recipent_id,recipent_type,context,message) 
+		values (new.shipping_id,c_id,'Customer','ShipmentDelivered',message1);
+
+	elsif new.shipping_status = 'Out for Delivery' then
+		select s.tracking_number,o.customer_id into trk,c_id
+		from shippings s
+		join order_details od on od.shipping_id = s.shipping_id
+		join orders o on o.order_id = od.order_id
+		where s.shipping_id = new.shipping_id;
+		
+		-- Add notification
+		message1:=format('Your shipment with tracking number %s is Out for Delivery.',trk);
+		
+		insert into notifications(request_id,recipent_id,recipent_type,context,message) 
+		values (new.shipping_id,c_id,'Customer','ShipmentOutforDelivery',message1);
+	
+	end if;
+	return new;
+end;
+$$;
+
+
+create or replace trigger notify_customer_shipment_trigger
+after update on shippings
+for each row
+execute procedure notify_customer_shipment();
+
+
+
