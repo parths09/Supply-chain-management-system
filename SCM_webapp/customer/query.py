@@ -67,11 +67,42 @@ def cus_product_details(tracking_no):
     except Exception as err:
         print(f'Failed to fetch product details -- {err}')
 
-def get_tableid(username):
+def get_customer_id(username):
     try:
-        query = f''' select table_id from auth_user where username = '{username}';'''
+        query = f''' select customer_id from customers where username = '{username}';'''
         result = db.execute_dql_commands(query)
         table_id = list(list(result)[0])[0]
         return table_id
     except Exception as err:
-        print(f'Failed to fetch product details -- {err}')
+        print(f'Failed to fetch customer id -- {err}')
+
+
+def set_notifications_read(id,type):
+     """
+     Set all notification as read.
+     """
+     try:
+         query = f'''update notifications set is_read = true
+           where recipent_type='{type}' and recipent_id = {id};
+          '''
+         db.execute_ddl_and_dml_commands(query)
+         
+     except Exception as err:
+          print(f'Failed to mark all notifications read -- {err}')
+
+def get_customer_notifications(id):
+     """
+     Get all notification for a particular warehouse manager.
+     """
+     try:
+         query = f'''select *
+         from notifications n
+         where n.recipent_type = 'Customer' and n.recipent_id = {id}
+         order by created_at desc;
+          '''
+         result = db.execute_dql_commands(query)
+         result= result.mappings().all()
+         return result
+         
+     except Exception as err:
+          print(f'Failed to get manager notifications -- {err}')

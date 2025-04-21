@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from supplier.query import *
-from manager import query as m
 from django.contrib import messages
 from django.http     import JsonResponse
 import json
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 
 def fetch_notifications(username):
     supplier_id=get_id(username)
@@ -20,11 +21,11 @@ def add_procurement_function(username,request_id, quantity, order_date, delivery
             add_procurement(request_id, quantity, order_date, delivery_date)
             supplier_id=get_id(username)
             # ADD NOTIFICATION
-            m.add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
-            m.add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
+            add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
+            add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
             # ADD NOTIFICATION
-            m.add_notification(request_id,supplier_id,'Supplier',context='ProcurementArriving')
-            m.add_notification(request_id,warehouse_id,'Manager',context='ProcurementArriving')
+            add_notification(request_id,supplier_id,'Supplier',context='ProcurementArriving')
+            add_notification(request_id,warehouse_id,'Manager',context='ProcurementArriving')
 
 
 # Create your views here.
@@ -53,8 +54,8 @@ def supplier_home(request):
                 # Add your database operation here
                 decline_request(request_id)
 
-                m.add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
-                m.add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
+                add_notification(request_id,supplier_id,'Supplier',context='RequestApproval')
+                add_notification(request_id,warehouse_id,'Manager',context='RequestApproval')
 
                 return JsonResponse({'status': 'ok'})
             else:
@@ -158,5 +159,26 @@ def supplier_products(request):
 def mark_all_notifications_read(request):
     if request.method=='POST':
         supplier_id=get_id(request.user.username)
-        m.set_notifications_read(id=supplier_id,type = "Supplier")
+        set_notifications_read(id=supplier_id,type = "Supplier")
         return redirect(request.META.get('HTTP_REFERER', '/'))
+    
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        old = request.POST['old_password']
+        new = request.POST['new_password']
+        confirm = request.POST['confirm_password']
+
+        if new != confirm:
+            messages.error(request, "New passwords do not match.")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        if not request.user.check_password(old):
+            messages.error(request, "Old password is incorrect.")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        request.user.set_password(new)
+        request.user.save()
+        update_session_auth_hash(request, request.user)  # Keeps the user logged in
+        messages.success(request, "Password changed successfully.")
+        return redirect(request.META.get('HTTP_REFERER'))

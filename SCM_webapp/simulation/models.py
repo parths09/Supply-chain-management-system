@@ -38,3 +38,23 @@ class Procurement(models.Model):
 
     def __str__(self):
         return f"Procurement {self.procurement_id} - {self.status}"
+    
+
+class Order(models.Model):
+    ORDER_STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
+        ('On the way', 'On the way'),
+        ('Completed', 'Completed'),
+    ]
+
+    order_id = models.BigAutoField(primary_key=True)
+    customer_id = models.BigIntegerField() # Adjust app name if needed
+    order_date = models.DateField()
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    order_status = models.CharField(max_length=15, choices=ORDER_STATUS_CHOICES, default='Pending')
+    class Meta:
+        managed = False  # ✅ Important: don't let Django manage it
+        db_table = 'orders'  # Match your actual table name
+    def __str__(self):
+        return f"Order {self.order_id} - {self.order_status}"

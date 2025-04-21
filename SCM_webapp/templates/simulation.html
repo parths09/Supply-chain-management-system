@@ -11,13 +11,27 @@
     <form action="{% url 'run_simulation' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="sim_date" value="{{ date }}" />
+      <input type="hidden" name="seek" value="{{ seek }}" />
       <button type="submit" class="btn btn-warning">Simulate Next Day</button>
     </form>
 
+    <br>
     {% if messages %}
       {% for message in messages %}
         <div class="alert alert-info">{{ message }}</div>
       {% endfor %}
     {% endif %}
+
+    <br>
+    {% if log_messages %}
+      <ul>
+        {% for log in log_messages %}
+          <li>{{ log }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No updates performed during this step.</p>
+    {% endif %}
+    
   </body>
 </html>

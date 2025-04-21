@@ -5,15 +5,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Orders</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{% static 'css/customer_order.css' %}">
+  <link rel="stylesheet" href="{% static 'css/notification.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/change_password.css' %}" />
+  <script src = "{% static 'js/change_password.js' %}"></script>
+  <script src = "{% static 'js/notify.js' %}"></script>
 </head>
 <body>
   <!-- Navbar -->
   <div class="navbar">
-    <div class="logo"> {{ username }}</div>
+    <nav class="nav stroke">
+      <a href="{% url 'customer_orders' %}">Home</a>
+      {% comment %} <div class="logo"> {{ username }}</div> {% endcomment %}
+    </nav>
     <div class="menu">
+      <!--Notification bell -->
+      <div class="notification-wrapper">
+        <button id="notification-button">
+          <i class="fa-solid fa-bell notification-bell-icon"></i>
+          {% if notifications_unread %}
+          <span class="notification-dot"></span>
+          {% endif %}
+        </button>
+        <div id="notification-dropdown" class="notification-dropdown">
+          <div class="dropdown-header">
+            <span class="dropdown-title">Notifications</span>
+            <form method="POST" action="{% url 'mark_all_notifications_read_customer' %}">
+              {% csrf_token %}
+              <button type="submit" class="mark-read-btn" title="Mark all as read">
+                ✓
+              </button>
+            </form>
+          </div>
+          <div class="dropdown-content-scroll">
+          {% if  notifications %}
+            <ul>
+              {% for note in notifications %}
+              {% if note.is_read %}
+                <li><p>{{ note.message }}</p></li>
+              {% else %}
+                <li><strong>{{ note.message }}</strong></li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p style="margin: 5px;">No new notifications.</p>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+
       <a href="#">Profile</a>
-      <a href="#">Change Password</a>
+      <a href="#" onclick="openChangePasswordModal()">Change Password</a>
       <a href="{% url 'logout' %}">Logout</a>
     </div>
   </div>
@@ -21,10 +65,32 @@
   {% if messages %}
   <div class="message-box">
     {% for message in messages %}
-      <p style="color: red;">{{ message }}</p>
+      <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">{{ message }}</p>
     {% endfor %}
   </div>
   {% endif %}
+
+  <!-- Modal container -->
+  <div id="changePasswordModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeChangePasswordModal()">&times;</span>
+      <h2>Change Password</h2>
+      <br>
+      <form method="POST" action="{% url 'change_password_customer' %}">
+        {% csrf_token %}
+        <label>Old Password:</label><br>
+        <input type="password" name="old_password" required><br>
+
+        <label>New Password:</label><br>
+        <input type="password" name="new_password" required><br>
+
+        <label>Confirm New Password:</label><br>
+        <input type="password" name="confirm_password" required><br><br>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
   
   <!-- Search Container (Below Navbar) -->
   <div class="search-container">
@@ -56,6 +122,8 @@
       </select>
     </form>
   </div>
+
+
   
   <!-- Shipments Table -->
   <main class="table" id="orders_table">
@@ -99,5 +167,7 @@
       </table>
     </section>
   </main>
+  
+  
 </body>
 </html>
