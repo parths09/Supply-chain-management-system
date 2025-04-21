@@ -161,3 +161,18 @@ def simulate_one_day(current_day:str,seek):
     next_day = current_day+timedelta(days=1)
     return datetime.strftime(next_day,"%Y-%m-%d"),seek+1,log_messages
 
+def get_current_date():
+    import os
+
+    # Build the path relative to the current file
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, 'date.txt')
+
+    try:
+        with open(file_path, 'r') as file:
+            date_str = file.read().strip()
+            return date_str
+    except FileNotFoundError:
+        return "date.txt not found"
+    except Exception as e:
+        return f"Error reading date.txt: {e}"
