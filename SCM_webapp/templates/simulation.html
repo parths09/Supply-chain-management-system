@@ -1,37 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>This is Simulation</h1>
-    <p>Date is {{ date }}</p>
-    <form action="{% url 'run_simulation' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="sim_date" value="{{ date }}" />
-      <input type="hidden" name="seek" value="{{ seek }}" />
-      <button type="submit" class="btn btn-warning">Simulate Next Day</button>
-    </form>
-
-    <br>
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-info">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-
-    <br>
-    {% if log_messages %}
-      <ul>
-        {% for log in log_messages %}
-          <li>{{ log }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No updates performed during this step.</p>
-    {% endif %}
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Day and Night Cycle Simulation</title>
+  <link rel="stylesheet" href="{% static 'css/simulation.css' %}">
+</head>
+<body>
+  <!-- Stars -->
+  <div class="star" id="star1"></div>
+  <div class="star" id="star2"></div>
+  <div class="star" id="star3"></div>
+  <div class="star" id="star4"></div>
+  <div class="star" id="star5"></div>
+  <div class="star" id="star6"></div>
+  <div class="star" id="star7"></div>
+  <div class="star" id="star8"></div>
+  <div class="star" id="star9"></div>
+  
+  <!-- Sun -->
+  <div id="sun"></div>
+  
+  <!-- Content Container - Moved lower on page -->
+  <div id="content-container">
+    <!-- Date Display -->
+    <div id="date-display">
+      <p>Date: <span id="current-date">{{ date }}</span></p>
+    </div>
     
-  </body>
+    <!-- Message Box -->
+    <div id="message-container">
+      <div class="message-header">
+        <h3>Simulation Log</h3>
+      </div>
+      <div class="message-box">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        
+        {% if log_messages %}
+          <ul class="log-list">
+            {% for log in log_messages %}
+              <li>{{ log }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="no-logs">No updates performed during this step.</p>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Simulate Form -->
+    <form id="simulate-form" action="{% url 'run_simulation' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="sim_date" id="sim-date-input" value="{{ date }}">
+      <input type="hidden" name="seek" value="{{ seek }}">
+      <button type="button" id="simulate-button">Simulate</button>
+    </form>
+  </div>
+  
+  <!-- Mountains -->
+  <div id="mountain"></div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const simulateBtn = document.getElementById("simulate-button");
+      const simulateForm = document.getElementById("simulate-form");
+      
+      // Position the sun at center top when page loads
+      const sun = document.getElementById("sun");
+      sun.style.left = "50%";
+      sun.style.top = "2%";
+      
+      simulateBtn.addEventListener("click", function() {
+        // Get elements for animation
+        const sun = document.getElementById("sun");
+        const body = document.body;
+        const stars = document.querySelectorAll(".star");
+        
+        // Disable button during animation
+        simulateBtn.disabled = true;
+        
+        // 1) Clear any running animation by setting to 'none'
+        [sun, body, ...stars].forEach(el => {
+          el.style.animation = 'none';
+          // Force reflow to flush the old animation
+          void el.offsetWidth;
+        });
+        
+        // 2) Re-apply animations
+        sun.style.animation = "sunCycle 1.3s ease-in-out 1 forwards";
+        body.style.animation = "dayCycle 1.3s ease-in-out 1 forwards";
+        
+        const durations = {
+          star1: 1, star2: 2, star3: 1, star4: 3,
+          star5: 6, star6: 1, star7: 5, star8: 1,
+          star9: 2
+        };
+        
+        stars.forEach(star => {
+          const d = durations[star.id] || 1;
+          star.style.animation = `starFlicker ${d}s ease-in-out 1 forwards`;
+        });
+        
+        // Wait for animation to complete before submitting the form
+        setTimeout(() => {
+          // Submit the form to run backend simulation
+          simulateForm.submit();
+        }, 1300); // Match the animation duration
+      });
+    });
+  </script>
+</body>
 </html>

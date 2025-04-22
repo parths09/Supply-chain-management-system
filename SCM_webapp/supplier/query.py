@@ -193,3 +193,12 @@ def add_notification(request_id,recipent_id,recipent_type,context):
          
      except Exception as err:
           print(f'Failed to add notification -- {err}')
+
+def get_profile(username):
+    try:
+        query = f''' select * from supplier_profile('{username}');'''
+        result = db.execute_dql_commands(query)
+        profile = list(result.mappings().all())
+        return profile
+    except Exception as err:
+        print(f'Failed to fetch product details -- {err}')

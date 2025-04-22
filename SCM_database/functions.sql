@@ -212,6 +212,22 @@ $$;
 
 select * from get_requests_supplier('techworld');
 
+--4)
+drop function if exists supplier_profile;
+
+create or replace function supplier_profile(sup_name varchar)
+returns table(name varchar, phone_number varchar,email varchar, address text,pincode integer) 
+language plpgsql as $$
+begin 
+	return query
+	select  s.supplier_name,s.phone_number,s.email_id, s.address,s.pincode
+	from suppliers as s where s.username = sup_name;
+end;
+$$;
+
+select * from supplier_profile('techworld');
+ 
+
 
 drop function if exists get_low_stock;
 

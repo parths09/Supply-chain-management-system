@@ -232,3 +232,38 @@ border-bottom: 1px solid #eee;
       font-size: 14px;
   }
 }
+/* 1) Make popup content a two‑column grid: labels + inputs side‑by‑side */
+.swal-input-container {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-row-gap: 0.4rem;     /* less vertical space */
+  grid-column-gap: 0.6rem;  /* small gap between label & input */
+  align-items: center;
+  text-align: left;
+  padding: 0.5rem 0;        /* tighten top/bottom padding */
+}
+
+/* 2) Tweak label and input font and spacing */
+.swal-input-container label {
+  margin: 0;               /* remove default margin */
+  font-size: 0.9rem;       /* a bit smaller */
+  color: #333;
+}
+.swal-input-container input {
+  margin: 0;               /* no extra space */
+  font-size: 0.9rem;       /* match label */
+  padding: 6px 8px;        /* slightly smaller input padding */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* 3) Shrink the entire popup’s base font */
+.swal2-popup {
+  font-size: 14px !important;
+}
+
+/* 4) Optional: reduce the vertical gap between lines inside the popup */
+.swal2-html-container p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
