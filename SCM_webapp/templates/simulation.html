@@ -92,8 +92,8 @@
         });
         
         // 2) Re-apply animations
-        sun.style.animation = "sunCycle 2.3s ease-in-out 1 forwards";
-        body.style.animation = "dayCycle 2.3s ease-in-out 1 forwards";
+        sun.style.animation = "sunCycle 1.3s ease-in-out 1 forwards";
+        body.style.animation = "dayCycle 1.3s ease-in-out 1 forwards";
         
         const durations = {
           star1: 1, star2: 2, star3: 1, star4: 3,
@@ -110,7 +110,7 @@
         setTimeout(() => {
           // Submit the form to run backend simulation
           simulateForm.submit();
-        }, 2300); // Match the animation duration
+        }, 1300); // Match the animation duration
       });
     });
   </script>
