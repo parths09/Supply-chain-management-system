@@ -87,14 +87,17 @@ def supplier_home(request):
     all_requests = fetch_requests(request.user.username)
     notifications, notifications_unread = fetch_notifications(request.user.username)
     order_date = get_current_date()
+    profile = get_profile(request.user.username)
 
     context={
         'username': request.user.username,
         'requests': all_requests,
         'notifications': notifications,
         'notifications_unread': notifications_unread,
-        'order_date': order_date
+        'order_date': order_date,
+        'profile': profile[0]
     }
+    print(profile)
     return render(request, 'supplier_home.html', context)
 
 def supplier_procurement(request):
@@ -103,11 +106,13 @@ def supplier_procurement(request):
         return render(request, 'supplier_procurements.html', {'username': request.user.username})
     all_procurements = fetch_procurement(request.user.username)
     notifications, notifications_unread = fetch_notifications(request.user.username)
+    profile = get_profile(request.user.username)
     context= {
         'username': request.user.username,
         'procurements': all_procurements,
         'notifications': notifications,
-        'notifications_unread': notifications_unread
+        'notifications_unread': notifications_unread,
+        'profile': profile[0]
     }
     print(all_procurements)
     return render(request, 'supplier_procurements.html', context)
@@ -118,7 +123,7 @@ def supplier_products(request):
     filtered_products = all_products
     product_names=[names['name'] for names in  fetch_names()]
     notifications, notifications_unread = fetch_notifications(request.user.username)
-
+    profile = get_profile(request.user.username)
     if request.method == 'POST' and request.content_type == 'application/json':
         try:
             data = json.loads(request.body)
@@ -171,7 +176,8 @@ def supplier_products(request):
             "products": filtered_products,
             "existing_names": product_names,
             "notifications": notifications,
-            "notifications_unread": notifications_unread
+            "notifications_unread": notifications_unread,
+            'profile': profile[0]      
             }
     
     return render(request, 'supplier_products.html', context)
