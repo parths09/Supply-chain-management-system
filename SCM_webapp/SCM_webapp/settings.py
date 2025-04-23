@@ -51,7 +51,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'login.middleware.no_cache_auth_middleware.NoCacheAndAuthMiddleware',
+    # 'login.middleware.no_cache_auth_middleware.NoCacheAndAuthMiddleware',
+    'login.middleware.middleware.MultiRoleSessionMiddleware',
+    'login.middleware.middleware.SimulationMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SCM_webapp.urls'
