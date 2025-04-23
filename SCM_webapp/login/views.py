@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
+from login.query import *
 
 from django.contrib.auth.models import Group
 
@@ -66,10 +67,13 @@ def register(request):
             phone_number = request.POST['phone_number_customer']
             billing_address = request.POST['billing_address']
             shipping_address = request.POST['shipping_address']
+            age = request.POST['age']
+            age=int(age)
             
             group= Group.objects.get(name=role)
             user = User.objects.create_user(first_name=first_name,last_name=last_name,username=username,password=password,email=email)
             group.user_set.add(user)
+            insert_customer(username,first_name,last_name,age,phone_number,email,pincode,billing_address,shipping_address)
             user.save()
 
         elif role == 'Supplier':
@@ -79,9 +83,11 @@ def register(request):
             phone_number= request.POST['phone_number_supplier']
             business_address = request.POST['business_address']
 
+
             group= Group.objects.get(name=role)
             user = User.objects.create_user(first_name=name,username=username,password=password,email=email)
             group.user_set.add(user)
+            insert_supplier(name,phone_number,email,business_address,pincode,username)
             user.save()
 
         print(f"{role} created")

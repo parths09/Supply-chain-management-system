@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="{% static 'css/supplier_home.css' %}">
   <link rel="stylesheet" href="{% static 'css/notification.css' %}" />
   <link rel="stylesheet" href="{% static 'css/change_password.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <script src = "{% static 'js/change_password.js' %}"></script>
   <script src = "{% static 'js/notify.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -58,7 +59,8 @@
                     </div>
                   </div>
                 </div>
-        <a href="#">Profile</a>
+        {% comment %} <a href="#" onclick = "profile(event,'{{username}}','{{profile.name}}' ,'{{profile.email}}','{{profile.phone_number}}',
+        '{{profile.address}}','{{profile.pincode}}')">Profile</a> {% endcomment %}
         <a href="#" onclick="openChangePasswordModal()">Change Password</a>
         <a href="{% url 'logout' %}">Logout</a>
       </div>
@@ -118,7 +120,8 @@
                         <td>{{ request.quantity }}</td>
                         <td>{{ request.unit_price }}</td>
                         <td>
-                            <button type="button" class="accept-btn"onclick="handleAccept(event, '{{ request.id }}',  '{{ request.product_name }}', '{{ request.quantity }}', {{request.w_id}})">Accept</button>
+                            <button type="button" class="accept-btn" onclick="handleAccept(event, '{{ request.id }}',  '{{ request.product_name }}', '{{order_date}}','{{ request.quantity }}', '{{request.w_id}}'
+                            ,'{{request.total}}')">Accept</button>
                         </td>
                         <td>
                           {% comment %} <button type="button" class="decline-btn" onclick="handleDeny('{{ request.id }}',{{request.w_id}})">Deny</button> {% endcomment %}
@@ -187,11 +190,9 @@
           });
         }
       
-      function handleAccept(event, requestId, productName, Quantity, w_id) {
+        function handleAccept(event, requestId, productName, orderDate, quantity, w_id,price) {
           event.stopPropagation(); // Prevent row toggle
-      
-          const orderDate = new Date().toISOString().split('T')[0];
-      
+          
           Swal.fire({
             title: 'Accept Request',
             html: `
@@ -200,29 +201,19 @@
                 <input id="product-name" class="swal2-input" value="${productName}" readonly>
           
                 <label for="quantity">Quantity:</label>
-                <input id="quantity" class="swal2-input" value="${Quantity}" readonly>
+                <input id="quantity" class="swal2-input" value="${quantity}" readonly>
+
+                <label for="price">Price:</label>
+                <input id="price" class="swal2-input" value="${price}" readonly>
           
                 <label for="order-date">Order Date:</label>
                 <input id="order-date" class="swal2-input" value="${orderDate}" readonly>
-          
-                <label for="delivery-date">Delivery Date:</label>
-                <input id="delivery-date" type="date" class="swal2-input" required>
               </div>
             `,
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Accept',
             preConfirm: () => {
-              const deliveryDate = document.getElementById('delivery-date').value;
-              if (!deliveryDate) {
-                Swal.showValidationMessage('Please select a delivery date.');
-                return false;
-              }
-              if (new Date(deliveryDate) < new Date(orderDate)) {
-                Swal.showValidationMessage('Invalid delivery date.');
-                return false;
-              }
-            
               return fetch("{% url 'supplier_home' %}", {
                 method: "POST",
                 headers: {
@@ -230,17 +221,18 @@
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                  quantity: Quantity,
+                  quantity: quantity,
                   action: "accept",
                   request_id: requestId,
-                  delivery_date: deliveryDate,
                   order_date: orderDate,
                   warehouse_id: w_id
                 })
-              }).then(response => {
+              })
+              .then(response => {
                 if (!response.ok) throw new Error('Network error');
                 return response.json();
-              }).catch(error => {
+              })
+              .catch(error => {
                 Swal.showValidationMessage(`Request failed: ${error}`);
               });
             }
@@ -251,6 +243,40 @@
             }
           });
         }
+    </script>
+
+    <script>
+      function profile(event, username, name, email, phone, address, pincode) {
+        event.preventDefault();
+        
+        Swal.fire({
+          title: 'Your Profile',
+          html: `
+            <div class="swal-input-container">
+              <label for="username">Username:</label>
+              <input id="username" class="swal2-input" value="${username}" readonly>
+        
+              <label for="name">Name:</label>
+              <input id="name" class="swal2-input" value="${name}" readonly>
+
+              <label for="email">Email:</label>
+              <input id="email" class="swal2-input" value="${email}" readonly>
+        
+              <label for="phone">Phone Number:</label>
+              <input id="phone" class="swal2-input" value="${phone}" readonly>
+
+              <label for="address">Address:</label>
+              <input id="address" class="swal2-input" value="${address} , ${pincode}" readonly>
+
+            </div>
+          `,
+          confirmButtonText: 'Close',
+          customClass: {
+            popup: 'profile-popup',
+            confirmButton: 'profile-btn'
+          }
+        });
+      }
     </script>
 </body>
 </html>

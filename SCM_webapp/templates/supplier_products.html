@@ -62,7 +62,8 @@
                     </div>
                   </div>
                 </div>
-      <a href="#">Profile</a>
+      {% comment %} <a href="#" onclick = "profile(event,'{{username}}','{{profile.name}}' ,'{{profile.email}}','{{profile.phone_number}}',
+                '{{profile.address}}','{{profile.pincode}}')">Profile</a> {% endcomment %}
       <a href="#" onclick="openChangePasswordModal()">Change Password</a>
       <a href="{% url 'logout' %}">Logout</a>
     </div>
@@ -481,6 +482,40 @@
             icon: 'success',
             confirmButtonColor: '#2d89ef'
           }).then(() => location.reload());
+        }
+      });
+    }
+  </script>
+
+  <script>
+    function profile(event, username, name, email, phone, address, pincode) {
+      event.preventDefault();
+      
+      Swal.fire({
+        title: 'Your Profile',
+        html: `
+          <div class="swal-input-container">
+            <label for="username">Username:</label>
+            <input id="username" class="swal2-input" value="${username}" readonly>
+      
+            <label for="name">Name:</label>
+            <input id="name" class="swal2-input" value="${name}" readonly>
+
+            <label for="email">Email:</label>
+            <input id="email" class="swal2-input" value="${email}" readonly>
+      
+            <label for="phone">Phone Number:</label>
+            <input id="phone" class="swal2-input" value="${phone}" readonly>
+
+            <label for="address">Address:</label>
+            <input id="address" class="swal2-input" value="${address} , ${pincode}" readonly>
+
+          </div>
+        `,
+        confirmButtonText: 'Close',
+        customClass: {
+          popup: 'profile-popup',
+          confirmButton: 'profile-btn'
         }
       });
     }

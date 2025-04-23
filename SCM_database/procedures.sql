@@ -1,3 +1,45 @@
+--login_admin
+
+--1)
+
+drop procedure if exists insert_customer;
+
+create or replace procedure insert_customer(username varchar(150) ,first_name varchar(150),last_name varchar(150), age smallint, phone_number varchar(15),
+email_id varchar(30), pincode integer, billing_address text, shipping_address text) language plpgsql as $$
+
+declare 
+	customerId bigint;
+	
+begin 
+	select coalesce(max(customer_id), 0) + 1 into customerId from customers;
+	--raise notice'id : %',customerId;
+	insert into customers(customer_id, username,first_name,last_name, age, phone_number, email_id, pincode, billing_address, shipping_address) values
+	(customerId,username,first_name,last_name, age, phone_number, email_id, pincode, billing_address, shipping_address);
+end;
+$$;
+
+-- call insert_customer('alice_johnson','Alice','Johnson',30::smallint,'9871234547','alicer@mail.com', 110001, '123 Main St, NY', '456 Elm St, NY');
+
+--2)
+drop procedure if exists insert_supplier;
+
+create or replace procedure insert_supplier(username varchar(150) ,name varchar(150), phone_number varchar(15),
+email_id varchar(30), pincode integer, address text) language plpgsql as $$
+
+declare 
+	supplierId bigint;
+	
+begin 
+	select coalesce(max(supplier_id), 0) + 1 into supplierId from suppliers;
+	--raise notice'id : %',supplierId;
+	insert into suppliers (supplier_id,username, supplier_name, phone_number, email_id, address, pincode) values
+	(supplierID,username,name,phone_number,email_id,address,pincode);
+end;
+$$;
+
+-- call insert_supplier('alice_johnson','Alice Johnson','9871234547','alicer@mail.com', 110001, '123 Main St, NY');
+	
+
 --SUPPLIER
 --1)
 drop procedure if exists update_products_supplier;
