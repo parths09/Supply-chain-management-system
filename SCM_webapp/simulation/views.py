@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
+from datetime import datetime
 
 # Create your views here.
 from django.shortcuts import redirect
@@ -7,7 +8,9 @@ from django.contrib import messages
 from .simulator import simulate_one_day
 
 def simulation_home(request):
-    date = "2025-04-10"
+    # date = "2025-04-10"
+    date = datetime.now()
+    date = datetime.strftime(date,"%Y-%m-%d")
     with open('simulation/date.txt','w') as file:
         file.write(date)
     return render(request,'simulation.html',{'date':date,'seek':0})
