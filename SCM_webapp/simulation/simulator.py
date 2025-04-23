@@ -59,7 +59,7 @@ def simulate_one_day(current_day:str,seek):
 
             for item in ship["items"]:
                 add_order_details(order['order_id'],item["inventory_id"],ship['shipping_id'],item["quantity"],item["amount"])
-                log_messages.append(f"Inserted order detail: innventory {item['inventory_id']} (qty: {item['quantity']}) in shipping {ship['shipping_id']}.")
+                log_messages.append(f"Inserted order detail: inventory {item['inventory_id']} (qty: {item['quantity']}) in shipping {ship['shipping_id']}.")
 
 
     #Updations
