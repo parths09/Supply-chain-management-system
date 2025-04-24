@@ -245,8 +245,8 @@ def get_manager_notifications(w_id):
      """
      try:
          query = f'''select *
-         from notifications n
-         where n.recipent_type = 'Manager' and n.recipent_id = {w_id}
+         from manager_notifications n
+         where n.recipent_id = {w_id}
          order by created_at desc;
           '''
          result = db.execute_dql_commands(query)
