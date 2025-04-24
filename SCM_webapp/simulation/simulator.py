@@ -149,11 +149,12 @@ def simulate_one_day(current_day:str,seek):
             order.order_status='On the way'
             order.save()
             log_messages.append(f"Order {order.order_id} status updated to {order.order_status}.")
-        check=check_order_completed(order.order_id)
-        if check is True:
-            order.order_status='Completed'
-            order.save()
-            log_messages.append(f"Order {order.order_id} status updated to {order.order_status}.")
+        # Below check is maintained by trigger
+        # check=check_order_completed(order.order_id)
+        # if check is True:
+        #     order.order_status='Completed'
+        #     order.save()
+        #     log_messages.append(f"Order {order.order_id} status updated to {order.order_status}.")
 
 
     #increment the day and return it
