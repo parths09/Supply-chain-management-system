@@ -150,3 +150,23 @@ create or replace trigger order_completed_trigger
 after update on shippings
 for each row
 execute procedure update_order_status();
+
+
+
+drop trigger active_prices_trigger on prices;
+drop function activate_prices ;
+
+create or replace function activate_prices()
+returns trigger
+language plpgsql as $$
+
+begin
+	new.active = True;
+	return new;
+end;
+$$;
+
+create or replace trigger active_prices_trigger
+after update on prices
+for each row
+execute procedure activate_prices();

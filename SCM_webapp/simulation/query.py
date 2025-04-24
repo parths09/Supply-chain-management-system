@@ -129,3 +129,16 @@ def check_order_completed(order_id):
         return not result
     except Exception as err:
         print(f'Failed to fetch warehouse id -- {err}')
+
+def reset_simulation():
+    try:
+        query = f'''
+        delete from shipping_details;
+        delete from order_details;
+        delete from shippings;
+        delete from orders;
+        delete from procurements;
+        '''
+        result=db.execute_ddl_and_dml_commands(query)
+    except Exception as err:
+        print(f'Failed to reset simulation -- {err}')

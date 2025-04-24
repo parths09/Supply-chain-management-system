@@ -96,8 +96,8 @@ def get_customer_notifications(id):
      """
      try:
          query = f'''select *
-         from notifications n
-         where n.recipent_type = 'Customer' and n.recipent_id = {id}
+         from customer_notifications n
+         where n.recipent_id = {id}
          order by created_at desc;
           '''
          result = db.execute_dql_commands(query)

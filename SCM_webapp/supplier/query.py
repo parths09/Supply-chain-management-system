@@ -96,7 +96,7 @@ def get_id(username):
         id = list(result.mappings().all())
         return id[0]['supplier_id']
     except Exception as err:
-        print(f'Failed to fetch product details -- {err}')
+        print(f'Failed to fetch supplier_id details -- {err}')
 
 def get_supplier_notifications(sup_id):
      """
@@ -105,8 +105,8 @@ def get_supplier_notifications(sup_id):
      print(f'Fetching notifications for supplier {sup_id}')
      try:
          query = f'''select *
-         from notifications n
-         where n.recipent_type = 'Supplier' and n.recipent_id = {sup_id}
+         from supplier_notifications n
+         where n.recipent_id = {sup_id}
          order by created_at desc;
           '''
          result = db.execute_dql_commands(query)
@@ -114,7 +114,7 @@ def get_supplier_notifications(sup_id):
          return result
          
      except Exception as err:
-          print(f'Failed to get manager notifications -- {err}')
+          print(f'Failed to get supplier notifications -- {err}')
 
 
 def set_notifications_read(id,type):

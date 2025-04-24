@@ -6,6 +6,7 @@ from datetime import datetime
 from django.shortcuts import redirect
 from django.contrib import messages
 from .simulator import simulate_one_day
+from .query import *
 
 def simulation_home(request):
     # date = "2025-04-10"
@@ -26,3 +27,8 @@ def run_simulation(request):
         file.write(next_day[:10])
     messages.success(request, f"Simulation advanced by 1 day! Current day is {next_day}")
     return render(request,'simulation.html',{'date':next_day,'seek':seek,'log_messages':logs})  # display the new day and logs here
+
+def reset_simulation_func(request):
+    print('Reseting Simulation...')
+    reset_simulation()
+    return redirect('/simulation')
