@@ -60,6 +60,11 @@
       <input type="hidden" name="seek" value="{{ seek }}">
       <button type="button" id="simulate-button">Simulate</button>
     </form>
+
+    <form id="reset-simulate-form" action="{% url 'reset_simulation' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" id="reset-simulate-button">Reset Simulation</button>
+    </form>
   </div>
   
   <!-- Mountains -->

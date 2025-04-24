@@ -290,3 +290,20 @@ begin
 	where i.warehouse_id = w_id and p.status in ('In transit','Processing');
 end;
 $$;
+
+drop function if exists check_order_completed;
+create or replace function check_order_completed(o_id bigint)
+returns boolean
+language plpgsql as $$
+declare
+	result boolean;
+begin
+	select exists(select * 
+        from order_details od
+        join shippings s on s.shipping_id = od.shipping_id
+        where shipping_status!='Delivered' and od.order_id = o_id) into result;
+		return not result;
+end;
+$$;
+
+select * from check_order_completed(1001);

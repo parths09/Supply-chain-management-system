@@ -13,3 +13,23 @@ create or replace view  customer_orders as
 
 select * from customer_orders;
 
+
+drop view if exists manager_notifications;
+create or replace view  manager_notifications as 
+(
+	select * from notifications n where n.recipent_type = 'Manager'
+);
+
+
+drop view if exists supplier_notifications;
+create or replace view  supplier_notifications as 
+(
+	select * from notifications n where n.recipent_type = 'Supplier'
+);
+
+
+drop view if exists customer_notifications;
+create or replace view  customer_notifications as 
+(
+	select * from notifications n where n.recipent_type = 'Customer'
+);

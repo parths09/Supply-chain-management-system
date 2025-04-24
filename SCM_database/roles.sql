@@ -14,6 +14,7 @@ grant select on products to customer;
 grant select on suppliers to customer;
 grant select on inventory to customer;
 grant select,update on notifications to customer;
+grant select on customer_notifications to customer;
 --set role customer;
 --select * from get_orders('Alice Johnson');
 --set role postgres;
@@ -39,6 +40,8 @@ GRANT USAGE, SELECT ON SEQUENCE requests_request_id_seq TO manager;
 grant select,insert,update on notifications to manager;
 GRANT USAGE, SELECT ON SEQUENCE notifications_notification_id_seq to manager;
 GRANT USAGE, SELECT ON SEQUENCE inventory_inventory_id_seq to manager;
+grant select on manager_notifications to manager;
+
 --3)
 drop owned by supplier ; 
 drop role supplier;
@@ -52,8 +55,6 @@ grant select,insert,update on procurements to supplier;
 grant select,insert,update on notifications to supplier;
 grant select,update on requests to supplier;
 GRANT USAGE, SELECT ON SEQUENCE notifications_notification_id_seq to supplier;
-
-
-
+grant select on supplier_notifications to supplier;
 
 

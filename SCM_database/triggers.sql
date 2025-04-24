@@ -117,3 +117,56 @@ execute procedure notify_customer_shipment();
 
 
 
+drop trigger order_completed_trigger on shippings;
+drop function update_order_status ;
+
+create or replace function update_order_status()
+returns trigger
+language plpgsql as $$
+declare
+o_id bigint;
+result boolean;
+
+begin
+	if new.shipping_status = 'Delivered' then
+		select od.order_id into o_id
+		from order_details od
+		where od.shipping_id = new.shipping_id
+		limit 1;
+	
+		result := check_order_completed(o_id);
+	
+		if result is true then
+			raise notice 'Order id %d has been completed',o_id;
+			update orders set order_status = 'Completed' where order_id = o_id;
+		end if;
+	end if;
+	
+	return new;
+end;
+$$;
+
+create or replace trigger order_completed_trigger
+after update on shippings
+for each row
+execute procedure update_order_status();
+
+
+
+drop trigger active_prices_trigger on prices;
+drop function activate_prices ;
+
+create or replace function activate_prices()
+returns trigger
+language plpgsql as $$
+
+begin
+	new.active = True;
+	return new;
+end;
+$$;
+
+create or replace trigger active_prices_trigger
+after update on prices
+for each row
+execute procedure activate_prices();

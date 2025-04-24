@@ -122,6 +122,7 @@ inventory_id bigint not null,
 quantity int not null,
 order_date date not null,
 delivery_date date not null, --delivery date > order date
+last_updated date,
 status varchar(20) default 'Processing' not null check (status in ('Delivered','In transit','Processing')),
 foreign key (inventory_id) references inventory(inventory_id) on delete cascade --you dont want to erase 
 );
@@ -145,8 +146,10 @@ create table shippings(
 shipping_id bigint primary key,
 delivery_date date,
 tracking_number varchar(15) not null,
-shipping_status varchar(20) default 'Pending' not null check(shipping_status in ('Pending',  'Processing', 'Shipped','In Transit', 'Out for Delivery', 'Delivered'))
-);
+shipping_status varchar(20) default 'Pending' not null check(shipping_status in ('Pending',  'Processing', 'Shipped','In Transit', 'Out for Delivery', 'Delivered')),
+last_updated date)
+;
+
 --shipping_details
 drop table if exists shipping_details cascade;
 

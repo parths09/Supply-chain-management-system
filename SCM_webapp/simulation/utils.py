@@ -79,8 +79,6 @@ def dijkstra(graph, start, end):
 
     return (float("inf"), [])  # If no path found
 
-print(dijkstra(graph,'W1','C4'))
-print(dijkstra(graph,'S4','W1'))
 
 def get_next_position(current, destination):
     
