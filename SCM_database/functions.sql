@@ -291,6 +291,9 @@ begin
 end;
 $$;
 
+-- Function: check_order_completed
+-- Input: o_id (bigint) - The ID of the order to check.
+-- Returns: A boolean value - Returns true if all shipments for the order are delivered, false otherwise.
 drop function if exists check_order_completed;
 create or replace function check_order_completed(o_id bigint)
 returns boolean
