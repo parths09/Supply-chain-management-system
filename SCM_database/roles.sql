@@ -48,7 +48,7 @@ grant all on products,prices  to supplier;
 grant select on suppliers,inventory,warehouses,procurements,requests to supplier;
 
 GRANT USAGE, SELECT ON SEQUENCE procurements_procurement_id_seq TO supplier;
-grant all on procurements to supplier;
+grant select,insert,update on procurements to supplier;
 grant select,insert,update on notifications to supplier;
 grant select,update on requests to supplier;
 GRANT USAGE, SELECT ON SEQUENCE notifications_notification_id_seq to supplier;

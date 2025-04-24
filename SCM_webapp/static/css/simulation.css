@@ -3,26 +3,18 @@
 /* Animation Keyframes */
 @keyframes sunCycle {
   0%   { left:50%; top:2%; }
-  10%  { left:65%; top:10%; }
-  25%  { left:85%; top:35%; }
-  40%  { left:90%; top:70%; }
-  50%  { left:80%; top:120%; }
-  60%  { left:50%; top:140%; }
-  75%  { left:20%; top:70%; }
-  90%  { left:15%; top:20%; }
+  25%  { left:90%; top:50%; }
+  50%  { left:50%; top:200%; }
+  75%  { left:10%; top:50%; }
   100% { left:50%; top:2%; }
 }
 
 @keyframes dayCycle {
-  0%   { background-color: #87CEEB; } /* Morning sky blue */
-  15%  { background-color: #B0E0E6; } /* Mid-morning powder blue */
-  30%  { background-color: #F0F8FF; } /* Noon light blue */
-  45%  { background-color: #FFD580; } /* Afternoon golden */
-  50%  { background-color: #FF7F50; } /* Sunset coral */
-  60%  { background-color: #464547; } /* Early night indigo */
-  75%  { background-color: #141415; } /* Deep night navy */
-  90%  { background-color: #23203a; } /* Pre-dawn dark slate blue */
-  100% { background-color: #87CEEB; } /* Back to morning */
+  0%   { background-color: white; }
+  25%  { background-color: #FAD6A5; }
+  50%  { background-color: #1f2020; }
+  75%  { background-color: #87CEEB; }
+  100% { background-color: white; }
 }
 
 @keyframes starFlicker {
