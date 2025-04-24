@@ -88,8 +88,10 @@ $$;
 
 select * from get_shipment_details(2);
 
+-- 4) Function: get_tracking
+-- Input: trk (varchar(15)) - The tracking number of the shipment.
+-- Returns: A table containing shipping details including current location and destination warehouse
 
--- Function to get tracking details from tracking number
 drop function if exists get_tracking;
 
 create or replace function get_tracking(trk varchar(15))
@@ -106,8 +108,9 @@ begin
 end;
 $$;
 
-
--- Function to get order date from tracking number
+-- 5) Function: get_order_date
+-- Input: trk (varchar(15)) - The tracking number of the shipment.
+-- Returns: The order date (date) for the specified tracking number
 drop function if exists get_order_date;
 
 create or replace function get_order_date(trk varchar(15))
@@ -126,7 +129,11 @@ end;
 $$;
 
 
--- Get product details
+
+-- 6) Function: get_product_details
+-- Input: trk (varchar(15)) - The tracking number of the shipment.
+-- Returns: A table containing comprehensive product, supplier and shipping details for the specified tracking number
+
 drop function if exists get_product_details;
 
 create or replace function get_product_details(trk varchar(15))
@@ -151,7 +158,10 @@ $$;
 
 --SUPPLIER FUNCTIONS
 
---1) 
+
+-- 7) Function: get_supplier_products
+-- Input: u_name (varchar(150)) - The username of the supplier.
+-- Returns: A table containing product details available from the specified supplier
 drop function if exists get_supplier_products ;
 
 create or replace function get_supplier_products(u_name varchar (150))
@@ -171,7 +181,11 @@ $$;
 
 select * from get_supplier_products('techworld');
 
---2) 
+
+-- 8) Function: get_procurements_supplier
+-- Input: sup_name (varchar) - The username of the supplier.
+-- Returns: A table containing procurement details for the specified supplier including warehouse and product information
+
 drop function if exists get_procurements_supplier;
 
 create or replace function get_procurements_supplier(sup_name varchar)
@@ -192,7 +206,10 @@ $$;
 
 select * from get_procurements_supplier('techworld');
 
---3)
+
+-- 9) Function: get_requests_supplier
+-- Input: sup_name (varchar) - The username of the supplier.
+-- Returns: A table containing pending request details for the specified supplier including warehouse and product information
 drop function if exists get_requests_supplier;
 
 create or replace function get_requests_supplier(sup_name varchar)
@@ -212,7 +229,11 @@ $$;
 
 select * from get_requests_supplier('techworld');
 
---4)
+
+-- 10) Function: supplier_profile
+-- Input: sup_name (varchar) - The username of the supplier.
+-- Returns: A table containing contact and address details for the specified supplier
+
 drop function if exists supplier_profile;
 
 create or replace function supplier_profile(sup_name varchar)
@@ -227,6 +248,10 @@ $$;
 
 select * from supplier_profile('techworld');
  
+-- 11) Function: get_low_stock
+-- Input: w_id (int) - The ID of the warehouse.
+-- Returns: A table containing inventory items with stock levels at or below reorder level in the specified warehouse
+
 
 
 drop function if exists get_low_stock;
@@ -245,6 +270,9 @@ begin
 end;
 $$;
 
+-- 12) Function: get_incoming_procurements
+-- Input: w_id (int) - The ID of the warehouse.
+-- Returns: A table containing details of incoming procurements (in transit or processing) for the specified warehouse
 
 drop function if exists get_incoming_procurements;
 
