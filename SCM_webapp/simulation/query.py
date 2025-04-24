@@ -117,6 +117,7 @@ def get_warehouse_id(inventory_id):
         print(f'Failed to fetch warehouse id -- {err}')
 
 def check_order_completed(order_id):
+    # this function is not more used
     try:
         query = f'''select exists(select * 
         from order_details od
