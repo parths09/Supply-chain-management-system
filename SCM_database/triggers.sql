@@ -161,12 +161,12 @@ returns trigger
 language plpgsql as $$
 
 begin
-	new.active = True;
+	new.active:=true;
 	return new;
 end;
 $$;
 
 create or replace trigger active_prices_trigger
-after update on prices
+before update on prices
 for each row
 execute procedure activate_prices();
