@@ -1,7 +1,7 @@
 -- Trigger to add notification when procurement is delivered
 
-drop trigger notify_procurement_trigger on procurements;
-drop function notify_procurement ;
+drop trigger if exists notify_procurement_trigger on procurements;
+drop function  if exists notify_procurement ;
 
 create or replace function notify_procurement()
 returns trigger
@@ -53,8 +53,8 @@ for each row
 execute procedure notify_procurement();
 
 
-drop trigger notify_customer_shipment_trigger on shippings;
-drop function notify_customer_shipment;
+drop trigger if exists notify_customer_shipment_trigger on shippings;
+drop function if exists notify_customer_shipment;
 
 create or replace function notify_customer_shipment()
 returns trigger
@@ -76,7 +76,7 @@ begin
 		message1:=format('Your shipment with tracking number %s has been SHIPPED.',trk);
 		
 		insert into notifications(request_id,recipent_id,recipent_type,context,message) 
-		values (new.shipping_id,c_id,'Customer','ShipmentShipped',message1);
+		values (NULL,c_id,'Customer','ShipmentShipped',message1);
 
 	elsif new.shipping_status = 'Delivered' then
 		select s.tracking_number,o.customer_id into trk,c_id
@@ -89,7 +89,7 @@ begin
 		message1:=format('Your shipment with tracking number %s has been DELIVERED',trk);
 		
 		insert into notifications(request_id,recipent_id,recipent_type,context,message) 
-		values (new.shipping_id,c_id,'Customer','ShipmentDelivered',message1);
+		values (NULL,c_id,'Customer','ShipmentDelivered',message1);
 
 	elsif new.shipping_status = 'Out for Delivery' then
 		select s.tracking_number,o.customer_id into trk,c_id
@@ -102,7 +102,7 @@ begin
 		message1:=format('Your shipment with tracking number %s is Out for Delivery.',trk);
 		
 		insert into notifications(request_id,recipent_id,recipent_type,context,message) 
-		values (new.shipping_id,c_id,'Customer','ShipmentOutforDelivery',message1);
+		values (NULL,c_id,'Customer','ShipmentOutforDelivery',message1);
 	
 	end if;
 	return new;
@@ -117,8 +117,8 @@ execute procedure notify_customer_shipment();
 
 
 
-drop trigger order_completed_trigger on shippings;
-drop function update_order_status ;
+drop trigger if exists order_completed_trigger on shippings;
+drop function if exists update_order_status ;
 
 create or replace function update_order_status()
 returns trigger
@@ -153,8 +153,8 @@ execute procedure update_order_status();
 
 
 
-drop trigger active_prices_trigger on prices;
-drop function activate_prices ;
+drop trigger if exists active_prices_trigger on prices;
+drop function if exists activate_prices ;
 
 create or replace function activate_prices()
 returns trigger

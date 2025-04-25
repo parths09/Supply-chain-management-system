@@ -37,7 +37,7 @@ drop function if exists get_orders(id bigint, u_name varchar(30));
 create or replace function get_orders(id bigint default NULL , u_name varchar(30) default NULL )
 
 returns table (tracking_number varchar(15),product_name varchar(50),
-quantity int, amount numeric(10,2), status varchar(20))
+quantity int, amount numeric(10,2), status varchar(20),detail_id integer)
 
 language plpgsql as $$
 declare 
@@ -47,7 +47,7 @@ begin
 	cus_id = coalesce(id,(select customer_id from customers where username=u_name));
 	return query
 	select co.tracking_number,co.name,co.quantity,
-	co.amount,co.shipping_status from customer_orders as co where customer_id = cus_id;
+	co.amount,co.shipping_status,co.detail_id from customer_orders as co where customer_id = cus_id;
 
 end;
 $$;
@@ -95,14 +95,15 @@ select * from get_shipment_details(2);
 drop function if exists get_tracking;
 
 create or replace function get_tracking(trk varchar(15))
-returns table(shipping_id bigint, date date, currently_in integer, move_to integer)
+returns table(shipping_id bigint, date date, currently_in integer, move_to integer,warehouse_name varchar(50))
 language plpgsql as $$
 begin 
 
 	return query
-	select s.shipping_id,sd.shipping_date,sd.curr_warehouse,sd.next_warehouse
+	select s.shipping_id,sd.shipping_date,sd.curr_warehouse,sd.next_warehouse,w.name
 	from shippings s
 	join shipping_details sd on s.shipping_id = sd.shipping_id
+	join warehouses w on w.warehouse_id = sd.curr_warehouse
 	where s.tracking_number = trk;
 	
 end;
@@ -136,7 +137,7 @@ $$;
 
 drop function if exists get_product_details;
 
-create or replace function get_product_details(trk varchar(15))
+create or replace function get_product_details(trk varchar(15),d_id integer)
 returns table(order_id bigint,product_name varchar(50),product_description text,supplier_name varchar(50), supplier_address text,
 quantity integer,price numeric(10,2), shipping_address text,shipping_status varchar(20), order_date date, expected_delivery date)
 language plpgsql as $$
@@ -151,7 +152,7 @@ begin
 	join inventory i on i.inventory_id = od.inventory_id
 	join products p on p.product_id = i.product_id
 	join suppliers sup on sup.supplier_id = i.supplier_id
-	where s.tracking_number=trk;
+	where s.tracking_number=trk and od.detail_id = d_id;
 end;
 $$;
 
