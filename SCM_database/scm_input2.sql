@@ -1,11 +1,5 @@
-INSERT INTO products (product_id, name, description, category) VALUES
-(21, 'Laptop', '15-inch, Intel i7, 16GB RAM', 'Electronics'),
-(22, 'Office Chair', 'Ergonomic chair with lumbar support', 'Office Furniture'),
-(23, 'Running Shoes', 'Lightweight with cushioned sole', 'Clothing'),
-(24, 'Fiction Book', 'Bestselling novel', 'Books'),
-(25, 'Teddy Bear', 'Soft plush toy for kids', 'Toys');
 
-delete * from products
+delete from products;
 INSERT INTO products (product_id, name, description, category) VALUES
 (1, 'Organic Almonds', 'Raw, unsalted almonds grown organically. High in protein and healthy fats.', 'Nuts'),
 (2, 'Italian Extra Virgin Olive Oil', 'Cold-pressed olive oil from Italy, rich in antioxidants and perfect for cooking and dressing.', 'Cooking Oil'),
@@ -26,16 +20,10 @@ INSERT INTO products (product_id, name, description, category) VALUES
 (17, 'Indoor Potted Plant', 'Low-maintenance houseplant, perfect for indoor spaces to improve air quality and decor.', 'Home Decor'),
 (18, 'Solar-Powered Outdoor Lantern', 'Energy-efficient outdoor lantern powered by solar panels, ideal for garden lighting.', 'Outdoor Lighting'),
 (19, 'Electric Coffee Grinder', 'Electric grinder for fresh coffee beans, with adjustable grind settings.', 'Kitchen Appliances'),
-(20, 'Yoga Mat', 'Non-slip, eco-friendly yoga mat with extra thickness for comfort during practice.', 'Fitness Gear'),
+(20, 'Yoga Mat', 'Non-slip, eco-friendly yoga mat with extra thickness for comfort during practice.', 'Fitness Gear');
 
 
-INSERT INTO suppliers (supplier_id, supplier_name, phone_number, email_id, address, pincode,username) VALUES
-(1, 'TechWorld Ltd.', '9876543210', 'contact@techworld.com', '123 Tech Street, NY', 10001, 'techworld'),
-(2, 'Furniture Hub', '9123456789', 'support@furnihub.com', '456 Wood Ave, LA', 90001, 'furniture_hub'),
-(3, 'Nike Suppliers', '9988776655', 'nike@shoes.com', '789 Sport Lane, TX', 73301, 'nike_suppliers'),
-(4, 'BookDepot', '8765432109', 'info@bookdepot.com', '101 Reading Blvd, SF', 94101, 'book_depot'),
-(5, 'ToyLand Inc.', '7553311223', 'hello@toyland.com', '202 Happy St, FL', 33101, 'toyland');
-
+delete from suppliers;
 INSERT INTO suppliers (supplier_id, supplier_name, phone_number, email_id, address, pincode, username) VALUES
 (1, 'NutriHarvest Foods', '9876543210', 'contact@nutriharvest.com', '12 Orchard Street, Pune', '411001', 'nutriharvest'),
 (2, 'CasaCraft Living', '9345678123', 'support@casacraft.in', '55 Woodfield Estate, Kochi', '682030', 'casacraft'),
@@ -43,19 +31,48 @@ INSERT INTO suppliers (supplier_id, supplier_name, phone_number, email_id, addre
 (4, 'OfficePro Solutions', '9785612345', 'sales@officepro.com', '1st Floor, Tower A, Gurugram', '122001', 'officepro'),
 (5, 'BrewPro Kitchenware', '9812345670', 'orders@brewpro.com', '77 Roastery Blvd, Mumbai', '400001', 'brewpro');
 
-INSERT INTO prices (product_id, supplier_id, unit_price,active) VALUES
-(1, 1, 1200.00,TRUE),
-(2, 2, 250.00,TRUE),
-(3, 3, 90.00,TRUE),
-(4, 4, 15.00,TRUE),
-(5, 5, 30.00,TRUE);
 
+delete from prices;
+INSERT INTO prices (product_id, supplier_id, unit_price, active) VALUES
+-- NutriHarvest Foods
+(1, 1, 450.00, TRUE),
+(2, 1, 850.00, TRUE),
+(4, 1, 120.00, TRUE),
+(5, 1, 275.00, TRUE),
+(11, 1, 300.00, TRUE),
+(15, 1, 400.00, TRUE),
+
+-- CasaCraft Living
+(6, 2, 15500.00, TRUE),
+(9, 2, 9800.00, TRUE),
+(14, 2, 950.00, TRUE),
+(16, 2, 18000.00, TRUE),
+(17, 2, 650.00, TRUE),
+(18, 2, 1100.00, TRUE),
+
+-- GreenGlow Wellness
+(7, 3, 1400.00, TRUE),
+(8, 3, 2200.00, TRUE),
+(10, 3, 120.00, TRUE),
+(20, 3, 999.00, TRUE),
+
+-- OfficePro Solutions
+(3, 4, 750.00, TRUE),
+(12, 4, 5990.00, TRUE),
+
+-- BrewPro Kitchenware
+(13, 5, 3400.00, TRUE),
+(19, 5, 1850.00, TRUE);
+
+
+delete from warehouses;
 INSERT INTO warehouses (warehouse_id, name, location, phone_number, pincode) VALUES
-(1, 'Warehouse A', 'New York', '9876543211', 10001),
-(2, 'Warehouse B', 'Los Angeles', '8765432102',90001),
-(3, 'Warehouse C', 'Texas', '7654321093',73301),
-(4, 'Warehouse D', 'San Francisco', '6543210984',94101),
-(5, 'Warehouse E', 'Florida', '5432109875', 33101);
+(1, 'North Hub Warehouse', 'Delhi', '01123456789', '110001'),
+(2, 'Western Logistics Depot', 'Mumbai', '02234567890', '400001'),
+(3, 'Eastern Storage Point', 'Kolkata', '03345678901', '700001'),
+(4, 'Southern Distribution Center', 'Chennai', '04456789012', '600001'),
+(5, 'Central Fulfillment Hub', 'Nagpur', '07126789012', '440001');
+
 
 INSERT INTO employees (employee_id, first_name,last_name, warehouse_id, phone_number, email_id, salary, role) VALUES
 (1, 'Michael','Scott', 1, '9876543211', 'michael@dundermifflin.com', 60000, 'manager'),
@@ -76,12 +93,34 @@ INSERT INTO managers(manager_id,warehouse_id,username) VALUES
 (7,5,'alicia_boyd'),
 (10,4,'james_parker');
 
+delete from inventory;
 INSERT INTO inventory(supplier_id,product_id,warehouse_id,quantity_in_stock,reorder_level) VALUES
+-- NutriHarvest Foods
 ( 1, 1, 1, 50, 10),
-( 3, 3, 3, 100, 20),
-( 4, 4, 4, 75, 15),
-( 5, 5, 5, 40, 8),
-( 2, 2, 2, 30, 5);
+(1, 1, 1, 120, 30),
+(1, 2, 2, 80, 20),
+(1, 4, 3, 200, 50),
+(1, 5, 4, 150, 40),
+(1, 11, 5, 100, 25),
+-- CasaCraft Living
+(2, 6, 1, 20, 5),
+(2, 9, 2, 18, 5),
+(2, 14, 3, 35, 10),
+(2, 16, 4, 10, 3),
+(2, 17, 5, 50, 10),
+-- GreenGlow Wellness
+(3, 7, 1, 60, 15),
+(3, 8, 2, 70, 20),
+(3, 10, 3, 200, 50),
+(3, 20, 4, 100, 25),
+-- OfficePro Solutions
+(4, 3, 1, 150, 30),
+(4, 3, 4, 140, 30),
+(4, 12, 5, 25, 5),
+-- BrewPro Kitchenware
+(5, 13, 1, 30, 10),
+(5, 13, 2, 30, 10),
+(5, 19, 2, 40, 10);
 
 INSERT INTO customers (customer_id, username,first_name,last_name, age, phone_number, email_id, pincode, billing_address, shipping_address) VALUES
 (1,'alice_johnson' ,'Alice','Johnson', 30, '9871234567', 'alice@mail.com', 110001, '123 Main St, NY', '456 Elm St, NY'),
@@ -90,47 +129,14 @@ INSERT INTO customers (customer_id, username,first_name,last_name, age, phone_nu
 (4,'diana_prince','Diana','Prince', 28, '6544567890', 'diana@mail.com', 440004, '99 Warrior St, SF', '12 Amazon Ave, SF'),
 (5,'edward_stark','Edward','Stark', 35, '5435678901', 'edward@mail.com', 550005, '77 Ice Road, IL', '88 Castle St, IL');
 
-INSERT INTO orders (order_id, customer_id, order_date, order_status) VALUES
-(1, 1, '2025-02-15', 'On the way'),
-(2, 1, '2025-02-14', 'Completed'),
-(3, 1, '2025-02-13', 'On the way'),
-(4, 1, '2025-02-12', 'Confirmed'),
-(5, 1, '2025-02-11', 'On the way');
-
-INSERT INTO shippings (shipping_id, delivery_date, tracking_number,shipping_status) VALUES
-(1, '2025-02-18','TRK1517', 'Shipped'),
-(2, '2025-02-16','TRK1518', 'Delivered'),
-(3,'2025-02-15','TRK1519', 'Out for Delivery'),
-(4,'2025-02-17','TRK1511', 'Processing'),
-(5,'2025-02-20','TRK1512', 'In Transit'),
-(6,'2025-02-27','TRK1513', 'Shipped');
-
-INSERT INTO shipping_details (shipping_id, curr_warehouse, next_warehouse, shipping_date) VALUES
-(1,1,2,'2025-02-16'),
-(2,2,3,'2025-02-15'),
-(3,3,2,'2025-02-11'),
-(3,2,4,'2025-02-12'),
-(3,4,null,'2025-02-13'),
-(5,5,2,'2025-02-22'),
-(5,5,2,'2025-02-23'),
-(6,4,1,'2025-02-19'),
-(6,1,2,'2025-02-22');
-
-INSERT INTO order_details (order_id,shipping_id, inventory_id, quantity, amount) VALUES
-(1, 1, 1, 2, 2400),
-(2, 2, 2, 1, 250),
-(3, 3, 3, 1, 90),
-(3, 6, 4, 1, 15),
-(4, 4, 4, 3, 45),
-(5, 5, 5, 2, 60);
-
-INSERT INTO procurement (inventory_id,quantity,order_date,delivery_date,status) VALUES
-(1,2,'2025-02-16','2025-02-18','Processing'),
-(6,100,'2025-02-16','2025-02-18','In transit'),
-(2,3,'2025-02-12','2025-02-14','Delivered'),
-(4,2,'2025-02-11','2025-02-17','In transit'),
-(4,1,'2025-02-12','2025-02-15','Delivered'),
-(3,5,'2025-02-16','2025-02-18','Processing');
+-- delete from procurements
+-- INSERT INTO procurements (inventory_id,quantity,order_date,delivery_date,status) VALUES
+-- (1,2,'2025-02-16','2025-02-18','Processing'),
+-- (6,100,'2025-02-16','2025-02-18','In transit'),
+-- (2,3,'2025-02-12','2025-02-14','Delivered'),
+-- (4,2,'2025-02-11','2025-02-17','In transit'),
+-- (4,1,'2025-02-12','2025-02-15','Delivered'),
+-- (3,5,'2025-02-16','2025-02-18','Processing');
 
 
 -- username, password
