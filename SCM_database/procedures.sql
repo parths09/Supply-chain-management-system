@@ -123,7 +123,7 @@ begin
 	select product_id into prod_id from products where name=p_name;
 
 	if exists(select * from prices where product_id = prod_id and supplier_id= sup_id) then 
-		-- update prices set active=true where product_id = prod_id and supplier_id= sup_id;
+		update prices set active=true where product_id = prod_id and supplier_id= sup_id;
 		update prices set unit_price=price where product_id = prod_id and supplier_id= sup_id;
 	else 
 		insert into prices (product_id, supplier_id, unit_price,active) VALUES
