@@ -27,7 +27,7 @@ delete from suppliers;
 INSERT INTO suppliers (supplier_id, supplier_name, phone_number, email_id, address, pincode, username) VALUES
 (1, 'NutriHarvest Foods', '9876543210', 'contact@nutriharvest.com', '12 Orchard Street, Pune', '411001', 'nutriharvest'),
 (2, 'CasaCraft Living', '9345678123', 'support@casacraft.in', '55 Woodfield Estate, Kochi', '682030', 'casacraft'),
-(3, 'GreenGlow Wellness', '9988776655', 'hello@greenglow.com', '88 Muscle Avenue, Hyderabad', '500081', 'greenglow'),
+	(3, 'GreenGlow Wellness', '9988776655', 'hello@greenglow.com', '88 Muscle Avenue, Hyderabad', '500081', 'greenglow'),
 (4, 'OfficePro Solutions', '9785612345', 'sales@officepro.com', '1st Floor, Tower A, Gurugram', '122001', 'officepro'),
 (5, 'BrewPro Kitchenware', '9812345670', 'orders@brewpro.com', '77 Roastery Blvd, Mumbai', '400001', 'brewpro');
 
@@ -145,11 +145,11 @@ INSERT INTO customers (customer_id, username,first_name,last_name, age, phone_nu
 -- joshua_snyder, josspass1
 -- alicia_boyd, alibpass1
 -- james_parker,jamppass1
--- techworld,techpass1
--- furniture_hub,furnpass1
--- nike_suppliers,nikepass1
--- book_depot,bookpass1
--- toyland,toylpass1
+-- nutriharvest,nutripass1
+-- casacraft,casapass1
+-- greenglow, greenpass1
+-- officepro,offpass1
+-- brewpro,brewpass1
 -- alice_johnson,alicepass1
 -- bob_williams,bobpass1
 -- charlie_brown,charliepass1

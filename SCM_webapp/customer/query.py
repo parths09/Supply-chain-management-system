@@ -58,12 +58,29 @@ def cus_expected_delivery(tracking_no):
     except Exception as err:
         print(f'Failed to fetch expected delivery date -- {err}')
 
-def cus_product_details(tracking_no,detail_id):
+def cus_product_details(tracking_no,detail_id=None):
     try:
-        query = f''' select * from get_product_details('{tracking_no}',{detail_id});'''
-        result = db.execute_dql_commands(query)
-        product_details=list(result.mappings().all())
-        return product_details
+        if detail_id is None:
+            query=f'''select od.order_id,p.name as product_name,p.description as product_description,sup.supplier_name as supplier_name,
+            sup.address as supplier_address,od.quantity,od.amount as price,c.shipping_address,s.shipping_status,o.order_date,s.delivery_date
+            from shippings s
+            join order_details od on od.shipping_id=s.shipping_id
+            join orders o on od.order_id = o.order_id
+            join customers c on c.customer_id = o.customer_id
+            join inventory i on i.inventory_id = od.inventory_id
+            join products p on p.product_id = i.product_id
+            join suppliers sup on sup.supplier_id = i.supplier_id
+            where s.tracking_number='{tracking_no}';
+            '''
+            result = db.execute_dql_commands(query)
+            product_details=list(result.mappings().all())[0]
+            return product_details
+        else:
+            query = f''' select * from get_product_details('{tracking_no}',{detail_id});'''
+            result = db.execute_dql_commands(query)
+            product_details=list(result.mappings().all())
+            return product_details
+
     except Exception as err:
         print(f'Failed to fetch product details -- {err}')
 
