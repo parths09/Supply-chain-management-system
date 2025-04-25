@@ -4,7 +4,7 @@ from django.utils.timezone import now
 from .models import Shipment,Procurement,Order
 from .utils import *
 from .query import *
-from .insertion_data import orders_data
+from .insertion_data2 import orders_data
 
 def get_difference(date1,date2):
     date1=datetime.date(date1)

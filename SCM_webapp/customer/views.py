@@ -54,7 +54,42 @@ def customer_orders(request):
             tracking_numbers = [order['tracking_number'] for order in all_orders]
 
             if tracking_number in tracking_numbers:
-                return redirect('tracking_page', tracking_number=tracking_number)
+                
+                tracking_details=cus_tracking(tracking_number)
+                customer_id = get_customer_id(request.user.username)
+                notifications = get_customer_notifications(customer_id)
+                notifications_unread = False
+                for note in notifications:
+                    if note['is_read']==False:
+                        notifications_unread=True
+                        break
+
+                progress_unit = len(tracking_details)-1
+                fill_circle = False
+                shipping_status = cus_shipping_status(tracking_number)[0]
+                if shipping_status == 'Shipped':
+                    progress_height = 6  + 6.5*progress_unit
+                    fill_circle = True
+                elif shipping_status == 'Processing':
+                    progress_height = 3
+                elif shipping_status == 'Delivered':
+                    progress_height = 6 + 6.5*progress_unit+6
+                else:
+                    progress_height = 6 + 6.5*progress_unit + 4
+                
+                product_info = cus_product_details(tracking_number)
+                print(product_info)
+                context = {
+                    "tracking_number": tracking_number,
+                    "tracking_details":tracking_details,
+                    "progress_height" : progress_height,
+                    "fill_circle" : fill_circle,
+                    "product_info":product_info,
+                    "username": request.user.username,
+                    'notifications':notifications,
+                    'notifications_unread':notifications_unread,
+                    }
+                return render(request, "customer_tracking_timeline.html",context)
             else:
                 messages.error(request, "Invalid Tracking Number.")
                 return redirect('customer_orders')
@@ -65,7 +100,7 @@ def customer_orders(request):
             #status=('pending', 'confirmed', 'completed', 'on the way')
 
             filtered_orders = [order for order in filtered_orders if order.get('status')==status_filter]
-
+    # print(filtered_orders)
     context = {
             "username": request.user.username,
             "orders": filtered_orders,
@@ -78,7 +113,8 @@ def customer_orders(request):
 
 
 
-def tracking_page(request, tracking_number):
+def tracking_page(request, tracking_number,detail_id):
+    detail_id = int(detail_id)
     tracking_details=cus_tracking(tracking_number)
     # print(tracking_details)
     # if tracking_details[-1]["move_to"] is None:
@@ -107,7 +143,8 @@ def tracking_page(request, tracking_number):
     else:
         progress_height = 6 + 6.5*progress_unit + 4
 
-    product_details = cus_product_details(tracking_number)
+    product_details = cus_product_details(tracking_number,detail_id)
+    # print(product_details)
 
 
     context = {

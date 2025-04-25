@@ -104,13 +104,11 @@
       </div>
     </div>
 
-    {% for product_info in product_details %}
-
     <div class= "details-wrapper">
 
       {% comment %} Order Details {% endcomment %}
       <div class="order-details-card">
-        <h2>Order Details</h2>
+        <h2>Shipment Details</h2>
       
         <div class="shipping-status">
           <span class="label">Shipping Status:</span>
@@ -119,10 +117,7 @@
       
         <div class="order-info">
           <p><strong>Tracking Number:</strong> {{tracking_number}}</p>
-          <p><strong>Product:</strong> <span class="product-name">{{product_info.product_name}} </span> - <span class="product-description">{{product_info.product_description}} </span></p>
           <p><strong>Order Date:</strong> {{product_info.order_date}}</p>
-          <p><strong>Supplier:</strong> {{product_info.supplier_name}} — <span class="supplier-location"> {{product_info.supplier_address}}</span></p>
-          <p class="price"><strong>Price: </strong>{{product_info.price}}</p>
           <p><strong>Shipping Address:</strong> {{product_info.shipping_address}}</p>
         </div>
       </div>
@@ -168,7 +163,5 @@
       </div>
 
     </div>
-    {% endfor %}  
-
   </body>
 </html>
