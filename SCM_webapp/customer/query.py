@@ -58,11 +58,11 @@ def cus_expected_delivery(tracking_no):
     except Exception as err:
         print(f'Failed to fetch expected delivery date -- {err}')
 
-def cus_product_details(tracking_no):
+def cus_product_details(tracking_no,detail_id):
     try:
-        query = f''' select * from get_product_details('{tracking_no}');'''
+        query = f''' select * from get_product_details('{tracking_no}',{detail_id});'''
         result = db.execute_dql_commands(query)
-        product_details=list(result.mappings().all())[0]
+        product_details=list(result.mappings().all())
         return product_details
     except Exception as err:
         print(f'Failed to fetch product details -- {err}')

@@ -65,7 +65,7 @@ def customer_orders(request):
             #status=('pending', 'confirmed', 'completed', 'on the way')
 
             filtered_orders = [order for order in filtered_orders if order.get('status')==status_filter]
-
+    # print(filtered_orders)
     context = {
             "username": request.user.username,
             "orders": filtered_orders,
@@ -78,7 +78,8 @@ def customer_orders(request):
 
 
 
-def tracking_page(request, tracking_number):
+def tracking_page(request, tracking_number,detail_id):
+    detail_id = int(detail_id)
     tracking_details=cus_tracking(tracking_number)
     # print(tracking_details)
     # if tracking_details[-1]["move_to"] is None:
@@ -107,7 +108,8 @@ def tracking_page(request, tracking_number):
     else:
         progress_height = 6 + 6.5*progress_unit + 4
 
-    product_details = cus_product_details(tracking_number)
+    product_details = cus_product_details(tracking_number,detail_id)
+    # print(product_details)
 
 
     context = {

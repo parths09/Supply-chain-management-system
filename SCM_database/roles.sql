@@ -13,6 +13,7 @@ grant select on customer_orders to customer;
 grant select on products to customer;
 grant select on suppliers to customer;
 grant select on inventory to customer;
+grant select on warehouses to customer;
 grant select,update on notifications to customer;
 grant select on customer_notifications to customer;
 --set role customer;
