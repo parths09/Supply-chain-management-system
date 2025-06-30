@@ -2,3 +2,4 @@
 *.pyc
 /SCM_webapp/venv2
 SCM_webapp/simulation/date.txt
+todo.md
