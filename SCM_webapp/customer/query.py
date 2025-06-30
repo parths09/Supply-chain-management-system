@@ -1,4 +1,4 @@
-
+# import models here and write queries
 from customer.db import db
 
 def cus_orders(id=None,name=None):
