@@ -53,6 +53,8 @@ for each row
 execute procedure notify_procurement();
 
 
+-- Trigger to notify customer of shipments
+
 drop trigger if exists notify_customer_shipment_trigger on shippings;
 drop function if exists notify_customer_shipment;
 
@@ -116,6 +118,7 @@ for each row
 execute procedure notify_customer_shipment();
 
 
+-- Trigger to update order status to 'Completed'
 
 drop trigger if exists order_completed_trigger on shippings;
 drop function if exists update_order_status ;
@@ -152,21 +155,3 @@ for each row
 execute procedure update_order_status();
 
 
-
-drop trigger if exists active_prices_trigger on prices;
-drop function if exists activate_prices ;
-
-create or replace function activate_prices()
-returns trigger
-language plpgsql as $$
-
-begin
-	new.active:=true;
-	return new;
-end;
-$$;
-
-create or replace trigger active_prices_trigger
-before update on prices
-for each row
-execute procedure activate_prices();
